@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import API from '../API';
 
-const fetchCustomers = async () => {
-  return await axios.get('http://localhost:8080/api/customers/');
+const fetchCustomers = () => {
+  return API.getAllCustomers();
 }
 
 export default function useCustomers() {
