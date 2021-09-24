@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const partSchema = new mongoose.Schema({
     part_number: { type: String, required: [true, 'part # required'] },
@@ -10,4 +10,4 @@ const partSchema = new mongoose.Schema({
 
 const Part = mongoose.model("Part", partSchema);
 
-export default Part;
+module.exports = Part;

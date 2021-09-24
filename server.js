@@ -1,6 +1,8 @@
 // Import dependencies
-import express from 'express';
-import mongoose from "mongoose";
+const express = require('express');
+const mongoose = require('mongoose');
+
+const routes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -13,6 +15,9 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 }
+
+// Add routes, both API and view
+app.use(routes);
 
 // Connect to database
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/metronicsDB")
