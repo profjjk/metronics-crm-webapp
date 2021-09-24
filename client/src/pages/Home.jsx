@@ -21,16 +21,16 @@ const Home = () => {
           <main>
             <SideNavbar />
             <div className="p-5">
-              <QuickActions 
+              <QuickActions
                 setShowJobForm={setShowJobForm}
                 setShowCustomerForm={setShowCustomerForm}
                 setShowPartForm={setShowPartForm}
               />
-              <OrderParts 
-                parts={parts.data.data} 
+              <OrderParts
+                parts={parts.data}
               />
-              <ScheduleJobs 
-                jobs={jobs.data.data}
+              <ScheduleJobs
+                jobs={jobs.data}
               />
             </div>
           </main>

@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import API from '../API';
 
-const fetchPart = async partId => {
-  return await axios.get(`http://localhost:8080/api/parts/${partId}`);
+const fetchPart = partId => {
+  return API.getPartById(partId);
 }
 
 export default function usePart(partId) {
