@@ -1,25 +1,14 @@
 const db = require('../models');
 
 module.exports = {
-    findAll: function(req, res) {
+    findAll: (req, res) => {
         db.Part.find({})
-            .then(parts => res.json(parts))
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     },
-    findById: function(req, res) {
+    findById: (req, res) => {
         db.Part.findById(req.params.id)
-            .then(part => res.json(part))
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     },
-    create: function(req, res) {
-        db.Part.create(req.body)
-            .then(newPart => res.json(newPart))
-            .catch(err => res.status(422).json(err));
-    },
-    remove: function(req, res) {
-        db.Part.findById({ _id: req.params.id })
-            .then(part => part.remove())
-            .then(part => res.json(part))
-            .catch(err => res.status(422).json(err));
-    }
-}
+} 

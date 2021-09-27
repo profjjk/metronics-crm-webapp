@@ -1,25 +1,37 @@
 const db = require('../models');
+const { JobModel } = require('../models/job')
 
 module.exports = {
-    findAll: function(req, res) {
+    findAllCustomers: (req, res) => {
         db.Customer.find({})
-            .then(customers => res.json(customers))
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     },
-    findById: function(req, res) {
+    findByCustomerId: (req, res) => {
         db.Customer.findById(req.params.id)
-            .then(customer => res.json(customer))
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     },
-    create: function(req, res) {
-        db.Customer.create(req.body)
-            .then(newCustomer => res.json(newCustomer))
+    findByJobId: (req, res) => {
+        db.Customer.findOne({ 'jobs._id': req.params.id })
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     },
-    remove: function(req, res) {
-        db.Customer.findById({ _id: req.params.id })
-            .then(customer => customer.remove())
-            .then(customer => res.json(customer))
+    addJob: (req, res) => {
+        const job = new JobModel(req.body);
+        db.Customer.findOneAndUpdate({ '_id': req.params.id }, {
+            $push: { 'jobs': job }}, { new: true })
+            .then(data => res.json(data))
+            .catch(err => res.status(422).json(err));
+    },
+    updateJob: (req, res) => {
+        db.Customer.findOneAndUpdate({ 'jobs._id': req.params.id }, {
+            $set: { 'jobs._id': req.body }}, { new: true })
+    },
+    removeJob: (req, res) => {
+        db.Customer.findOneAndUpdate({ 'jobs._id': req.params.id }, {
+            $pull: { 'jobs._id': req.params.id }}, { new: true })
+            .then(data => res.json(data))
             .catch(err => res.status(422).json(err));
     }
 } 

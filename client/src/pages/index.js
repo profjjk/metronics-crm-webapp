@@ -1,4 +1,3 @@
-export { default as Home } from './Home';
-export { default as Jobs } from './Jobs';
-export { default as Customers } from './Customers';
-export { default as Inventory } from './Inventory';
+export { default as HomePage } from './HomePage';
+export { default as CustomerPage } from './CustomerPage';
+export { default as InventoryPage } from './InventoryPage';

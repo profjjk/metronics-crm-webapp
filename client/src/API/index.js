@@ -1,60 +1,56 @@
-import ky from 'ky';
+import axios from 'axios';
 
 const customerUrl = 'http://localhost:8080/api/customers/';
-const jobUrl = 'http://localhost:8080/api/jobs/';
 const partUrl = 'http://localhost:8080/api/parts/';
 
-
 const API = {
-  // Customers
+
+  // CUSTOMERS
   getAllCustomers() {
-    return ky.get(customerUrl).json();
+    return axios.get(customerUrl);
   },
   getCustomerById(id) {
-    return ky.get(customerUrl + id).json();
+    return axios.get(customerUrl + id);
   },
-  createCustomer(customer) {
-    return ky.post(customerUrl, { json: customer }).json();
+  createCustomer(data) {
+    return axios.post(customerUrl, data);
   },
-  updateCustomer(customer) {
-    return ky.put(customerUrl, { json: customer }).json();
+  updateCustomerById(id, data) {
+    return axios.put(customerUrl + id, data);
   },
-  deleteCustomer(id) {
-    return ky.delete(customerUrl + id);
-  },
-
-  // Jobs
-  getAllJobs() {
-    return ky.get(jobUrl).json();
-  },
-  getJobById(id) {
-    return ky.get(jobUrl + id).json();
-  },
-  createJob(job) {
-    return ky.post(jobUrl, { json: job }).json();
-  },
-  updateJob(job) {
-    return ky.put(jobUrl, { json: job }).json();
-  },
-  deleteJob(id,) {
-    return ky.delete(jobUrl + id);
+  deleteCustomerById(id) {
+    return axios.delete(customerUrl + id);
   },
 
-  // Parts
+  // PARTS
   getAllParts() {
-    return ky.get(partUrl).json();
+    return axios.get(partUrl);
   },
   getPartById(id) {
-    return ky.get(partUrl + id).json();
+    return axios.get(partUrl + id);
   },
-  createPart(part) {
-    return ky.post(partUrl, { json: part }).json();
+  createPart(data) {
+    return axios.post(partUrl, data);
   },
-  updatePart(part) {
-    return ky.put(partUrl, { json: part }).json();
+  updatePartById(id, data) {
+    return axios.put(partUrl + id, data);
   },
-  deletePart(id) {
-    return ky.delete(partUrl + id);
+  deletePartById(id) {
+    return axios.delete(partUrl + id);
+  },
+
+  // JOBS
+  addCustomerJob(id, data) {
+    return axios.put(customerUrl + 'job/new/' + id, data);
+  },
+  updateCustomerJob(id, data) {
+    return axios.put(customerUrl + 'job/update/' + id, data);
+  },
+  addPartToJob(id, data) {
+    return axios.put(customerUrl + 'part/add/' + id, data);
+  },
+  removePartFromJob(id, data) {
+    return axios.put(customerUrl + 'part/remove/' + id, data);
   }
 }
 

@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const partSchema = new mongoose.Schema({
-    part_number: { type: String, required: [true, 'part # required'] },
-    description: { type: String, required: [true, 'description required'] },
-    purchase_price: Number,
-    sale_price: Number,
+    partNumber: { type: String, required: [true, 'Part # required'] },
+    description: { type: String, required: [true, 'Description required'] },
+    purchasePrice: Number,
+    salePrice: Number,
     stock: Number
 })
 
-const Part = mongoose.model("Part", partSchema);
+const PartModel = mongoose.model("Part", partSchema);
 
-module.exports = Part;
+module.exports = PartModel;
