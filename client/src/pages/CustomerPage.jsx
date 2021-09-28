@@ -1,8 +1,7 @@
-import { useCustomers, useCustomer } from '../hooks';
+import { useCustomers } from '../hooks';
 
 const CustomerPage = () => {
     const { status, data, error } = useCustomers();
-    const customer = useCustomer()
 
     switch (status) {
         case "loading":

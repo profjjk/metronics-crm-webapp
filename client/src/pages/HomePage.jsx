@@ -1,5 +1,4 @@
-import {useCustomers, useJobs, useParts, useJobQuery} from '../hooks';
-import API from '../API';
+import {useCustomers, useJobs, useParts } from '../hooks';
 
 const HomePage = () => {
     const customers = useCustomers();
