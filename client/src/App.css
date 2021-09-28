@@ -4,3 +4,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/***** PAGE STYLES *****/
+main {
+  margin-left: 250px;
+  padding: 50px;
+}
+
+/***** COMPONENT STYLES *****/
+/* SideNavbar */
+nav {
+  width: 250px;
+  height: 100vh;
+  background: #eee;
+}
+nav li {
+  list-style: none;
+}
+nav li a {
+  text-decoration: none;
+}

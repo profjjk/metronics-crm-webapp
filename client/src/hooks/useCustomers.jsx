@@ -2,9 +2,7 @@ import { useQuery } from 'react-query';
 import API from '../API';
 
 const fetchCustomers = async (key, value) => {
-    const customers = await API.searchCustomers(key, value);
-    console.log('CUSTOMER SEARCH RESULTS:\n', customers.data);
-    return customers;
+    return await API.searchCustomers(key, value);
 }
 
 export default function useCustomers(key, value) {
