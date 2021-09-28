@@ -3,8 +3,7 @@ import API from '../API';
 
 const fetchParts = async () => {
     const parts = await API.getAllParts();
-    console.log('\n***** GET ALL PARTS *****')
-    console.log(parts.data);
+    console.log('GET ALL PARTS:\n', parts.data);
     return parts;
 }
 

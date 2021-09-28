@@ -1,37 +1,34 @@
 const db = require('../models');
-const { JobModel } = require('../models/job')
 
 module.exports = {
-    findAllCustomers: (req, res) => {
-        db.Customer.find({})
-            .then(data => res.json(data))
-            .catch(err => res.status(422).json(err));
+    findAll: async (req, res) => {
+        try {
+            const data = await db.Customer.find(req.query);
+            res.json(data);
+        } catch(err) { res.status(422).json(err) }
     },
-    findByCustomerId: (req, res) => {
-        db.Customer.findById(req.params.id)
-            .then(data => res.json(data))
-            .catch(err => res.status(422).json(err));
+    findById: async (req, res) => {
+        try {
+            const data = await db.Customer.findById(req.params.id);
+            res.json(data);
+        } catch(err) { res.status(422).json(err) }
     },
-    findByJobId: (req, res) => {
-        db.Customer.findOne({ 'jobs._id': req.params.id })
-            .then(data => res.json(data))
-            .catch(err => res.status(422).json(err));
+    updateById: async (req, res) => {
+        try {
+            const data = await db.Customer.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            res.json(data);
+        } catch(err) { res.status(422).json(err) }
     },
-    addJob: (req, res) => {
-        const job = new JobModel(req.body);
-        db.Customer.findOneAndUpdate({ '_id': req.params.id }, {
-            $push: { 'jobs': job }}, { new: true })
-            .then(data => res.json(data))
-            .catch(err => res.status(422).json(err));
+    create: async (req, res) => {
+        try {
+            const data = await db.Customer.create(req.body);
+            res.json(data);
+        } catch(err) { res.status(422).json(err) }
     },
-    updateJob: (req, res) => {
-        db.Customer.findOneAndUpdate({ 'jobs._id': req.params.id }, {
-            $set: { 'jobs._id': req.body }}, { new: true })
-    },
-    removeJob: (req, res) => {
-        db.Customer.findOneAndUpdate({ 'jobs._id': req.params.id }, {
-            $pull: { 'jobs._id': req.params.id }}, { new: true })
-            .then(data => res.json(data))
-            .catch(err => res.status(422).json(err));
+    delete: async (req, res) => {
+        try {
+            await db.Customer.deleteOne({ _id: req.params.id });
+            res.end();
+        } catch(err) { res.status(422).json(err) }
     }
-} 
+}

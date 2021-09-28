@@ -3,8 +3,7 @@ import API from '../API';
 
 const fetchCustomerById = async id => {
     const customer = await API.getCustomerById(id);
-    console.log('\n***** GET CUSTOMER BY ID *****')
-    console.log(customer.data);
+    console.log('GET ONE CUSTOMER:\n', customer.data);
     return customer;
 }
 

@@ -3,8 +3,7 @@ import API from '../API';
 
 const fetchPartById = async id => {
     const part = await API.getPartById(id);
-    console.log('\n***** GET PART BY ID *****')
-    console.log(part.data);
+    console.log('GET ONE PART:\n', part.data);
     return part;
 }
 

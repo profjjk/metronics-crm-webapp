@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema({
-    customerId: String,
-    dateCompleted: String,
-    invoiceNumber: String,
+    customerId: { type: String, required: true, index: true },
+    dateCompleted: { type: String, index: true },
+    invoiceNumber: { type: String, index: true },
     issueNotes: String,
     repairNotes: String,
     status: { enum: ['Waiting', 'Scheduled', 'Completed', 'Canceled'] },
@@ -12,6 +12,6 @@ const jobSchema = new mongoose.Schema({
 
 })
 
-const JobModel = mongoose.model("Job", jobSchema);
+const Job = mongoose.model("Job", jobSchema);
 
-module.exports = { JobModel, jobSchema };
+module.exports = Job;
