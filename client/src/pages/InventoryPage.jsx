@@ -1,7 +1,8 @@
 import { useParts } from '../hooks';
+import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
 
 const InventoryPage = () => {
-    const { status, data, error } = useParts();
+    const { status, data, error } = useParts(false);
 
     switch (status) {
         case "loading":
@@ -11,7 +12,12 @@ const InventoryPage = () => {
         default:
             console.log(data.data);
             return (
-                <h1 className="text-center my-5"> Data Load Successful</h1>
+                <>
+                    <SideNavbar/>
+                    <main>
+
+                    </main>
+                </>
             )
     }
 }

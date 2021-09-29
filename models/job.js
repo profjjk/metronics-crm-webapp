@@ -6,9 +6,9 @@ const jobSchema = new mongoose.Schema({
     invoiceNumber: { type: String, index: true },
     issueNotes: String,
     repairNotes: String,
-    status: { enum: ['Waiting', 'Scheduled', 'Completed', 'Canceled'] },
-    type: { enum: ['Maintenance', 'Repair', 'Callback', 'Training'] },
-    parts: []
+    status: String,
+    type: String,
+    parts: Array
 
 })
 

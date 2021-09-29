@@ -14,6 +14,8 @@ const API = {
     return axios.post(customerUrl, data);
   },
   updateCustomer(id, data) {
+    console.log(id)
+    console.log(data)
     return axios.put(`${customerUrl}/${id}`, data);
   },
   deleteCustomer(id) {
