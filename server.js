@@ -1,5 +1,6 @@
 // Import dependencies
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 
 const routes = require('./routes');
@@ -11,6 +12,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
     next();
 });
+app.options('*', cors());
 
 // Body parsing middleware
 app.use(express.urlencoded({ extended: true }));

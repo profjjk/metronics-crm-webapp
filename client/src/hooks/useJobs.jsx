@@ -12,7 +12,7 @@ const fetchJobs = async (key, value) => {
             status: job.status,
             type: job.type,
             invoiceNumber: job.invoiceNumber,
-            dateComplete: job.dateCompleted,
+            dateCompleted: job.dateCompleted,
             issueNotes: job.issueNotes,
             repairNotes: job.repairNotes,
             parts: job.parts,
@@ -29,5 +29,5 @@ const fetchJobs = async (key, value) => {
 }
 
 export default function useJobs(key, value) {
-    return useQuery(['jobs'], () => fetchJobs(key, value));
+    return useQuery(['jobs', value || "all"], () => fetchJobs(key, value));
 }

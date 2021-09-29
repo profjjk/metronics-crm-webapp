@@ -1,10 +1,16 @@
 import { useQuery } from 'react-query';
 import API from '../API';
 
-const fetchParts = async (key, value) => {
-    return await API.searchParts(key, value);
+const fetchParts = async (restock, key, value) => {
+    if (restock) {
+        let parts = await API.searchParts(key, value);
+        parts = parts.data.filter(part => part.stock <= part.minimum)
+        return parts;
+    } else {
+        return await API.searchParts(key, value);
+    }
 }
 
-export default function useParts(key, value) {
-    return useQuery(['parts'], () => fetchParts(key, value));
+export default function useParts(restock, key, value) {
+    return useQuery(['parts', restock], () => fetchParts(restock, key, value));
 }

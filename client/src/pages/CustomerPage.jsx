@@ -1,4 +1,5 @@
 import { useCustomers } from '../hooks';
+import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
 
 const CustomerPage = () => {
     const { status, data, error } = useCustomers();
@@ -11,7 +12,12 @@ const CustomerPage = () => {
         default:
             console.log(data.data);
             return (
-                <h1 className="text-center my-5"> Data Load Successful</h1>
+                <>
+                    <SideNavbar/>
+                    <main>
+
+                    </main>
+                </>
             )
     }
 }
