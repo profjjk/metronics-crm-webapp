@@ -1,7 +1,6 @@
-import { useParts } from '../hooks';
-import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
+import { useParts } from '../../hooks';
 
-const InventoryPage = () => {
+const InventoryHome = () => {
     const { status, data, error } = useParts(false);
 
     switch (status) {
@@ -10,10 +9,8 @@ const InventoryPage = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            console.log(data.data);
             return (
                 <>
-                    <SideNavbar/>
                     <main>
 
                     </main>
@@ -22,4 +19,4 @@ const InventoryPage = () => {
     }
 }
 
-export default InventoryPage;
+export default InventoryHome;

@@ -1,7 +1,6 @@
-import { useCustomers } from '../hooks';
-import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
+import { useCustomers } from '../../hooks';
 
-const CustomerPage = () => {
+const CustomerHome = () => {
     const { status, data, error } = useCustomers();
 
     switch (status) {
@@ -10,10 +9,8 @@ const CustomerPage = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            console.log(data.data);
             return (
                 <>
-                    <SideNavbar/>
                     <main>
 
                     </main>
@@ -22,4 +19,4 @@ const CustomerPage = () => {
     }
 }
 
-export default CustomerPage;
+export default CustomerHome;

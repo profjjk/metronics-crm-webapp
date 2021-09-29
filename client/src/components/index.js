@@ -8,5 +8,5 @@ export { default as PartsReorderTable } from './dashboard/PartsReorderTable';
 
 // Job
 export { default as JobsTable } from './job/JobsTable';
-export { default as JobFormNew } from './job/JobFormNew';
+export { default as ServiceForm } from './shared/ServiceForm';
 export { default as JobFormUpdate } from './job/JobFormUpdate';
