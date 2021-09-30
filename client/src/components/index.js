@@ -15,3 +15,8 @@ export { default as JobFormUpdate } from './job/JobFormUpdate';
 export { default as CustomerTable } from './customer/CustomerTable';
 export { default as CustomerFormNew } from './customer/CustomerFormNew';
 export { default as CustomerFormUpdate } from './customer/CustomerFormUpdate';
+
+// Inventory
+export { default as PartsTable } from './inventory/PartsTable';
+export { default as PartFormNew } from './inventory/PartFormNew';
+export { default as PartFormUpdate } from './inventory/PartFormUpdate';

@@ -10,6 +10,7 @@ const PartsReorderTable = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message()}</h4>;
         default:
+            console.log(data)
             return (
                 <div className="my-5">
                     <h4 className="pt-5"><strong>Parts that need to be re-ordered</strong></h4>
