@@ -1,8 +1,14 @@
-import { useCustomers } from '../hooks';
-import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
+import { useState } from 'react';
+import useCustomers from '../hooks/useCustomers';
+import { SideNavbar, Searchbar, CustomerTable, CustomerFormNew, CustomerFormUpdate } from '../components';
 
 const CustomerPage = () => {
-    const { status, data, error } = useCustomers();
+    const { status, data, error, isFetching } = useCustomers();
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [customerId, setCustomerId] = useState();
+    const [showFormUpdate, setShowFormUpdate] = useState(false);
+    const [showFormNew, setShowFormNew] = useState(false);
 
     switch (status) {
         case "loading":
@@ -10,15 +16,59 @@ const CustomerPage = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            console.log(data.data);
-            return (
-                <>
-                    <SideNavbar/>
-                    <main>
+            if (!showFormNew && !showFormUpdate) {
+                return (
+                    <>
+                        <main>
+                            <Searchbar
+                                heading="Customer Search"
+                                subheading="Search by business name, city name, or phone #"
+                                placeholder="Business Name, city name, or phone #"
+                                setSearch={setSearchTerm}
+                            />
+                            <button
+                                className="btn btn-success me-3 mt-5"
+                                onClick={() => setShowFormNew(true)}
+                                >Create New Customer
+                            </button>
+                            <CustomerTable
+                                setShowFormUpdate={setShowFormUpdate}
+                                setCustomerId={setCustomerId}
+                                searchTerm={searchTerm}
+                                customers={data.data}
+                            />
+                            {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
+                        </main>
+                    </>
+                )
+            }
 
+            if (showFormNew) {
+                return (
+                    <main>
+                        <div className="p-5">
+                            <CustomerFormNew
+                                setShowFormNew={setShowFormNew}
+                            />
+                            {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
+                        </div>
                     </main>
-                </>
-            )
+                )
+            }
+
+            if (showFormUpdate) {
+                return (
+                    <main>
+                        <div className="p-5">
+                            <CustomerFormUpdate
+                                setShowFormUpdate={setShowFormUpdate}
+                                customerId={customerId}
+                            />
+                            {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
+                        </div>
+                    </main>
+                )
+            }
     }
 }
 

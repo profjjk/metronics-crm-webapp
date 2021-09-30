@@ -29,5 +29,5 @@ const fetchJobs = async (key, value) => {
 }
 
 export default function useJobs(key, value) {
-    return useQuery(['jobs', value || "all"], () => fetchJobs(key, value));
+    return useQuery(['jobs', value || 'all'], () => fetchJobs(key, value));
 }

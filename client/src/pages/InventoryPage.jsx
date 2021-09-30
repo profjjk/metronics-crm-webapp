@@ -1,5 +1,4 @@
 import { useParts } from '../hooks';
-import {PartsReorderTable, SideNavbar, WaitListTable} from "../components";
 
 const InventoryPage = () => {
     const { status, data, error } = useParts(false);
@@ -13,7 +12,6 @@ const InventoryPage = () => {
             console.log(data.data);
             return (
                 <>
-                    <SideNavbar/>
                     <main>
 
                     </main>

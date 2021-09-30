@@ -18,7 +18,6 @@ const ServicePage = () => {
             if(!showFormNew && !showFormUpdate) {
                 return (
                     <>
-                        <SideNavbar/>
                         <main>
                             <Searchbar
                                 heading={"Service Job Search"}

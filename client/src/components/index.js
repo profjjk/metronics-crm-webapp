@@ -10,3 +10,8 @@ export { default as PartsReorderTable } from './dashboard/PartsReorderTable';
 export { default as JobsTable } from './job/JobsTable';
 export { default as JobFormNew } from './job/JobFormNew';
 export { default as JobFormUpdate } from './job/JobFormUpdate';
+
+// Customer
+export { default as CustomerTable } from './customer/CustomerTable';
+export { default as CustomerFormNew } from './customer/CustomerFormNew';
+export { default as CustomerFormUpdate } from './customer/CustomerFormUpdate';

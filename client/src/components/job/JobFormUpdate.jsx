@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import { useRef, useState} from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useJobs } from '../../hooks';
 import API from '../../API';
