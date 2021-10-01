@@ -1,20 +1,12 @@
 import { useRef } from "react";
 import API from "../../API";
 
-const ServiceForm = props => {
+const ServiceForm = ({ customer, job, parts, setParts, submitHandler, removePartHandler, setShowForm }) => {
     // TODO: Parts will not update when a new one is added. Perhaps I need a stateful variable that updates with useEffect?
     // TODO: I need to map over the variable for a job's status and type. Reference the old update form.
     // TODO: Need to include delete functionality on parts table.
 
-    let partNumber = useRef(); let partQuantity = useRef(); let customer; let job;
-
-    if (!props.newJob) {
-        customer = [props.data[0].customer]
-        job = props.data;
-        props.setParts(props.data[0].parts)
-    } else {
-        customer = props.data;
-    }
+    let partNumber = useRef(); let partQuantity = useRef();
 
     const addPartHandler = async e => {
         try {
@@ -25,13 +17,13 @@ const ServiceForm = props => {
                 description: part.data[0].description,
                 quantity: parseInt(partQuantity.current.value) < 0 ? 0 : parseInt(partQuantity.current.value)
             }
-            props.setParts([...props.parts, newPart]);
+            setParts([...parts, newPart]);
             partNumber.current.value = ""; partQuantity.current.value = "";
         } catch(err) { console.error(err) }
     }
 
     return (
-        <form className="p-5" onSubmit={props.submitHandler}>
+        <form className="p-5" onSubmit={submitHandler}>
             <h1 className="text-primary text-center mb-5">Service Job Form</h1>
             <div id="dropdown-area" className="my-3">
                 <div className="px-3">
@@ -58,6 +50,7 @@ const ServiceForm = props => {
                         type="date"
                         className="form-control"
                         name="dateCompleted"
+                        defaultValue={job ? job.dateCompleted : ""}
                     />
                 </div>
                 <div className="px-3">
@@ -66,6 +59,7 @@ const ServiceForm = props => {
                         type="text"
                         className="form-control"
                         name="invoiceNumber"
+                        defaultValue={job ? job.invoiceNumber : ""}
                     />
                 </div>
             </div>
@@ -78,14 +72,14 @@ const ServiceForm = props => {
                         className="form-control"
                         name="businessName"
                         placeholder={"business name"}
-                        defaultValue={customer ? customer[0].businessName : ""}
+                        defaultValue={customer ? customer.businessName : ""}
                     />
                     <input
                         type="text"
                         className="form-control my-2"
                         name="contactName"
                         placeholder={"contact name"}
-                        defaultValue={customer ? customer[0].contactName : ""}
+                        defaultValue={customer ? customer.contactName : ""}
                     />
                     <input
                         type="tel"
@@ -94,7 +88,7 @@ const ServiceForm = props => {
                         className="form-control"
                         name="phone"
                         placeholder={"123-456-7890"}
-                        defaultValue={customer ? customer[0].phone : ""}
+                        defaultValue={customer ? customer.phone : ""}
                     />
                 </div>
 
@@ -105,14 +99,14 @@ const ServiceForm = props => {
                         className="form-control"
                         name="street1"
                         placeholder={"street 1"}
-                        defaultValue={customer ? customer[0].address.street1 : ""}
+                        defaultValue={customer ? customer.address.street1 : ""}
                     />
                     <input
                         type="text"
                         className="form-control my-2"
                         name="street2"
                         placeholder={"street 2"}
-                        defaultValue={customer ? customer[0].address.street2 : ""}
+                        defaultValue={customer ? customer.address.street2 : ""}
                     />
                     <div id="address">
                         <input
@@ -120,21 +114,21 @@ const ServiceForm = props => {
                             className="form-control"
                             name="city"
                             placeholder={"city"}
-                            defaultValue={customer ? customer[0].address.city : ""}
+                            defaultValue={customer ? customer.address.city : ""}
                         />
                         <input
                             type="text"
                             className="form-control"
                             name="state"
                             placeholder={"state"}
-                            defaultValue={customer ? customer[0].address.state : "CA"}
+                            defaultValue={customer ? customer.address.state : "CA"}
                         />
                         <input
                             type="text"
                             className="form-control"
                             name="zipcode"
                             placeholder={"zip code"}
-                            defaultValue={customer ? customer[0].address.zipcode : ""}
+                            defaultValue={customer ? customer.address.zipcode : ""}
                         />
                     </div>
                 </div>
@@ -145,13 +139,13 @@ const ServiceForm = props => {
                 <textarea
                     className="form-control"
                     name="issueNotes"
-                    defaultValue={job ? job[0].issueNotes : ""}
+                    defaultValue={job ? job.issueNotes : ""}
                 />
                 <h6 className="mt-3">Repair Notes</h6>
                 <textarea
                     className="form-control"
                     name="repairNotes"
-                    defaultValue={job ? job[0].repairNotes : ""}
+                    defaultValue={job ? job.repairNotes : ""}
                 />
             </div>
 
@@ -192,7 +186,7 @@ const ServiceForm = props => {
                         </tr>
                         </thead>
                         <tbody>
-                        {props.parts.map(part => (
+                        {parts.map(part => (
                             <tr key={part.partNumber}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
@@ -201,7 +195,7 @@ const ServiceForm = props => {
                                     <button
                                         className="btn btn-warning"
                                         data-id={part.partNumber}
-                                        onClick={props.removePartHandler}
+                                        onClick={removePartHandler}
                                         >X
                                     </button>
                                 </td>
@@ -218,7 +212,7 @@ const ServiceForm = props => {
                 </button>
                 <button
                     className="btn btn-secondary form-btn"
-                    onClick={() => props.setShowForm(false)}
+                    onClick={() => setShowForm(false)}
                     >Cancel
                 </button>
             </div>

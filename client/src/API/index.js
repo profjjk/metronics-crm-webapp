@@ -14,8 +14,6 @@ const API = {
     return axios.post(customerUrl, data);
   },
   updateCustomer(id, data) {
-    console.log(id)
-    console.log(data)
     return axios.put(`${customerUrl}/${id}`, data);
   },
   deleteCustomer(id) {
@@ -30,6 +28,7 @@ const API = {
     return axios.post(jobUrl, data);
   },
   updateJob(id, data) {
+    console.log(data)
     return axios.put(`${jobUrl}/${id}`, data);
   },
   deleteJob(id) {

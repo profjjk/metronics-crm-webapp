@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandler, deleteHandler }) => {
+const JobsTable = ({ jobs, searchTerm, jobStatus, selectionHandler, deleteJobHandler, setStatusFilter }) => {
     const [jobList, setJobList] = useState(jobs)
 
     // Filter by search results
@@ -38,7 +38,7 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandle
             <h3 className="float-start">Service Jobs:</h3>
 
             <div className="float-end">
-                <select className="form-select" onChange={statusHandler}>
+                <select className="form-select" onChange={e => setStatusFilter(e.target.value)}>
                     <option>Filter by status</option>
                     <option>Waiting</option>
                     <option>Scheduled</option>
@@ -84,7 +84,7 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandle
                                 <button
                                     className="btn btn-danger ms-4"
                                     data-id={job._id}
-                                    onClick={deleteHandler}
+                                    onClick={deleteJobHandler}
                                     >X
                                 </button>
                             </div>

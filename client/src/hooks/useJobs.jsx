@@ -17,6 +17,7 @@ const fetchJobs = async (key, value) => {
             repairNotes: job.repairNotes,
             parts: job.parts,
             customer: {
+                _id: customer[0]._id,
                 businessName: customer[0].businessName,
                 contactName: customer[0].contactName,
                 address: customer[0].address,

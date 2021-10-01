@@ -8,37 +8,30 @@ import AutoCompleteSearch from "../../components/job/AutoCompleteSearch";
 const ServiceHome = () => {
     // STATE: Shared
     const { status, data, error, isFetching } = useJobs();
+
+    // STATE: Booleans
     const [showForm, setShowForm] = useState(false);
-    const [newJob, setNewJob] = useState(false);
+    const [found, setFound] = useState(false);
+    const [edit, setEdit] = useState(false);
 
     // STATE: Service Form & Autocomplete
     const customers = useCustomers();
-    const [parts, setParts] = useState([])
-    const [searchResult, setSearchResult] = useState();
-    const [found, setFound] = useState();
+    const [job, setJob] = useState();
+    const [parts, setParts] = useState([]);
+    const [customer, setCustomer] = useState();
 
     // STATE: Jobs Table
-    const [jobId, setJobId] = useState();
     const [searchTerm, setSearchTerm] = useState();
     const [statusFilter, setStatusFilter] = useState();
 
     // EVENT HANDLERS
-    const statusHandler = e => {
+    const selectionHandler = e => {
         e.preventDefault();
-        setStatusFilter(e.target.value);
-    };
-
-    const newJobHandler = e => {
-        e.preventDefault();
-        setNewJob(true);
-        setShowForm(true);
-    }
-
-    const selectionHandler = async e => {
-        e.preventDefault();
-        setJobId(e.target.dataset.id);
         let job = data.filter(job => job._id === e.target.dataset.id);
-        await setSearchResult(job);
+        setJob(job[0]);
+        setCustomer(job[0].customer)
+        setParts(job[0].parts)
+        setEdit(true)
         setShowForm(true);
     };
 
@@ -80,39 +73,53 @@ const ServiceHome = () => {
             }
 
             if (found) {
-                await editCustomer.mutate({ id: searchResult[0]._id, data: customerData});
-                createJob.mutate({ customerId: searchResult[0]._id, ...jobData });
-            } else {
-                const newCustomer = await createCustomer.mutateAsync(customerData);
-                createJob.mutate({ customerId: newCustomer.data._id, ...jobData });
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                createJob.mutate({ customerId: customer._id, ...jobData });
+                setFound(false);
+                setShowForm(false);
+                return
             }
+            if (edit) {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                editJob.mutate({ id: job._id, data: jobData });
+                setEdit(false);
+                setShowForm(false);
+                return
+            }
+            const newCustomer = await createCustomer.mutateAsync(customerData);
+            createJob.mutate({ customerId: newCustomer.data._id, ...jobData });
             setShowForm(false);
-            setJobId(null);
         } catch(err) { console.error(err) }
     };
 
     // MUTATIONS
     const queryClient = useQueryClient();
-    const deleteJob = useMutation(id => API.deleteJob(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries(["jobs", "all"]);
-        }
-    })
     const createJob = useMutation(job => API.createJob(job), {
         onSuccess: () => {
             queryClient.invalidateQueries(["jobs", "all"]);
         }
     });
-    const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
+    const editJob = useMutation(job => API.updateJob(job.id, job.data), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["customers", "all"]);
+            queryClient.invalidateQueries(["jobs", "all"]);
         }
-    })
+    });
+    const deleteJob = useMutation(id => API.deleteJob(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["jobs", "all"]);
+        }
+    });
     const createCustomer = useMutation(customer => API.createCustomer(customer), {
         onSuccess: () => {
             queryClient.invalidateQueries(["customers", "all"]);
         }
-    })
+    });
+    const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["customers", "all"]);
+            queryClient.invalidateQueries(["jobs", "all"]);
+        }
+    });
 
     switch (status) {
         case "loading":
@@ -120,40 +127,37 @@ const ServiceHome = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            // let selectedJob = data.filter(job => job._id === jobId);
-
-            if(showForm && newJob) {
+            if(showForm && !edit) {
                 return (
                     <main>
                         <AutoCompleteSearch
-                            data={data}
-                            setSearchResult={setSearchResult}
+                            setCustomer={setCustomer}
                             setFound={setFound}
                         />
                         <ServiceForm
                             submitHandler={submitHandler}
                             removePartHandler={removePartHandler}
-                            data={searchResult}
+                            customer={customer}
                             parts={parts}
+                            job={job}
                             setParts={setParts}
                             setShowForm={setShowForm}
-                            newJob={newJob}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
                     </main>
                 )
             }
-            if (showForm && !newJob) {
+            if (showForm && edit) {
                 return (
                     <main>
                         <ServiceForm
                             submitHandler={submitHandler}
                             removePartHandler={removePartHandler}
-                            data={searchResult}
+                            setShowForm={setShowForm}
+                            customer={customer}
+                            job={job}
                             parts={parts}
                             setParts={setParts}
-                            setShowForm={setShowForm}
-                            newJob={newJob}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
                     </main>
@@ -170,16 +174,16 @@ const ServiceHome = () => {
                         />
                         <button
                             className="btn btn-success me-3 mt-5"
-                            onClick={newJobHandler}
+                            onClick={() => setShowForm(true)}
                             >Create New Service Job
                         </button>
                         <JobsTable
                             jobs={data}
                             searchTerm={searchTerm}
                             statusFilter={statusFilter}
-                            statusHandler={statusHandler}
+                            setStatusFilter={setStatusFilter}
                             selectionHandler={selectionHandler}
-                            // deleteHandler={deleteHandler}
+                            deleteJobHandler={deleteJobHandler}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
                     </main>
