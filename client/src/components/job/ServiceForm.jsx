@@ -1,45 +1,55 @@
 import { useRef } from "react";
+import API from "../../API";
 
-const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, setCustomerInfo }) => {
+const ServiceForm = props => {
+    // TODO: Parts will not update when a new one is added. Perhaps I need a stateful variable that updates with useEffect?
+    // TODO: I need to map over the variable for a job's status and type. Reference the old update form.
+    // TODO: Need to include delete functionality on parts table.
 
-    // Capture form input for job
-    let jobStatus = useRef(''); let type = useRef(''); let dateCompleted = useRef('');
-    let invoiceNumber = useRef(''); let issueNotes = useRef(''); let repairNotes = useRef('');
+    let partNumber = useRef(); let partQuantity = useRef(); let customer; let job;
 
-    // Capture form input for parts
-    let partNumber = useRef(''); let partQuantity = useRef('');
+    if (!props.newJob) {
+        customer = [props.data[0].customer]
+        job = props.data;
+        props.setParts(props.data[0].parts)
+    } else {
+        customer = props.data;
+    }
 
-    // Capture form input for customer
-    let customerId; let businessName = useRef(''); let contactName = useRef('');
-    let phone = useRef(''); let street1 = useRef(''); let street2 = useRef('');
-    let city = useRef(''); let state = useRef(''); let zipcode = useRef('');
+    const addPartHandler = async e => {
+        try {
+            e.preventDefault();
+            let part = await API.searchParts('partNumber', partNumber.current.value.toUpperCase())
+            const newPart = {
+                partNumber: partNumber.current.value.toUpperCase(),
+                description: part.data[0].description,
+                quantity: parseInt(partQuantity.current.value) < 0 ? 0 : parseInt(partQuantity.current.value)
+            }
+            props.setParts([...props.parts, newPart]);
+            partNumber.current.value = ""; partQuantity.current.value = "";
+        } catch(err) { console.error(err) }
+    }
 
     return (
-        <form className="p-5" onSubmit={handleSubmit}>
+        <form className="p-5" onSubmit={props.submitHandler}>
             <h1 className="text-primary text-center mb-5">Service Job Form</h1>
             <div id="dropdown-area" className="my-3">
                 <div className="px-3">
                     <h6>Status</h6>
-                    <select className="form-select" name="status" ref={jobStatus}>
+                    <select className="form-select" name="status">
                         <option>Waiting</option>
-                        }
                         <option>Scheduled</option>
-                        }
-                        <option>Completed</option>}
+                        <option>Completed</option>
                         <option>Canceled</option>
-                        }
                     </select>
                 </div>
                 <div className="px-3">
                     <h6>Type</h6>
-                    <select className="form-select" name="type" ref={type}>
+                    <select className="form-select" name="type">
                         <option>Maintenance</option>
-                        }
                         <option>Repair</option>
-                        }
-                        <option>Callback</option>}
+                        <option>Callback</option>
                         <option>Training</option>
-                        }
                     </select>
                 </div>
                 <div className="px-3">
@@ -48,7 +58,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         type="date"
                         className="form-control"
                         name="dateCompleted"
-                        ref={dateCompleted}
                     />
                 </div>
                 <div className="px-3">
@@ -57,7 +66,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         type="text"
                         className="form-control"
                         name="invoiceNumber"
-                        ref={invoiceNumber}
                     />
                 </div>
             </div>
@@ -71,7 +79,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         name="businessName"
                         placeholder={"business name"}
                         defaultValue={customer ? customer[0].businessName : ""}
-                        ref={businessName}
                     />
                     <input
                         type="text"
@@ -79,7 +86,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         name="contactName"
                         placeholder={"contact name"}
                         defaultValue={customer ? customer[0].contactName : ""}
-                        ref={contactName}
                     />
                     <input
                         type="tel"
@@ -89,7 +95,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         name="phone"
                         placeholder={"123-456-7890"}
                         defaultValue={customer ? customer[0].phone : ""}
-                        ref={phone}
                     />
                 </div>
 
@@ -101,7 +106,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         name="street1"
                         placeholder={"street 1"}
                         defaultValue={customer ? customer[0].address.street1 : ""}
-                        ref={street1}
                     />
                     <input
                         type="text"
@@ -109,7 +113,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         name="street2"
                         placeholder={"street 2"}
                         defaultValue={customer ? customer[0].address.street2 : ""}
-                        ref={street2}
                     />
                     <div id="address">
                         <input
@@ -118,7 +121,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                             name="city"
                             placeholder={"city"}
                             defaultValue={customer ? customer[0].address.city : ""}
-                            ref={city}
                         />
                         <input
                             type="text"
@@ -126,7 +128,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                             name="state"
                             placeholder={"state"}
                             defaultValue={customer ? customer[0].address.state : "CA"}
-                            ref={state}
                         />
                         <input
                             type="text"
@@ -134,7 +135,6 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                             name="zipcode"
                             placeholder={"zip code"}
                             defaultValue={customer ? customer[0].address.zipcode : ""}
-                            ref={zipcode}
                         />
                     </div>
                 </div>
@@ -145,13 +145,13 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                 <textarea
                     className="form-control"
                     name="issueNotes"
-                    ref={issueNotes}
+                    defaultValue={job ? job[0].issueNotes : ""}
                 />
                 <h6 className="mt-3">Repair Notes</h6>
                 <textarea
                     className="form-control"
                     name="repairNotes"
-                    ref={repairNotes}
+                    defaultValue={job ? job[0].repairNotes : ""}
                 />
             </div>
 
@@ -175,8 +175,8 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         <div>
                             <button
                                 className="btn btn-success"
-                                onClick={partHandler}
-                            >Add
+                                onClick={addPartHandler}
+                                >Add
                             </button>
                         </div>
                     </div>
@@ -192,7 +192,7 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                         </tr>
                         </thead>
                         <tbody>
-                        {parts.map(part => (
+                        {props.parts.map(part => (
                             <tr key={part.partNumber}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
@@ -201,8 +201,8 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                                     <button
                                         className="btn btn-warning"
                                         data-id={part.partNumber}
-                                        onClick={deleteHandler}
-                                    >X
+                                        onClick={props.removePartHandler}
+                                        >X
                                     </button>
                                 </td>
                             </tr>
@@ -218,8 +218,8 @@ const ServiceForm = ({ handleSubmit, deleteHandler, setJobInfo, setPartInfo, set
                 </button>
                 <button
                     className="btn btn-secondary form-btn"
-                    onClick={() => history.goBack()}
-                >Cancel
+                    onClick={() => props.setShowForm(false)}
+                    >Cancel
                 </button>
             </div>
         </form>

@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useCustomers } from "../../hooks";
 
-const AutoCompleteSearch = ({ customers, setCustomer, setCustomerExists }) => {
+const AutoCompleteSearch = ({ setSearchResult, setFound }) => {
+  const { data } = useCustomers()
   const [activeSuggestion, setActiveSuggestion] = useState(0); // index of a selected suggestion
   const [filteredSuggestions, setFilteredSuggestions] = useState([]); // an array of suggestions matching user input
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInput, setUserInput] = useState("");
 
   const onChange = e => {
-    const suggestions = customers.data.map(customer => customer.businessName.toLowerCase());
+    const suggestions = data.data.map(customer => customer.businessName.toLowerCase());
     const userInput = e.target.value;
     const filtered = suggestions.filter(
       suggestion => suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
@@ -24,8 +26,8 @@ const AutoCompleteSearch = ({ customers, setCustomer, setCustomerExists }) => {
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setUserInput(e.target.innerText);
-    setCustomerExists(true);
-    setCustomer(customers.data.filter(customer => customer.businessName.toLowerCase() === e.target.innerText.toLowerCase()));
+    setFound(true);
+    setSearchResult(data.data.filter(customer => customer.businessName.toLowerCase() === e.target.innerText.toLowerCase()));
   }
 
   const onKeyDown = e => {

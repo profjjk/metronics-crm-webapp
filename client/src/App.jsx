@@ -3,8 +3,7 @@ import {
     CustomerHome,
     DashboardHome,
     InventoryHome,
-    ServiceHome,
-    ServiceNew } from "./pages";
+    ServiceHome } from "./pages";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -21,7 +20,6 @@ const App = () => {
                     <Route exact path="/" component={DashboardHome} />
                     <Route exact path="/customers" component={CustomerHome} />
                     <Route exact path="/service" component={ServiceHome} />
-                    <Route exact path="/service/new" component={ServiceNew} />
                     <Route exact path="/inventory" component={InventoryHome} />
                 </Switch>
             </Router>

@@ -6,5 +6,5 @@ const fetchCustomers = async (key, value) => {
 }
 
 export default function useCustomers(key, value) {
-    return useQuery(['customers', value], () => fetchCustomers(key, value));
+    return useQuery(['customers', value || 'all'], () => fetchCustomers(key, value));
 }

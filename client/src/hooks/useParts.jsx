@@ -12,5 +12,5 @@ const fetchParts = async (restock, key, value) => {
 }
 
 export default function useParts(restock, key, value) {
-    return useQuery(['parts', restock], () => fetchParts(restock, key, value));
+    return useQuery(['parts', value || 'all'], () => fetchParts(restock, key, value));
 }

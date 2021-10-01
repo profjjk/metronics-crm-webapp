@@ -5,7 +5,7 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandle
 
     // Filter by search results
     useEffect(() => {
-        if (searchTerm === '') {
+        if (!searchTerm) {
             setJobList(jobs);
             return;
         }
@@ -31,7 +31,7 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandle
         } else {
             setJobList(jobs);
         }
-    }, [jobStatus]);
+    }, [jobStatus, jobs]);
 
     return (
         <div className="mt-5">
@@ -79,13 +79,13 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, statusHandler, selectionHandle
                                     className="btn btn-secondary"
                                     data-id={job._id}
                                     onClick={selectionHandler}
-                                >&#10162;
+                                    >&#10162;
                                 </button>
                                 <button
                                     className="btn btn-danger ms-4"
                                     data-id={job._id}
                                     onClick={deleteHandler}
-                                >X
+                                    >X
                                 </button>
                             </div>
                         </td>
