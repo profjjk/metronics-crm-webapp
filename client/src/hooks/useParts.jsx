@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import API from '../API';
+import API from '../utils/API';
 
 const fetchParts = async (restock, key, value) => {
     if (restock) {

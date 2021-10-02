@@ -12,7 +12,7 @@ const Searchbar = ({ heading, subheading, placeholder, setSearch }) => {
     <div id="search-bar">
       <h5 className="text-center">{heading}</h5>
       <p className="text-center">{subheading}</p>
-      <form onSubmit={searchJobs}>
+      <form onChange={searchJobs}>
         <input className="form-control text-center w-50 mx-auto" 
           type="text" 
           placeholder={placeholder}

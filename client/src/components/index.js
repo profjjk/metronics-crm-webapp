@@ -7,16 +7,10 @@ export { default as WaitListTable } from './dashboard/WaitListTable';
 export { default as PartsReorderTable } from './dashboard/PartsReorderTable';
 
 // Job
-export { default as JobsTable } from './job/JobsTable';
-export { default as JobFormNew } from './job/JobFormNew';
-export { default as JobFormUpdate } from './job/JobFormUpdate';
+export { default as JobsTable } from './tables/JobsTable';
+export { default as ServiceForm } from './forms/ServiceForm';
+export { default as AutoCompleteSearch } from './shared/AutoCompleteSearch';
 
 // Customer
-export { default as CustomerTable } from './customer/CustomerTable';
-export { default as CustomerFormNew } from './customer/CustomerFormNew';
-export { default as CustomerFormUpdate } from './customer/CustomerFormUpdate';
-
-// Inventory
-export { default as PartsTable } from './inventory/PartsTable';
-export { default as PartFormNew } from './inventory/PartFormNew';
-export { default as PartFormUpdate } from './inventory/PartFormUpdate';
+export { default as CustomersTable } from './tables/CustomersTable';
+export { default as CustomerForm } from './forms/CustomerForm';

@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import API from '../../API';
 
-const CustomerTable = ({ setShowFormUpdate, setCustomerId, searchTerm, customers }) => {
+const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers }) => {
   const [customerList, setCustomerList] = useState(customers);
 
   // Search for customers
@@ -24,26 +22,6 @@ const CustomerTable = ({ setShowFormUpdate, setCustomerId, searchTerm, customers
       })
     );
   }, [searchTerm, customers]);
-
-  // Mutations
-  const queryClient = useQueryClient();
-  const deleteCustomer = useMutation(id => API.deleteCustomer(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("customers");
-      console.log("Customer deleted!");
-    },
-  });
-
-  // Event Handlers
-  const viewHandler = e => {
-    e.preventDefault();
-    setCustomerId(e.target.dataset.id);
-    setShowFormUpdate(true);
-  };
-  const deleteHandler = async e => {
-    e.preventDefault();
-    await deleteCustomer.mutate(e.target.dataset.id);
-  };
 
   return (
     <div className="mt-5">
@@ -76,7 +54,7 @@ const CustomerTable = ({ setShowFormUpdate, setCustomerId, searchTerm, customers
                   <button
                     className="btn btn-warning"
                     data-id={customer._id}
-                    onClick={viewHandler}
+                    onClick={selectionHandler}
                     >view
                   </button>
                   <button
@@ -95,4 +73,4 @@ const CustomerTable = ({ setShowFormUpdate, setCustomerId, searchTerm, customers
   );
 }
 
-export default CustomerTable;
+export default CustomersTable;

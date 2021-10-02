@@ -1,4 +1,11 @@
-export { default as HomePage } from './HomePage';
-export { default as CustomerPage } from './CustomerPage';
-export { default as ServicePage } from './ServicePage';
-export { default as InventoryPage } from './InventoryPage';
+// Dashboard
+export { default as DashboardHome } from './DashboardPages';
+
+// Service Pages
+export { default as ServiceHome } from './ServicePages';
+
+// Customer Pages
+export { default as CustomerHome } from './CustomerPages';
+
+// Inventory Pages
+export { default as InventoryHome } from './InventoryPages';

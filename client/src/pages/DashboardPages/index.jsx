@@ -1,6 +1,6 @@
-import { WaitListTable, PartsReorderTable, SideNavbar } from "../components";
+import { WaitListTable, PartsReorderTable } from "../../components";
 
-const HomePage = () => {
+const DashboardHome = () => {
     return (
         <>
             <main>
@@ -11,4 +11,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage;
+export default DashboardHome;
