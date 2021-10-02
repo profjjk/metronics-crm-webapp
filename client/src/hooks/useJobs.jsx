@@ -5,26 +5,28 @@ const fetchJobs = async (key, value) => {
     const jobs = await API.searchJobs(key, value);
     const customers = await API.searchCustomers();
     const results = [];
-    for (let job of jobs.data) {
-        const customer = customers.data.filter(customer => customer._id === job.customerId )
-        const compilation = {
-            _id: job._id,
-            status: job.status,
-            type: job.type,
-            invoiceNumber: job.invoiceNumber,
-            dateCompleted: job.dateCompleted,
-            issueNotes: job.issueNotes,
-            repairNotes: job.repairNotes,
-            parts: job.parts,
-            customer: {
-                _id: customer[0]._id,
-                businessName: customer[0].businessName,
-                contactName: customer[0].contactName,
-                address: customer[0].address,
-                phone: customer[0].phone
+    if (jobs.data.length > 0) {
+        for (let job of jobs.data) {
+            const customer = customers.data.filter(customer => customer._id === job.customerId )
+            const compilation = {
+                _id: job._id,
+                status: job.status,
+                type: job.type,
+                invoiceNumber: job.invoiceNumber,
+                dateCompleted: job.dateCompleted,
+                issueNotes: job.issueNotes,
+                repairNotes: job.repairNotes,
+                parts: job.parts,
+                customer: {
+                    _id: customer[0]._id,
+                    businessName: customer[0].businessName,
+                    contactName: customer[0].contactName,
+                    address: customer[0].address,
+                    phone: customer[0].phone
+                }
             }
+            results.push(compilation);
         }
-        results.push(compilation);
     }
     return results;
 }

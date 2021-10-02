@@ -10,7 +10,6 @@ const PartsReorderTable = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message()}</h4>;
         default:
-            console.log(data)
             return (
                 <div className="my-5">
                     <h4 className="pt-5"><strong>Parts that need to be re-ordered</strong></h4>
@@ -22,7 +21,7 @@ const PartsReorderTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map(part => (
+                        {data.length >= 0 ? data.map(part => (
                             <tr key={part._id}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
@@ -35,9 +34,10 @@ const PartsReorderTable = () => {
                                     </button>
                                 </td>
                             </tr>
-                        ))}
+                        )) : <></>}
                         </tbody>
                     </table>
+                    {data.length < 1 ? <p className={"text-center text-muted"}>** Inventory is well stocked **</p> : <></>}
                 </div>
             )
     }

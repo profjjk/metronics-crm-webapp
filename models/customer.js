@@ -10,8 +10,9 @@ const customerSchema = new mongoose.Schema({
         city: String,
         state: { type: String, default: 'CA' },
         zipcode: String
-    }
-})
+    },
+    notes: String
+}, { timestamps: true })
 
 const Customer = mongoose.model("Customer", customerSchema);
 

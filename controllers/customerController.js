@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
     findAll: async (req, res) => {
         try {
-            const data = await db.Customer.find(req.query);
+            const data = await db.Customer.find(req.query).sort({ 'address.city': 1 });
             res.json(data);
         } catch(err) { res.status(422).json(err) }
     },
@@ -33,4 +33,4 @@ module.exports = {
     }
 }
 
-// TODO: Sort findAll results by city
+// TODO: Sort findAll results by lastModified

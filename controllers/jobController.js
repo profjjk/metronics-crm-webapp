@@ -30,6 +30,12 @@ module.exports = {
             await db.Job.deleteOne({ _id: req.params.id });
             res.end();
         } catch(err) { res.status(422).json(err) }
+    },
+    deleteMany: async (req, res) => {
+        try {
+            await db.Job.deleteMany({ customerId: req.params.id });
+            res.end();
+        } catch(err) { res.status(422).json(err) }
     }
 }
 
