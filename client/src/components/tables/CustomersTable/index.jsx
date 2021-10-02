@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers }) => {
   const [customerList, setCustomerList] = useState(customers);
+  const headers = ["Business Name", "Address", "Phone #", "Contact Name"];
 
   // Search for customers
   useEffect(() => {
@@ -29,11 +30,8 @@ const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Business Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone #</th>
-            <th scope="col">Contact Name</th>
-            <th scope="col" />
+              {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
+              <td />
           </tr>
         </thead>
 

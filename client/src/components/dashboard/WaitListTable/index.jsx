@@ -21,7 +21,7 @@ const WaitListTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map(job => (
+                        {data.length > 0 ? data.map(job => (
                             <tr key={job._id}>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.contactName}</td>
@@ -36,9 +36,10 @@ const WaitListTable = () => {
                                     </button>
                                 </td>
                             </tr>
-                        ))}
+                        )) : <></>}
                         </tbody>
                     </table>
+                    {data.length < 1 ? <p className={"text-center text-muted"}>** No new jobs to display **</p> : <></>}
                 </div>
             )
     }

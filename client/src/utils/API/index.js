@@ -34,6 +34,9 @@ const API = {
   deleteJob(id) {
     return axios.delete(`${jobUrl}/${id}`);
   },
+  deleteJobsByCustomerId(id) {
+    return axios.delete(`${jobUrl}/many/${id}`);
+  },
 
   // PARTS
   searchParts(key, value) {

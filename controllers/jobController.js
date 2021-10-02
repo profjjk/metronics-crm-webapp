@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
     findAll: async (req, res) => {
         try {
-            const data = await db.Job.find(req.query);
+            const data = await db.Job.find(req.query).sort({ createdAt: 1 });
             res.json(data);
         } catch(err) { res.status(422).json(err) }
     },
@@ -28,6 +28,12 @@ module.exports = {
     delete: async (req, res) => {
         try {
             await db.Job.deleteOne({ _id: req.params.id });
+            res.end();
+        } catch(err) { res.status(422).json(err) }
+    },
+    deleteMany: async (req, res) => {
+        try {
+            await db.Job.deleteMany({ customerId: req.params.id });
             res.end();
         } catch(err) { res.status(422).json(err) }
     }

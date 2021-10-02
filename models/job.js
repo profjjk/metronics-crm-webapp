@@ -8,12 +8,11 @@ const jobSchema = new mongoose.Schema({
     repairNotes: String,
     status: String,
     type: String,
-    parts: Array
-
-})
+    parts: Array,
+    totalBill: { type: Number, default: 0 },
+    paid: { type: Boolean, default: false }
+}, { timestamps: true })
 
 const Job = mongoose.model("Job", jobSchema);
 
 module.exports = Job;
-
-// TODO: Add timestamps

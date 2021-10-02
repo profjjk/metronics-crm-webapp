@@ -3,12 +3,15 @@ const jobController = require('../../controllers/jobController');
 
 router.route('/')
     .get(jobController.findAll)
-    .post(jobController.create)
+    .post(jobController.create);
 
 router.route('/:id')
     .get(jobController.findById)
     .put(jobController.updateById)
-    .delete(jobController.delete)
+    .delete(jobController.delete);
+
+router.route('/many/:id')
+    .delete(jobController.deleteMany);
 
 
 module.exports = router;

@@ -30,6 +30,11 @@ const CustomerHome = () => {
             console.log("Customer deleted!");
         },
     });
+    const deleteJobs = useMutation(id => API.deleteJobsByCustomerId(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["jobs", "all"]);
+        }
+    });
 
     // EVENT HANDLERS
     const selectionHandler = e => {
@@ -39,10 +44,14 @@ const CustomerHome = () => {
         setEdit(true);
         setShowForm(true);
     };
-    const deleteHandler = async e => {
+    const deleteCustomerHandler = async e => {
         e.preventDefault();
-        await deleteCustomer.mutate(parseInt(e.target.dataset.id));
-    };
+        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
+        if (answer) {
+            await deleteCustomer.mutate(e.target.dataset.id)
+            deleteJobs.mutate(e.target.dataset.id)
+        }
+    }
     const submitHandler = async e => {
         try {
             e.preventDefault();
@@ -88,12 +97,16 @@ const CustomerHome = () => {
                             />
                             <button
                                 className="btn btn-success me-3 mt-5"
-                                onClick={() => setShowForm(true)}
+                                onClick={() => {
+                                    setEdit(false);
+                                    setShowForm(true);
+                                }}
                                 >Create New Customer
                             </button>
                             <CustomersTable
                                 setShowFormUpdate={setShowForm}
                                 selectionHandler={selectionHandler}
+                                deleteHandler={deleteCustomerHandler}
                                 searchTerm={searchTerm}
                                 customers={data.data}
                             />
@@ -110,7 +123,7 @@ const CustomerHome = () => {
                             <CustomerForm
                                 setShowForm={setShowForm}
                                 submitHandler={submitHandler}
-                                customer={customer}
+                                customer={edit ? customer : null}
                             />
                             {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
                         </div>

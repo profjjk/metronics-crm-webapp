@@ -118,42 +118,6 @@ const ServiceHome = () => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            if(showForm && !edit) {
-                return (
-                    <main>
-                        <AutoCompleteSearch
-                            setCustomer={setCustomer}
-                            setFound={setFound}
-                        />
-                        <ServiceForm
-                            submitHandler={submitHandler}
-                            removePartHandler={removePartHandler}
-                            customer={customer}
-                            parts={parts}
-                            job={job}
-                            setParts={setParts}
-                            setShowForm={setShowForm}
-                        />
-                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
-                    </main>
-                )
-            }
-            if (showForm && edit) {
-                return (
-                    <main>
-                        <ServiceForm
-                            submitHandler={submitHandler}
-                            removePartHandler={removePartHandler}
-                            setShowForm={setShowForm}
-                            customer={customer}
-                            job={job}
-                            parts={parts}
-                            setParts={setParts}
-                        />
-                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
-                    </main>
-                )
-            }
             if (!showForm) {
                 return (
                     <main>
@@ -165,8 +129,11 @@ const ServiceHome = () => {
                         />
                         <button
                             className="btn btn-success me-3 mt-5"
-                            onClick={() => setShowForm(true)}
-                            >Create New Service Job
+                            onClick={() => {
+                                setEdit(false);
+                                setShowForm(true);
+                            }}
+                        >Create New Service Job
                         </button>
                         <JobsTable
                             jobs={data}
@@ -175,6 +142,26 @@ const ServiceHome = () => {
                             setStatusFilter={setStatusFilter}
                             selectionHandler={selectionHandler}
                             deleteJobHandler={deleteJobHandler}
+                        />
+                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
+                    </main>
+                )
+            }
+            if(showForm) {
+                return (
+                    <main>
+                        {!edit ? <AutoCompleteSearch
+                            setCustomer={setCustomer}
+                            setFound={setFound}
+                        /> : <></>}
+                        <ServiceForm
+                            submitHandler={submitHandler}
+                            removePartHandler={removePartHandler}
+                            customer={edit || found ? customer : null}
+                            parts={parts.length > 0 ? parts : []}
+                            job={edit ? job : null}
+                            setParts={setParts}
+                            setShowForm={setShowForm}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
                     </main>

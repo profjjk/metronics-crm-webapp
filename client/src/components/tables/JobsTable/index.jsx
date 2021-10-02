@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter }) => {
-    const [jobList, setJobList] = useState(jobs)
+    const [jobList, setJobList] = useState(jobs);
+    const headers = ["Invoice #", "Date Completed", "Company Name", "City", "Type", "Status"];
 
     // Filter by search results
     useEffect(() => {
@@ -50,13 +51,8 @@ const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJob
             <table className="table">
                 <thead>
                 <tr>
-                    <th scope="col">Invoice #</th>
-                    <th scope="col">Date Completed</th>
-                    <th scope="col">Company Name</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" />
+                    {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
+                    <td />
                 </tr>
                 </thead>
 
