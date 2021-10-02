@@ -1,11 +1,11 @@
 // Dashboard
-export { default as DashboardHome } from './DashboardPages/DashboardHome';
+export { default as DashboardHome } from './DashboardPages';
 
 // Service Pages
-export { default as ServiceHome } from './ServicePages/ServiceHome';
+export { default as ServiceHome } from './ServicePages';
 
 // Customer Pages
-export { default as CustomerHome } from './CustomerPages/CustomerHome';
+export { default as CustomerHome } from './CustomerPages';
 
 // Inventory Pages
-export { default as InventoryHome } from './InventoryPages/InventoryHome';
+export { default as InventoryHome } from './InventoryPages';

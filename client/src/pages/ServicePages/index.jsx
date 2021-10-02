@@ -1,96 +1,23 @@
 import { useState } from 'react';
 import { useCustomers, useJobs } from '../../hooks';
-import { JobsTable, Searchbar, ServiceForm } from "../../components";
+import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
 import { useMutation, useQueryClient } from "react-query";
-import API from "../../API";
-import AutoCompleteSearch from "../../components/job/AutoCompleteSearch";
+import API from "../../utils/API";
 
 const ServiceHome = () => {
-    // STATE: Shared
+    // STATE
     const { status, data, error, isFetching } = useJobs();
 
-    // STATE: Booleans
     const [showForm, setShowForm] = useState(false);
     const [found, setFound] = useState(false);
     const [edit, setEdit] = useState(false);
 
-    // STATE: Service Form & Autocomplete
-    const customers = useCustomers();
     const [job, setJob] = useState();
     const [parts, setParts] = useState([]);
     const [customer, setCustomer] = useState();
 
-    // STATE: Jobs Table
     const [searchTerm, setSearchTerm] = useState();
     const [statusFilter, setStatusFilter] = useState();
-
-    // EVENT HANDLERS
-    const selectionHandler = e => {
-        e.preventDefault();
-        let job = data.filter(job => job._id === e.target.dataset.id);
-        setJob(job[0]);
-        setCustomer(job[0].customer)
-        setParts(job[0].parts)
-        setEdit(true)
-        setShowForm(true);
-    };
-
-    const deleteJobHandler = e => {
-        e.preventDefault();
-        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
-        if (answer) deleteJob.mutate(e.target.dataset.id)
-    }
-
-    const removePartHandler = e => {
-        e.preventDefault();
-        setParts(parts.filter(part => part.partNumber !== e.target.dataset.id));
-    }
-
-    const submitHandler = async e => {
-        try {
-            e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target))
-            const jobData = {
-                status: formData.status,
-                type: formData.type,
-                dateCompleted: formData.dateCompleted,
-                invoiceNumber: formData.invoiceNumber,
-                issueNotes: formData.issueNotes,
-                repairNotes: formData.repairNotes,
-                parts: parts
-            }
-            const customerData = {
-                businessName: formData.businessName,
-                contactName: formData.contactName,
-                phone: formData.phone,
-                address: {
-                    street1: formData.street1,
-                    street2: formData.street2,
-                    city: formData.city,
-                    state: formData.state,
-                    zipcode: formData.zipcode
-                }
-            }
-
-            if (found) {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                createJob.mutate({ customerId: customer._id, ...jobData });
-                setFound(false);
-                setShowForm(false);
-                return
-            }
-            if (edit) {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                editJob.mutate({ id: job._id, data: jobData });
-                setEdit(false);
-                setShowForm(false);
-                return
-            }
-            const newCustomer = await createCustomer.mutateAsync(customerData);
-            createJob.mutate({ customerId: newCustomer.data._id, ...jobData });
-            setShowForm(false);
-        } catch(err) { console.error(err) }
-    };
 
     // MUTATIONS
     const queryClient = useQueryClient();
@@ -120,6 +47,70 @@ const ServiceHome = () => {
             queryClient.invalidateQueries(["jobs", "all"]);
         }
     });
+
+    // EVENT HANDLERS
+    const selectionHandler = e => {
+        e.preventDefault();
+        let job = data.filter(job => job._id === e.target.dataset.id);
+        setJob(job[0]);
+        setCustomer(job[0].customer)
+        setParts(job[0].parts)
+        setEdit(true)
+        setShowForm(true);
+    };
+    const deleteJobHandler = e => {
+        e.preventDefault();
+        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
+        if (answer) deleteJob.mutate(e.target.dataset.id)
+    }
+    const removePartHandler = e => {
+        e.preventDefault();
+        setParts(parts.filter(part => part.partNumber !== e.target.dataset.id));
+    }
+    const submitHandler = async e => {
+        try {
+            e.preventDefault();
+            const formData = Object.fromEntries(new FormData(e.target))
+            const jobData = {
+                status: formData.status,
+                type: formData.type,
+                dateCompleted: formData.dateCompleted,
+                invoiceNumber: formData.invoiceNumber,
+                issueNotes: formData.issueNotes,
+                repairNotes: formData.repairNotes,
+                parts: parts
+            }
+            const customerData = {
+                businessName: formData.businessName,
+                contactName: formData.contactName,
+                phone: formData.phone,
+                address: {
+                    street1: formData.street1,
+                    street2: formData.street2,
+                    city: formData.city,
+                    state: formData.state,
+                    zipcode: formData.zipcode
+                }
+            }
+            if (found) {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                createJob.mutate({ customerId: customer._id, ...jobData });
+                setFound(false);
+                setShowForm(false);
+                return
+            }
+            if (edit) {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                editJob.mutate({ id: job._id, data: jobData });
+                setEdit(false);
+                setShowForm(false);
+                return
+            }
+            const newCustomer = await createCustomer.mutateAsync(customerData);
+            createJob.mutate({ customerId: newCustomer.data._id, ...jobData });
+            setShowForm(false);
+        } catch(err) { console.error(err) }
+    };
 
     switch (status) {
         case "loading":

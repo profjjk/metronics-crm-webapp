@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-const JobsTable = ({ jobs, searchTerm, jobStatus, selectionHandler, deleteJobHandler, setStatusFilter }) => {
+const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter }) => {
     const [jobList, setJobList] = useState(jobs)
 
     // Filter by search results
@@ -20,18 +20,18 @@ const JobsTable = ({ jobs, searchTerm, jobStatus, selectionHandler, deleteJobHan
 
     // Filter by status selection
     useEffect(() => {
-        if (jobStatus === "Waiting") {
+        if (statusFilter === "Waiting") {
             setJobList(jobs.filter(job => job.status === "Waiting"));
-        } else if (jobStatus === "Scheduled") {
+        } else if (statusFilter === "Scheduled") {
             setJobList(jobs.filter(job => job.status === "Scheduled"));
-        } else if (jobStatus === "Completed") {
+        } else if (statusFilter === "Completed") {
             setJobList(jobs.filter(job => job.status === "Completed"));
-        } else if (jobStatus === "Canceled") {
+        } else if (statusFilter === "Canceled") {
             setJobList(jobs.filter(job => job.status === "Canceled"));
         } else {
             setJobList(jobs);
         }
-    }, [jobStatus, jobs]);
+    }, [statusFilter]);
 
     return (
         <div className="mt-5">

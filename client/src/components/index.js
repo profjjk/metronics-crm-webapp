@@ -7,6 +7,10 @@ export { default as WaitListTable } from './dashboard/WaitListTable';
 export { default as PartsReorderTable } from './dashboard/PartsReorderTable';
 
 // Job
-export { default as JobsTable } from './job/JobsTable';
-export { default as ServiceForm } from './job/ServiceForm';
-export { default as JobFormUpdate } from './job/JobFormUpdate';
+export { default as JobsTable } from './tables/JobsTable';
+export { default as ServiceForm } from './forms/ServiceForm';
+export { default as AutoCompleteSearch } from './shared/AutoCompleteSearch';
+
+// Customer
+export { default as CustomersTable } from './tables/CustomersTable';
+export { default as CustomerForm } from './forms/CustomerForm';

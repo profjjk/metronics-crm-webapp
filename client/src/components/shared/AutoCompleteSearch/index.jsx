@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCustomers } from "../../hooks";
+import { useCustomers } from "../../../hooks";
 
 const AutoCompleteSearch = ({ setCustomer, setFound }) => {
   const { data } = useCustomers()

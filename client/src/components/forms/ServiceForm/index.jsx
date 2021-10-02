@@ -1,11 +1,7 @@
 import { useRef } from "react";
-import API from "../../API";
+import API from "../../../utils/API";
 
 const ServiceForm = ({ customer, job, parts, setParts, submitHandler, removePartHandler, setShowForm }) => {
-    // TODO: Parts will not update when a new one is added. Perhaps I need a stateful variable that updates with useEffect?
-    // TODO: I need to map over the variable for a job's status and type. Reference the old update form.
-    // TODO: Need to include delete functionality on parts table.
-
     let partNumber = useRef(); let partQuantity = useRef();
 
     const addPartHandler = async e => {
@@ -29,19 +25,21 @@ const ServiceForm = ({ customer, job, parts, setParts, submitHandler, removePart
                 <div className="px-3">
                     <h6>Status</h6>
                     <select className="form-select" name="status">
-                        <option>Waiting</option>
-                        <option>Scheduled</option>
-                        <option>Completed</option>
-                        <option>Canceled</option>
+                        <option>{job.status}</option>
+                        {job.status === "Waiting" ? "" : <option>Waiting</option>}
+                        {job.status === "Scheduled" ? "" : <option>Scheduled</option>}
+                        {job.status === "Completed" ? "" : <option>Completed</option>}
+                        {job.status === "Canceled" ? "" : <option>Canceled</option>}
                     </select>
                 </div>
                 <div className="px-3">
                     <h6>Type</h6>
                     <select className="form-select" name="type">
-                        <option>Maintenance</option>
-                        <option>Repair</option>
-                        <option>Callback</option>
-                        <option>Training</option>
+                        <option>{job.type}</option>
+                        {job.type === "Maintenance" ? "" : <option>Maintenance</option>}
+                        {job.type === "Repair" ? "" : <option>Repair</option>}
+                        {job.type === "Callback" ? "" : <option>Callback</option>}
+                        {job.type === "Training" ? "" : <option>Training</option>}
                     </select>
                 </div>
                 <div className="px-3">

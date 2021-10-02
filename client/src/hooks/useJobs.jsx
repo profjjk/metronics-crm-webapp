@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import API from '../API';
+import API from '../utils/API';
 
 const fetchJobs = async (key, value) => {
     const jobs = await API.searchJobs(key, value);
