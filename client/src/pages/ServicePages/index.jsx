@@ -157,8 +157,8 @@ const ServiceHome = () => {
                         <ServiceForm
                             submitHandler={submitHandler}
                             removePartHandler={removePartHandler}
-                            customer={edit ? customer : null}
-                            parts={edit ? parts : null}
+                            customer={edit || found ? customer : null}
+                            parts={parts.length > 0 ? parts : []}
                             job={edit ? job : null}
                             setParts={setParts}
                             setShowForm={setShowForm}
