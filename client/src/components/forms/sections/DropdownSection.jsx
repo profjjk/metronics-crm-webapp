@@ -26,8 +26,8 @@ const DropdownSection = ({ job }) => {
                 <input
                     type="date"
                     className="form-control"
-                    name="dateCompleted"
-                    defaultValue={job ? job.dateCompleted : ""}
+                    name="serviceDate"
+                    defaultValue={job ? job.serviceDate : ""}
                 />
             </div>
             <div className="px-3">

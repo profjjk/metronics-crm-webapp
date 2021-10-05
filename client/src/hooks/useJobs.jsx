@@ -13,7 +13,7 @@ const fetchJobs = async (key, value) => {
                 status: job.status,
                 type: job.type,
                 invoiceNumber: job.invoiceNumber,
-                dateCompleted: job.dateCompleted,
+                serviceDate: job.serviceDate,
                 issueNotes: job.issueNotes,
                 repairNotes: job.repairNotes,
                 parts: job.parts,

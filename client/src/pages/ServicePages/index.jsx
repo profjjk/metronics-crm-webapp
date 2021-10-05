@@ -23,28 +23,27 @@ const ServiceHome = () => {
     const queryClient = useQueryClient();
     const createJob = useMutation(job => API.createJob(job), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["jobs", "all"]);
+            queryClient.invalidateQueries('jobs');
         }
     });
     const editJob = useMutation(job => API.updateJob(job.id, job.data), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["jobs", "all"]);
+            queryClient.invalidateQueries('jobs');
         }
     });
     const deleteJob = useMutation(id => API.deleteJob(id), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["jobs", "all"]);
+            queryClient.invalidateQueries('jobs');
         }
     });
     const createCustomer = useMutation(customer => API.createCustomer(customer), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["customers", "all"]);
+            queryClient.invalidateQueries('customers');
         }
     });
     const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["customers", "all"]);
-            queryClient.invalidateQueries(["jobs", "all"]);
+            queryClient.invalidateQueries('customers');
         }
     });
 
@@ -74,22 +73,22 @@ const ServiceHome = () => {
             const jobData = {
                 status: formData.status,
                 type: formData.type,
-                dateCompleted: formData.dateCompleted,
-                invoiceNumber: formData.invoiceNumber,
-                issueNotes: formData.issueNotes,
-                repairNotes: formData.repairNotes,
+                serviceDate: formData.serviceDate,
+                invoiceNumber: formData.invoiceNumber.trim(),
+                issueNotes: formData.issueNotes.trim(),
+                repairNotes: formData.repairNotes.trim(),
                 parts: parts
             }
             const customerData = {
-                businessName: formData.businessName,
-                contactName: formData.contactName,
-                phone: formData.phone,
+                businessName: formData.businessName.trim(),
+                contactName: formData.contactName.trim(),
+                phone: formData.phone.trim(),
                 address: {
-                    street1: formData.street1,
-                    street2: formData.street2,
-                    city: formData.city,
-                    state: formData.state,
-                    zipcode: formData.zipcode
+                    street1: formData.street1.trim(),
+                    street2: formData.street2.trim(),
+                    city: formData.city.trim(),
+                    state: formData.state.trim(),
+                    zipcode: formData.zipcode.trim()
                 }
             }
             if (found) {

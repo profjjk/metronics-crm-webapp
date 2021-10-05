@@ -55,8 +55,9 @@ const CustomerSection = ({ customer }) => {
                     <input
                         type="text"
                         className="form-control"
+                        pattern={"[A-Z]{2}"}
                         name="state"
-                        placeholder={"state"}
+                        placeholder={"CA"}
                         defaultValue={customer ? customer.address.state : "CA"}
                     />
                     <input

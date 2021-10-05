@@ -1,8 +1,14 @@
 import { useJobs } from '../../../hooks';
+import { useState, useEffect } from "react";
 
 const WaitListTable = () => {
-    const { status, data, error } = useJobs('status', 'Waiting');
+    const { status, data, error } = useJobs();
+    const [jobList, setJobList] = useState([]);
     const headers = ["Business Name", "Contact Name", "Phone #", "Location", "Type"];
+
+    useEffect(() => {
+        if (status === 'success') setJobList(data.filter(job => job.status === 'Waiting'));
+    }, [data]);
 
     switch (status) {
         case "loading":
@@ -21,7 +27,7 @@ const WaitListTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.length > 0 ? data.map(job => (
+                        {jobList.map(job => (
                             <tr key={job._id}>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.contactName}</td>
@@ -36,10 +42,10 @@ const WaitListTable = () => {
                                     </button>
                                 </td>
                             </tr>
-                        )) : <></>}
+                        ))}
                         </tbody>
                     </table>
-                    {data.length < 1 ? <p className={"text-center text-muted"}>** No new jobs to display **</p> : <></>}
+                    {jobList.length < 1 ? <p className={"text-center text-muted"}>** No new jobs to display **</p> : <></>}
                 </div>
             )
     }

@@ -1,0 +1,10 @@
+#partForm-top {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    grid-column-gap: 10px;
+}
+#partForm-middle {
+    display: grid;
+    grid-template-columns: 2fr 2fr 7fr 1fr;
+    grid-column-gap: 10px;
+}

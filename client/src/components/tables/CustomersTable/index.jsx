@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers }) => {
-  const [customerList, setCustomerList] = useState(customers);
+  const [customerList, setCustomerList] = useState(customers || []);
   const headers = ["Business Name", "Address", "Phone #", "Contact Name"];
 
   // Search for customers
@@ -12,14 +12,17 @@ const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers
     }
     setCustomerList(
       customers.filter(customer => {
-        if (customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
-          return true;
-        } else if (customer.address.city !== null && customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) {
-          return true;
-        } else if (customer.phone !== null && customer.phone.includes(searchTerm)) {
-          return true;
-        }
-        return false;
+          return customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              customer.address.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              customer.phone.includes(searchTerm)
+        // if (customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        //   return true;
+        // } else if (customer.address.city !== null && customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) {
+        //   return true;
+        // } else if (customer.phone !== null && customer.phone.includes(searchTerm)) {
+        //   return true;
+        // }
+        // return false;
       })
     );
   }, [searchTerm, customers]);
@@ -72,3 +75,5 @@ const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers
 }
 
 export default CustomersTable;
+
+// TODO: add pagination for displaying data

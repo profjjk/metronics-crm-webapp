@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter }) => {
-    const [jobList, setJobList] = useState(jobs);
-    const headers = ["Invoice #", "Date Completed", "Company Name", "City", "Type", "Status"];
+    const [jobList, setJobList] = useState(jobs || []);
+    const headers = ["Invoice #", "Service Date", "Company Name", "City", "Type", "Status"];
 
     // Filter by search results
     useEffect(() => {
@@ -13,7 +13,7 @@ const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJob
         setJobList(jobs.filter(job => {
             if (job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
                 return true;
-            } else if (job.dateCompleted.toLowerCase() !== null && job.dateCompleted.toLowerCase().includes(searchTerm)) {
+            } else if (job.serviceDate.toLowerCase() !== null && job.serviceDate.toLowerCase().includes(searchTerm)) {
                 return true;
             } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
         }))
@@ -63,7 +63,7 @@ const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJob
                             {job.invoiceNumber ? job.invoiceNumber : "--"}
                         </td>
                         <td className="text-center">
-                            {job.dateCompleted ? job.dateCompleted : "--"}
+                            {job.serviceDate ? job.serviceDate : "--"}
                         </td>
                         <td>{job.customer.businessName}</td>
                         <td>{job.customer.address.city}</td>
@@ -94,3 +94,5 @@ const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJob
 }
 
 export default JobsTable;
+
+// TODO: add pagination for displaying data

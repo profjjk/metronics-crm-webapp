@@ -12,7 +12,7 @@ const customerSchema = new mongoose.Schema({
         zipcode: String
     },
     notes: String
-}, { timestamps: true })
+}, { timestamps: true });
 
 const Customer = mongoose.model("Customer", customerSchema);
 

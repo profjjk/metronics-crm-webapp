@@ -1,8 +1,14 @@
 import { useParts } from "../../../hooks";
+import {useEffect, useState} from "react";
 
 const PartsReorderTable = () => {
     const { status, data, error } = useParts(true);
+    const [partList, setPartList] = useState([]);
     const headers = ["Part #", "Description", "In Stock"];
+
+    useEffect(() => {
+        if (status === 'success') setPartList(data.data.filter(part => part.stock <= part.minimum));
+    }, [data]);
 
     switch (status) {
         case "loading":
@@ -21,7 +27,7 @@ const PartsReorderTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.length >= 0 ? data.map(part => (
+                        {partList.map(part => (
                             <tr key={part._id}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
@@ -34,10 +40,10 @@ const PartsReorderTable = () => {
                                     </button>
                                 </td>
                             </tr>
-                        )) : <></>}
+                        ))}
                         </tbody>
                     </table>
-                    {data.length < 1 ? <p className={"text-center text-muted"}>** Inventory is well stocked **</p> : <></>}
+                    {partList.length < 1 ? <p className={"text-center text-muted"}>** Inventory is fully stocked **</p> : <></>}
                 </div>
             )
     }

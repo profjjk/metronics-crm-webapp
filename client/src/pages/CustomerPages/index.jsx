@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCustomers, useJobs } from '../../hooks';
+import { useCustomers } from '../../hooks';
 import { Searchbar, CustomersTable, CustomerForm } from "../../components";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
@@ -46,7 +46,9 @@ const CustomerHome = () => {
     };
     const deleteCustomerHandler = async e => {
         e.preventDefault();
-        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
+        let answer = window.confirm("Are you sure you want to delete?\n" +
+            "This will delete the customer and their service history from the database.\n" +
+            "This cannot be undone.")
         if (answer) {
             await deleteCustomer.mutate(e.target.dataset.id)
             deleteJobs.mutate(e.target.dataset.id)
@@ -57,15 +59,15 @@ const CustomerHome = () => {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target))
             const customerData = {
-                businessName: formData.businessName,
-                contactName: formData.contactName,
-                phone: formData.phone,
+                businessName: formData.businessName.trim(),
+                contactName: formData.contactName.trim(),
+                phone: formData.phone.trim(),
                 address: {
-                    street1: formData.street1,
-                    street2: formData.street2,
-                    city: formData.city,
-                    state: formData.state,
-                    zipcode: formData.zipcode
+                    street1: formData.street1.trim(),
+                    street2: formData.street2.trim(),
+                    city: formData.city.trim(),
+                    state: formData.state.trim(),
+                    zipcode: formData.zipcode.trim()
                 }
             }
             if (edit) {
@@ -88,30 +90,29 @@ const CustomerHome = () => {
             if (!showForm) {
                 return (
                     <main>
-                        <div className="p-5">
-                            <Searchbar
-                                heading="Customer Search"
-                                subheading="Search by business name, city name, or phone #"
-                                placeholder="Business Name, city name, or phone #"
-                                setSearch={setSearchTerm}
-                            />
-                            <button
-                                className="btn btn-success me-3 mt-5"
-                                onClick={() => {
-                                    setEdit(false);
-                                    setShowForm(true);
-                                }}
-                                >Create New Customer
-                            </button>
-                            <CustomersTable
-                                setShowFormUpdate={setShowForm}
-                                selectionHandler={selectionHandler}
-                                deleteHandler={deleteCustomerHandler}
-                                searchTerm={searchTerm}
-                                customers={data.data}
-                            />
-                            {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
-                        </div>
+                        <Searchbar
+                            heading="Customer Search"
+                            subheading="Search by business name, city name, or phone #"
+                            placeholder="Business Name, city name, or phone #"
+                            setSearch={setSearchTerm}
+                        />
+                        <button
+                            className="btn btn-success me-3 mt-5"
+                            onClick={() => {
+                                setEdit(false);
+                                setShowForm(true);
+                            }}
+                        >Create New Customer
+                        </button>
+                        <CustomersTable
+                            setShowFormUpdate={setShowForm}
+                            selectionHandler={selectionHandler}
+                            deleteHandler={deleteCustomerHandler}
+                            searchTerm={searchTerm}
+                            customers={data.data}
+                        />
+                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
+
                     </main>
                 )
             }
