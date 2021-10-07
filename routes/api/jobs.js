@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const jobController = require('../../controllers/jobController');
+const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
     .get(jobController.findAll)

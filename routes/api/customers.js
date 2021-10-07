@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const customerController = require('../../controllers/customerController');
+const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
     .get(customerController.findAll)

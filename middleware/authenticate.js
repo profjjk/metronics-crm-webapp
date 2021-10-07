@@ -1,40 +1,36 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const db = require('../models');
+require('dotenv').config()
 
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    console.log("authHeader: ", authHeader);
-    const token = authHeader.split(' ')[1];
-    console.log("token: ", token);
-    if (!token) return res.sendStatus(401);
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, err => {
-        if (err) {
-            console.log(err)
-            return res.sendStatus(403);
+const authenticateUser = async (req, res, next) => {
+    const { username, password } = req.body;
+    try {
+        const user = await db.User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ msg: "Invalid credentials." });
+        }
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(401).json({ msg: "Invalid credentials." });
         }
         next();
-    })
+    } catch(err) { res.json({ msg: "Failed to authenticate user." }) }
 }
 
-
-// TODO: turn authenticateUser into middleware using next().
-// const authenticateUser = async (req, res) => {
-//     const admin = await db.User.find({ username: req.body.username });
-//     if (admin.length < 1) {
-//         res.status(404).send("Cannot find user.");
-//         return false;
-//     }
-//     const validPassword = await bcrypt.compare(req.body.password, admin[0].password);
-//     if (validPassword) {
-//         return true;
-//     } else {
-//         res.status(401).send("Invalid password");
-//         return false;
-//     }
-// }
-
-
+const authenticateToken = (req, res, next) => {
+    const token = req.headers['x-access-token'];
+    if (!token) return res.status(401).json({ msg: "Access denied. No authorization token received." });
+    try {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+            if (err) return res.status(403).json({ msg: err });
+            req.username = decoded.username;
+            next();
+        })
+    } catch(err) { res.json({ msg: "Failed to authenticate token." }) }
+}
 
 module.exports = {
-    token: authenticateToken
-    // user: authenticateUser
+    token: authenticateToken,
+    user: authenticateUser
 }

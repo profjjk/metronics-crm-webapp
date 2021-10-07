@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const partController = require("../../controllers/partController");
+const authenticate = require('../../middleware/authenticate');
 
 router.route("/")
     .get(partController.findAll)

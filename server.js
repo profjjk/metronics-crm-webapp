@@ -28,7 +28,7 @@ app.use(routes);
 
 // Connect to database
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/metronicsDB")
-    .then(() => console.log("Connection to Metronics database successful."))
+    .then(() => console.log("Connected to Metronics database."))
     .catch(err => console.log("Failed to connect to database." + "\n" + `Error: ${err.message}`));
 
 // Start the server

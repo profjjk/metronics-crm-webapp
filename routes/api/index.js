@@ -3,11 +3,11 @@ const router = require('express').Router();
 const customerRoutes = require('./customers');
 const jobRoutes = require('./jobs');
 const partRoutes = require('./parts');
-const adminRoutes = require('./admins');
+const userRoutes = require('./users');
 
 router.use('/customers', customerRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/parts', partRoutes);
-router.use('/admin', adminRoutes);
+router.use('/auth', userRoutes);
 
 module.exports = router;
