@@ -68,7 +68,8 @@ const CustomerHome = () => {
                     city: formData.city.trim(),
                     state: formData.state.trim(),
                     zipcode: formData.zipcode.trim()
-                }
+                },
+                notes: FormData.notes.trim()
             }
             if (edit) {
                 editCustomer.mutate({ id: customer._id, data: customerData});

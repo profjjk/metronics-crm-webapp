@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema({
-    customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true, index: true },
+    customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true, index: true },
     serviceDate: { type: String, index: true },
     invoiceNumber: { type: String, index: true },
     issueNotes: String,
@@ -10,9 +10,9 @@ const jobSchema = new mongoose.Schema({
     type: { type: String, default: 'Unknown' },
     parts: Array,
     totalBill: { type: Number, default: 0 },
-    paid: { type: Boolean, default: false }
+    isPaid: { type: Boolean, default: false }
 }, { timestamps: true })
 
-const Job = mongoose.model("Job", jobSchema);
+const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;

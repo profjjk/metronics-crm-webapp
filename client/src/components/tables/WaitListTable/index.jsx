@@ -7,7 +7,7 @@ const WaitListTable = () => {
     const headers = ["Business Name", "Contact Name", "Phone #", "Location", "Type"];
 
     useEffect(() => {
-        if (status === 'success') setJobList(data.filter(job => job.status === 'Waiting'));
+        if (status === 'success') setJobList(data.data.filter(job => job.status === 'Waiting'));
     }, [data]);
 
     switch (status) {

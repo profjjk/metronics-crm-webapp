@@ -14,6 +14,6 @@ const customerSchema = new mongoose.Schema({
     notes: String
 }, { timestamps: true });
 
-const Customer = mongoose.model("Customer", customerSchema);
+const Customer = mongoose.model('Customer', customerSchema);
 
 module.exports = Customer;
