@@ -18,3 +18,6 @@ export { default as CustomerForm } from './forms/CustomerForm';
 // Inventory
 export { default as PartsTable } from './tables/PartsTable';
 export { default as PartForm } from './forms/PartForm';
+
+// Login
+export { default as LoginForm } from './forms/LoginForm';

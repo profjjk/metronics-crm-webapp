@@ -9,5 +9,3 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
-// TODO: add an authorization field to distinguish administrators from regular users.
