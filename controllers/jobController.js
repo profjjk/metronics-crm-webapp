@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
     findAll: async (req, res) => {
         try {
-            const data = await db.Job.find(req.query).sort({ createdAt: 1 }).populate('customer');
+            const data = await db.Job.find().sort({ createdAt: 1 }).populate('customer');
             res.json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },

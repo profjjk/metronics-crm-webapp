@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
     findAll: async (req, res) => {
         try {
-            const data = await db.Part.find(req.query).sort({ partNumber: 1 });
+            const data = await db.Part.find().sort({ partNumber: 1 });
             res.json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
