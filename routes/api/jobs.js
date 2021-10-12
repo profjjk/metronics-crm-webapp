@@ -11,7 +11,7 @@ router.route('/:id')
     .put(authenticate.token, jobController.updateById)
     .delete(authenticate.token, jobController.delete);
 
-router.route('/many/:id')
+router.route('/clear/:id')
     .delete(authenticate.token, jobController.deleteMany);
 
 

@@ -1,14 +1,14 @@
 import { useQuery } from 'react-query';
 import API from '../utils/API';
 
-const fetchParts = async (key, value) => {
+const fetchParts = async () => {
     try {
-        return await API.searchParts(key, value);
+        return await API.getParts();
     } catch(err) { console.error(err.message) }
 }
 
-const useParts = (key, value) => {
-    return useQuery('parts', () => fetchParts(key, value));
+const useParts = () => {
+    return useQuery('parts', () => fetchParts());
 }
 
 export default useParts;

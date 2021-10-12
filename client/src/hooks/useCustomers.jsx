@@ -1,14 +1,14 @@
 import { useQuery } from 'react-query';
 import API from '../utils/API';
 
-const fetchCustomers = async (key, value) => {
+const fetchCustomers = async () => {
     try {
-        return await API.searchCustomers(key, value);
+        return await API.getCustomers();
     } catch(err) { console.error(err.message) }
 }
 
-const useCustomers = (key, value) => {
-    return useQuery('customers', () => fetchCustomers(key, value));
+const useCustomers = () => {
+    return useQuery('customers', () => fetchCustomers());
 }
 
 export default useCustomers;

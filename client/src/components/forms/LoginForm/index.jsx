@@ -1,7 +1,3 @@
-const submitHandler = () => {
-    console.log("...")
-}
-
 const LoginForm = ({ submitHandler }) => {
     return (
         <form id={"login"} className={"p-5"} onSubmit={submitHandler}>

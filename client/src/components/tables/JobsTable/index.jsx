@@ -1,96 +1,114 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
+import {useJobs} from "../../../hooks";
 
-const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter }) => {
-    const [jobList, setJobList] = useState(jobs);
+const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
+    const {status, data, error, isFetching} = useJobs();
+    const [jobList, setJobList] = useState([]);
     const headers = ["Invoice #", "Service Date", "Company Name", "City", "Type", "Status"];
+
+    useEffect(() => {
+        if (status === 'success') setJobList(data.data);
+    }, [isFetching]);
 
     // Filter by search results
     useEffect(() => {
-        if (!searchTerm) {
-            setJobList(jobs);
-            return;
+        if (status === 'success') {
+            if (!searchTerm) {
+                setJobList(data.data);
+                return;
+            }
+            setJobList(data.data.filter(job => {
+                if (job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    return true;
+                } else if (job.serviceDate.toLowerCase() !== null && job.serviceDate.toLowerCase().includes(searchTerm)) {
+                    return true;
+                } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
+            }))
         }
-        setJobList(jobs.filter(job => {
-            if (job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
-                return true;
-            } else if (job.serviceDate.toLowerCase() !== null && job.serviceDate.toLowerCase().includes(searchTerm)) {
-                return true;
-            } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
-        }))
-    }, [searchTerm, jobs]);
+    }, [searchTerm, data]);
 
     // Filter by status selection
     useEffect(() => {
-        if (statusFilter === "Waiting") {
-            setJobList(jobs.filter(job => job.status === "Waiting"));
-        } else if (statusFilter === "Scheduled") {
-            setJobList(jobs.filter(job => job.status === "Scheduled"));
-        } else if (statusFilter === "Completed") {
-            setJobList(jobs.filter(job => job.status === "Completed"));
-        } else if (statusFilter === "Canceled") {
-            setJobList(jobs.filter(job => job.status === "Canceled"));
-        } else {
-            setJobList(jobs);
+        if (status === 'success') {
+            if (statusFilter === "Waiting") {
+                setJobList(data.data.filter(job => job.status === "Waiting"));
+            } else if (statusFilter === "Scheduled") {
+                setJobList(data.data.filter(job => job.status === "Scheduled"));
+            } else if (statusFilter === "Completed") {
+                setJobList(data.data.filter(job => job.status === "Completed"));
+            } else if (statusFilter === "Canceled") {
+                setJobList(data.data.filter(job => job.status === "Canceled"));
+            } else {
+                setJobList(data.data);
+            }
         }
     }, [statusFilter]);
 
-    return (
-        <div className="mt-5">
-            <h3 className="float-start">Service Jobs:</h3>
+    switch (status) {
+        case "loading":
+            return <h1 className="text-center my-5">Loading</h1>;
+        case "error":
+            return <h4 className="text-center my-5">Error: {error.message}</h4>;
+        default:
+            return (
+                <div className="mt-5">
+                    <h3 className="float-start">Service Jobs:</h3>
 
-            <div className="float-end">
-                <select className="form-select" onChange={e => setStatusFilter(e.target.value)}>
-                    <option>Filter by status</option>
-                    <option>Waiting</option>
-                    <option>Scheduled</option>
-                    <option>Completed</option>
-                    <option>Canceled</option>
-                </select>
-            </div>
+                    <div className="float-end">
+                        <select className="form-select" onChange={e => setStatusFilter(e.target.value)}>
+                            <option>Filter by status</option>
+                            <option>Waiting</option>
+                            <option>Scheduled</option>
+                            <option>Completed</option>
+                            <option>Canceled</option>
+                        </select>
+                    </div>
 
-            <table className="table">
-                <thead>
-                <tr>
-                    {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
-                    <td />
-                </tr>
-                </thead>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
+                            <td/>
+                        </tr>
+                        </thead>
 
-                <tbody>
-                {jobList.map(job => (
-                    <tr key={job._id}>
-                        <td className="text-center">
-                            {job.invoiceNumber ? job.invoiceNumber : "--"}
-                        </td>
-                        <td className="text-center">
-                            {job.serviceDate ? job.serviceDate : "--"}
-                        </td>
-                        <td>{job.customer.businessName}</td>
-                        <td>{job.customer.address.city}</td>
-                        <td>{job.type}</td>
-                        <td>{job.status}</td>
-                        <td>
-                            <div className="float-end">
-                                <button
-                                    className="btn btn-secondary"
-                                    data-id={job._id}
-                                    onClick={selectionHandler}
-                                    >&#10162;
-                                </button>
-                                <button
-                                    className="btn btn-danger ms-4"
-                                    data-id={job._id}
-                                    onClick={deleteJobHandler}
-                                    >X
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
-    );
+                        <tbody>
+                        {jobList.map(job => (
+                            <tr key={job._id}>
+                                <td className="text-center">
+                                    {job.invoiceNumber ? job.invoiceNumber : "--"}
+                                </td>
+                                <td className="text-center">
+                                    {job.serviceDate ? job.serviceDate : "--"}
+                                </td>
+                                <td>{job.customer.businessName}</td>
+                                <td>{job.customer.address.city}</td>
+                                <td>{job.type}</td>
+                                <td>{job.status}</td>
+                                <td>
+                                    <div className="float-end">
+                                        <button
+                                            className="btn btn-secondary"
+                                            data-id={job._id}
+                                            onClick={e => selectionHandler(e, job)}
+                                        >&#10162;
+                                        </button>
+                                        <button
+                                            className="btn btn-danger ms-4"
+                                            data-id={job._id}
+                                            onClick={deleteJobHandler}
+                                        >X
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
+                </div>
+            );
+    }
 }
 
 export default JobsTable;
