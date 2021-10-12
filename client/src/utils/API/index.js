@@ -5,6 +5,7 @@ const customerUrl = 'api/customers';
 const jobUrl = 'api/jobs';
 const partUrl = 'api/parts';
 const userUrl = 'api/user';
+const authUrl = 'api/auth';
 
 const authHeader = () => {
   const token = getStoredUser();
@@ -16,8 +17,8 @@ const authHeader = () => {
 const API = {
 
   // CUSTOMERS
-  searchCustomers(key, value) {
-    return axios.get(`${customerUrl}?${key}=${value}`, { headers: authHeader() });
+  getCustomers(key, value) {
+    return axios.get(customerUrl, { headers: authHeader() });
   },
   createCustomer(data) {
     return axios.post(customerUrl, data, { headers: authHeader() });
@@ -30,26 +31,25 @@ const API = {
   },
 
   // JOBS
-  searchJobs(key, value) {
-    return axios.get(`${jobUrl}?${key}=${value}`, { headers: authHeader() });
+  getJobs(key, value) {
+    return axios.get(jobUrl, { headers: authHeader() });
   },
   createJob(data) {
     return axios.post(jobUrl, data, { headers: authHeader() });
   },
   updateJob(id, data) {
-    console.log(data)
     return axios.put(`${jobUrl}/${id}`, data, { headers: authHeader() });
   },
   deleteJob(id) {
     return axios.delete(`${jobUrl}/${id}`, { headers: authHeader() });
   },
   deleteJobsByCustomerId(id) {
-    return axios.delete(`${jobUrl}/many/${id}`, { headers: authHeader() });
+    return axios.delete(`${jobUrl}/clear/${id}`, { headers: authHeader() });
   },
 
   // PARTS
-  searchParts(key, value) {
-    return axios.get(`${partUrl}?${key}=${value}`, { headers: authHeader() });
+  getParts(key, value) {
+    return axios.get(partUrl, { headers: authHeader() });
   },
   createPart(data) {
     return axios.post(partUrl, data, { headers: authHeader() });
@@ -61,21 +61,23 @@ const API = {
     return axios.delete(`${partUrl}/${id}`, { headers: authHeader() });
   },
 
-  // AUTHENTICATION
-  login(data) {
-    return axios.post(`${userUrl}/login`, data);
-  },
-  searchUsers(username) {
-    return axios.get(`${userUrl}?username=${username}`, { headers: authHeader() });
-  },
-  createUser(data) {
-    return axios.post(userUrl, data, { headers: authHeader() });
+  // USERS
+  getUsers(username) {
+    return axios.get(userUrl, { headers: authHeader() });
   },
   updateUser(id, data) {
     return axios.put(`${userUrl}/${id}`, data, { headers: authHeader() });
   },
   deleteUser(id) {
     return axios.delete(`${userUrl}/${id}`, { headers: authHeader() });
+  },
+
+  // AUTHENTICATION
+  login(data) {
+    return axios.post(`${authUrl}/login`, data);
+  },
+  register(data) {
+    return axios.post(`${authUrl}/new`, data, { headers: authHeader() });
   }
 }
 
