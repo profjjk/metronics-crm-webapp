@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
 
 const CustomerHome = () => {
-    const { status, data, error, isFetching } = useCustomers();
     const [customer, setCustomer] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const [showForm, setShowForm] = useState(false);
@@ -37,10 +36,9 @@ const CustomerHome = () => {
     });
 
     // EVENT HANDLERS
-    const selectionHandler = e => {
+    const selectionHandler = (e, customer) => {
         e.preventDefault();
-        let customer = data.data.filter(customer => customer._id === e.target.dataset.id);
-        setCustomer(customer[0]);
+        setCustomer(customer)
         setEdit(true);
         setShowForm(true);
     };
@@ -82,56 +80,47 @@ const CustomerHome = () => {
         } catch(err) { console.error(err) }
     };
 
-    switch (status) {
-        case "loading":
-            return <h1 className="text-center my-5">Loading</h1>;
-        case "error":
-            return <h4 className="text-center my-5">Error: {error.message}</h4>;
-        default:
-            if (!showForm) {
-                return (
-                    <main>
-                        <Searchbar
-                            heading="Customer Search"
-                            subheading="Search by business name, city name, or phone #"
-                            placeholder="Business Name, city name, or phone #"
-                            setSearch={setSearchTerm}
-                        />
-                        <button
-                            className="btn btn-success me-3 mt-5"
-                            onClick={() => {
-                                setEdit(false);
-                                setShowForm(true);
-                            }}
-                        >Create New Customer
-                        </button>
-                        <CustomersTable
-                            setShowFormUpdate={setShowForm}
-                            selectionHandler={selectionHandler}
-                            deleteHandler={deleteCustomerHandler}
-                            searchTerm={searchTerm}
-                            customers={data.data || []}
-                        />
-                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
+    if (!showForm) {
+        return (
+            <main>
+                <Searchbar
+                    heading="Customer Search"
+                    subheading="Search by business name, city name, or phone #"
+                    placeholder="Business Name, city name, or phone #"
+                    setSearch={setSearchTerm}
+                />
+                <button
+                    className="btn btn-success me-3 mt-5"
+                    onClick={() => {
+                        setEdit(false);
+                        setShowForm(true);
+                    }}
+                >Create New Customer
+                </button>
+                <CustomersTable
+                    setShowFormUpdate={setShowForm}
+                    selectionHandler={selectionHandler}
+                    deleteHandler={deleteCustomerHandler}
+                    searchTerm={searchTerm}
+                />
 
-                    </main>
-                )
-            }
+            </main>
+        )
+    }
 
-            if (showForm) {
-                return (
-                    <main>
-                        <div className="p-5">
-                            <CustomerForm
-                                setShowForm={setShowForm}
-                                submitHandler={submitHandler}
-                                customer={edit ? customer : null}
-                            />
-                            {isFetching ? <p className="text-center my-5">Getting information from database...</p> : "" }
-                        </div>
-                    </main>
-                )
-            }
+    if (showForm) {
+        return (
+            <main>
+                <div className="p-5">
+                    <CustomerForm
+                        setShowForm={setShowForm}
+                        submitHandler={submitHandler}
+                        customer={edit ? customer : null}
+                    />
+
+                </div>
+            </main>
+        )
     }
 }
 

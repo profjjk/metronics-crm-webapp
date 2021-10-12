@@ -3,7 +3,7 @@ import API from '../utils/API';
 
 const fetchCustomers = async () => {
     try {
-        return await API.searchCustomers();
+        return await API.getCustomers();
     } catch(err) { console.error(err.message) }
 }
 

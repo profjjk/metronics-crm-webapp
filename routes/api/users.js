@@ -1,11 +1,13 @@
 const router = require('express').Router();
-const authController = require('../../controllers/authController');
+const userController = require('../../controllers/userController');
 const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
-    .post(authenticate.user, authController.login)
+    .get(authenticate.token, userController.findAll)
 
-router.route('/new')
-    .post(authenticate.token, authController.register)
+router.route('/:id')
+    .get(authenticate.token, userController.findById)
+    .put(authenticate.token, userController.updateById)
+    .delete(authenticate.token, userController.delete)
 
 module.exports = router;

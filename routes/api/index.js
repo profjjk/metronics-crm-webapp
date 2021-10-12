@@ -9,7 +9,7 @@ const authRoutes = require('./auth');
 router.use('/customers', customerRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/parts', partRoutes);
-router.use('/user', userRoutes);
+router.use('/users', userRoutes);
 router.use('/auth', authRoutes);
 
 module.exports = router;

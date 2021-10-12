@@ -3,6 +3,7 @@ const customerController = require('../../controllers/customerController');
 const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
+    // .get(authenticate.token, customerController.findAll)
     .get(authenticate.token, customerController.findAll)
     .post(authenticate.token, customerController.create)
 

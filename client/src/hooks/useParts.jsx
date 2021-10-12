@@ -3,7 +3,7 @@ import API from '../utils/API';
 
 const fetchParts = async () => {
     try {
-        return await API.searchParts();
+        return await API.getParts();
     } catch(err) { console.error(err.message) }
 }
 

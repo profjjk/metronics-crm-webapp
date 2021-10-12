@@ -1,14 +1,15 @@
 import API from '../../utils/API';
+import { setStoredUser } from "../../utils/storage";
 import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
     const history = useHistory();
 
-    const login = async userData => {
+    const login = async user => {
         try {
-            const response = await API.login(userData);
+            const response = await API.login(user);
             if (response.data.accessToken) {
-                localStorage.setItem('metronics', JSON.stringify(response.data.accessToken))
+                setStoredUser(response.data.accessToken)
             }
         } catch(err) { console.error(err) }
     }
@@ -17,11 +18,12 @@ const LoginPage = () => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
-            const userData = {
+            const user = {
                 username: formData.username,
                 password: formData.password
             }
-            await login(userData);
+            await login(user);
+            history.replace('/dashboard')
         } catch(err) { console.error(err) }
     }
 

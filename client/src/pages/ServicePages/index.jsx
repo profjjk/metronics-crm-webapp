@@ -1,13 +1,9 @@
 import { useState } from 'react';
-import { useCustomers, useJobs } from '../../hooks';
-import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
+import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
 
 const ServiceHome = () => {
-    // STATE
-    const { status, data, error, isFetching } = useJobs();
-
     const [showForm, setShowForm] = useState(false);
     const [found, setFound] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -48,12 +44,11 @@ const ServiceHome = () => {
     });
 
     // EVENT HANDLERS
-    const selectionHandler = e => {
+    const selectionHandler = (e, job) => {
         e.preventDefault();
-        let job = data.data.filter(job => job._id === e.target.dataset.id);
-        setJob(job[0]);
-        setCustomer(job[0].customer)
-        setParts(job[0].parts)
+        setJob(job);
+        setCustomer(job.customer)
+        setParts(job.parts)
         setEdit(true)
         setShowForm(true);
     };
@@ -116,61 +111,52 @@ const ServiceHome = () => {
         } catch(err) { console.error(err) }
     };
 
-    switch (status) {
-        case "loading":
-            return <h1 className="text-center my-5">Loading</h1>;
-        case "error":
-            return <h4 className="text-center my-5">Error: {error.message}</h4>;
-        default:
-            if (!showForm) {
-                return (
-                    <main>
-                        <Searchbar
-                            heading={"Service Job Search"}
-                            subheading={"Search by invoice #, date, or customer"}
-                            placeholder={"Invoice #, date, or customer"}
-                            setSearch={setSearchTerm}
-                        />
-                        <button
-                            className="btn btn-success me-3 mt-5"
-                            onClick={() => {
-                                setEdit(false);
-                                setShowForm(true);
-                            }}
-                        >Create New Service Job
-                        </button>
-                        <JobsTable
-                            jobs={data.data || []}
-                            searchTerm={searchTerm}
-                            statusFilter={statusFilter}
-                            setStatusFilter={setStatusFilter}
-                            selectionHandler={selectionHandler}
-                            deleteJobHandler={deleteJobHandler}
-                        />
-                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
-                    </main>
-                )
-            }
-            if(showForm) {
-                return (
-                    <main>
-                        {!edit ? <AutoCompleteSearch
-                            setCustomer={setCustomer}
-                            setFound={setFound}
-                        /> : <></>}
-                        <ServiceForm
-                            submitHandler={submitHandler}
-                            removePartHandler={removePartHandler}
-                            customer={edit || found ? customer : null}
-                            parts={parts.length > 0 ? parts : []}
-                            job={edit ? job : null}
-                            setParts={setParts}
-                            setShowForm={setShowForm}
-                        />
-                        {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
-                    </main>
-                )
-            }
+
+    if (!showForm) {
+        return (
+            <main>
+                <Searchbar
+                    heading={"Service Job Search"}
+                    subheading={"Search by invoice #, date, or customer"}
+                    placeholder={"Invoice #, date, or customer"}
+                    setSearch={setSearchTerm}
+                />
+                <button
+                    className="btn btn-success me-3 mt-5"
+                    onClick={() => {
+                        setEdit(false);
+                        setShowForm(true);
+                    }}
+                >Create New Service Job
+                </button>
+                <JobsTable
+                    searchTerm={searchTerm}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    selectionHandler={selectionHandler}
+                    deleteJobHandler={deleteJobHandler}
+                />
+            </main>
+        )
+    }
+    if (showForm) {
+        return (
+            <main>
+                {!edit ? <AutoCompleteSearch
+                    setCustomer={setCustomer}
+                    setFound={setFound}
+                /> : <></>}
+                <ServiceForm
+                    submitHandler={submitHandler}
+                    removePartHandler={removePartHandler}
+                    customer={edit || found ? customer : null}
+                    parts={parts.length > 0 ? parts : []}
+                    job={edit ? job : null}
+                    setParts={setParts}
+                    setShowForm={setShowForm}
+                />
+            </main>
+        )
     }
 }
 

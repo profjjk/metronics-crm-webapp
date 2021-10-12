@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { getStoredUser } from '../storage'
 
-const customerUrl = 'api/customers';
-const jobUrl = 'api/jobs';
-const partUrl = 'api/parts';
-const userUrl = 'api/user';
-const authUrl = 'api/auth';
+const customerUrl = 'http://localhost:8080/api/customers';
+const jobUrl = 'http://localhost:8080/api/jobs';
+const partUrl = 'http://localhost:8080/api/parts';
+const userUrl = 'http://localhost:8080/api/user';
+const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
   const token = getStoredUser();

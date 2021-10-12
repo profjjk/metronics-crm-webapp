@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { useQueryClient, useMutation } from "react-query";
-import { useParts } from '../../hooks';
+import {useState} from "react";
+import {useQueryClient, useMutation} from "react-query";
+import {useParts} from '../../hooks';
 import API from '../../utils/API';
-import { Searchbar, PartsTable, PartForm } from "../../components";
+import {Searchbar, PartsTable, PartForm} from "../../components";
 
 const InventoryHome = () => {
-    const { status, data, error } = useParts();
     const [part, setPart] = useState();
     const [showForm, setShowForm] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -43,22 +42,24 @@ const InventoryHome = () => {
                 minimum: parseInt(formData.minimum.trim())
             }
             if (edit) {
-                await updatePart.mutate({ id: part._id, data: partData});
+                await updatePart.mutate({id: part._id, data: partData});
                 setEdit(false);
                 setShowForm(false);
                 return
             }
             await createPart.mutate(partData);
             setShowForm(false);
-        } catch(err) { console.error(err) }
+        } catch (err) {
+            console.error(err)
+        }
     };
-    const quantityHandler = (e, part) => {
+    const quantityHandler = e => {
         e.preventDefault();
-        updatePart.mutate({ id: e.target.dataset.id, data: part});
+        updatePart.mutate({id: e.target.dataset.id, data: part});
     }
-    const selectionHandler = e => {
+    const selectionHandler = (e, part) => {
         e.preventDefault();
-        setPart(data.data.filter(part => part._id === e.target.dataset.id));
+        setPart(part);
         setEdit(true);
         setShowForm(true);
     };
@@ -68,49 +69,41 @@ const InventoryHome = () => {
         if (answer) deletePart.mutate(e.target.dataset.id);
     }
 
-    switch (status) {
-        case "loading":
-            return <h1 className="text-center my-5">Loading</h1>;
-        case "error":
-            return <h4 className="text-center my-5">Error: {error.message}</h4>;
-        default:
-            if (showForm) {
-                return (
-                    <main>
-                        <PartForm
-                            part={edit ? part[0] : null}
-                            submitHandler={submitHandler}
-                            setShowForm={setShowForm}
-                        />
-                    </main>
-                )
-            } else {
-                return (
-                    <main>
-                        <Searchbar
-                            heading="Inventory Search"
-                            subheading="Search by description or part #"
-                            placeholder="Description or part #"
-                            setSearch={setSearchTerm}
-                        />
-                        <button
-                            className="btn btn-success me-3 mt-5"
-                            onClick={() => {
-                                setEdit(false);
-                                setShowForm(true);
-                            }}
-                            >Add Part to Inventory
-                        </button>
-                        <PartsTable
-                            parts={data.data || []}
-                            searchTerm={searchTerm}
-                            selectionHandler={selectionHandler}
-                            quantityHandler={quantityHandler}
-                            deleteHandler={deleteHandler}
-                        />
-                    </main>
-                )
-            }
+    if (showForm) {
+        return (
+            <main>
+                <PartForm
+                    part={edit ? part[0] : null}
+                    submitHandler={submitHandler}
+                    setShowForm={setShowForm}
+                />
+            </main>
+        )
+    } else {
+        return (
+            <main>
+                <Searchbar
+                    heading="Inventory Search"
+                    subheading="Search by description or part #"
+                    placeholder="Description or part #"
+                    setSearch={setSearchTerm}
+                />
+                <button
+                    className="btn btn-success me-3 mt-5"
+                    onClick={() => {
+                        setEdit(false);
+                        setShowForm(true);
+                    }}
+                >Add Part to Inventory
+                </button>
+                <PartsTable
+                    searchTerm={searchTerm}
+                    selectionHandler={selectionHandler}
+                    quantityHandler={quantityHandler}
+                    deleteHandler={deleteHandler}
+                />
+            </main>
+        )
     }
 }
 

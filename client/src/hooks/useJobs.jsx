@@ -3,7 +3,7 @@ import API from '../utils/API';
 
 const fetchJobs = async () => {
     try {
-        return await API.searchJobs();
+        return await API.getJobs();
     } catch(err) { console.error(err.message) }
 }
 
