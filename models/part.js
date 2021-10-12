@@ -9,6 +9,6 @@ const partSchema = new mongoose.Schema({
     minimum: { type: Number, default: 0 }
 }, { timestamps: true });
 
-const Part = mongoose.model("Part", partSchema);
+const Part = mongoose.model('Part', partSchema);
 
 module.exports = Part;

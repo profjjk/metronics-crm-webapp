@@ -8,6 +8,6 @@ const userRoutes = require('./users');
 router.use('/customers', customerRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/parts', partRoutes);
-router.use('/auth', userRoutes);
+router.use('/user', userRoutes);
 
 module.exports = router;

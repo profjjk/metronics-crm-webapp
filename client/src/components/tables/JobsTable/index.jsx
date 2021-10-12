@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const JobsTable = ({ jobs, searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter }) => {
-    const [jobList, setJobList] = useState(jobs || []);
+    const [jobList, setJobList] = useState(jobs);
     const headers = ["Invoice #", "Service Date", "Company Name", "City", "Type", "Status"];
 
     // Filter by search results

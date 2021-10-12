@@ -102,7 +102,7 @@ const InventoryHome = () => {
                             >Add Part to Inventory
                         </button>
                         <PartsTable
-                            parts={data.data}
+                            parts={data.data || []}
                             searchTerm={searchTerm}
                             selectionHandler={selectionHandler}
                             quantityHandler={quantityHandler}

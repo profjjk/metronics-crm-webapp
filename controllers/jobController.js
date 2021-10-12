@@ -3,13 +3,13 @@ const db = require('../models');
 module.exports = {
     findAll: async (req, res) => {
         try {
-            const data = await db.Job.find(req.query).sort({ createdAt: 1 });
+            const data = await db.Job.find(req.query).sort({ createdAt: 1 }).populate('customer');
             res.json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     findById: async (req, res) => {
         try {
-            const data = await db.Job.findById(req.params.id);
+            const data = await db.Job.findById(req.params.id).populate('customer');
             res.json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
@@ -33,7 +33,7 @@ module.exports = {
     },
     deleteMany: async (req, res) => {
         try {
-            await db.Job.deleteMany({ customerId: req.params.id });
+            await db.Job.deleteMany({ 'customer._id': req.params.id });
             res.end();
         } catch(err) { res.status(422).json({ msg: err}) }
     }

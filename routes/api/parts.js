@@ -3,12 +3,12 @@ const partController = require("../../controllers/partController");
 const authenticate = require('../../middleware/authenticate');
 
 router.route("/")
-    .get(partController.findAll)
-    .post(partController.create)
+    .get(authenticate.token, partController.findAll)
+    .post(authenticate.token, partController.create)
 
 router.route('/:id')
-    .get(partController.findById)
-    .put(partController.updateById)
-    .delete(partController.delete)
+    .get(authenticate.token, partController.findById)
+    .put(authenticate.token, partController.updateById)
+    .delete(authenticate.token, partController.delete)
 
 module.exports = router;

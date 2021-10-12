@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const CustomersTable = ({ selectionHandler, deleteHandler, searchTerm, customers }) => {
-  const [customerList, setCustomerList] = useState(customers || []);
+  const [customerList, setCustomerList] = useState(customers);
   const headers = ["Business Name", "Address", "Phone #", "Contact Name"];
 
   // Search for customers

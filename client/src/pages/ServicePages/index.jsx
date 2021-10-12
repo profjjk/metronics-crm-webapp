@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCustomers, useJobs } from '../../hooks';
-import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
+import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
 
@@ -50,7 +50,7 @@ const ServiceHome = () => {
     // EVENT HANDLERS
     const selectionHandler = e => {
         e.preventDefault();
-        let job = data.filter(job => job._id === e.target.dataset.id);
+        let job = data.data.filter(job => job._id === e.target.dataset.id);
         setJob(job[0]);
         setCustomer(job[0].customer)
         setParts(job[0].parts)
@@ -60,7 +60,10 @@ const ServiceHome = () => {
     const deleteJobHandler = e => {
         e.preventDefault();
         let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
-        if (answer) deleteJob.mutate(e.target.dataset.id)
+        if (answer) {
+            setParts([])
+            deleteJob.mutate(e.target.dataset.id)
+        }
     }
     const removePartHandler = e => {
         e.preventDefault();
@@ -69,7 +72,7 @@ const ServiceHome = () => {
     const submitHandler = async e => {
         try {
             e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target))
+            const formData = Object.fromEntries(new FormData(e.target));
             const jobData = {
                 status: formData.status,
                 type: formData.type,
@@ -77,6 +80,8 @@ const ServiceHome = () => {
                 invoiceNumber: formData.invoiceNumber.trim(),
                 issueNotes: formData.issueNotes.trim(),
                 repairNotes: formData.repairNotes.trim(),
+                totalBill: parseFloat(formData.totalBill.trim()),
+                isPaid: formData.isPaid === "on",
                 parts: parts
             }
             const customerData = {
@@ -89,11 +94,11 @@ const ServiceHome = () => {
                     city: formData.city.trim(),
                     state: formData.state.trim(),
                     zipcode: formData.zipcode.trim()
-                }
+                },
             }
             if (found) {
                 editCustomer.mutate({ id: customer._id, data: customerData});
-                createJob.mutate({ customerId: customer._id, ...jobData });
+                createJob.mutate({ customer: customer._id, ...jobData });
                 setFound(false);
                 setShowForm(false);
                 return
@@ -106,7 +111,7 @@ const ServiceHome = () => {
                 return
             }
             const newCustomer = await createCustomer.mutateAsync(customerData);
-            createJob.mutate({ customerId: newCustomer.data._id, ...jobData });
+            createJob.mutate({ customer: newCustomer.data._id, ...jobData });
             setShowForm(false);
         } catch(err) { console.error(err) }
     };
@@ -135,7 +140,7 @@ const ServiceHome = () => {
                         >Create New Service Job
                         </button>
                         <JobsTable
-                            jobs={data}
+                            jobs={data.data || []}
                             searchTerm={searchTerm}
                             statusFilter={statusFilter}
                             setStatusFilter={setStatusFilter}

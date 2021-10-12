@@ -68,7 +68,8 @@ const CustomerHome = () => {
                     city: formData.city.trim(),
                     state: formData.state.trim(),
                     zipcode: formData.zipcode.trim()
-                }
+                },
+                notes: FormData.notes.trim()
             }
             if (edit) {
                 editCustomer.mutate({ id: customer._id, data: customerData});
@@ -109,7 +110,7 @@ const CustomerHome = () => {
                             selectionHandler={selectionHandler}
                             deleteHandler={deleteCustomerHandler}
                             searchTerm={searchTerm}
-                            customers={data.data}
+                            customers={data.data || []}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
 
