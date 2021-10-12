@@ -6,3 +6,4 @@ export { default as CustomerHome } from './CustomerPages';
 export { default as InventoryHome } from './InventoryPages';
 
 // Public Pages
+export { default as LandingPage } from './PublicPages/LandingPage';

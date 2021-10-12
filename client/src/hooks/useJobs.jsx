@@ -2,9 +2,13 @@ import { useQuery } from 'react-query';
 import API from '../utils/API';
 
 const fetchJobs = async (key, value) => {
-    return await API.searchJobs(key, value);
+    try {
+        return await API.searchJobs(key, value);
+    } catch(err) { console.error(err.message) }
 }
 
-export default function useJobs(key, value) {
-    return useQuery(['jobs', value || 'all'], () => fetchJobs(key, value));
+const useJobs = (key, value) => {
+    return useQuery('jobs', () => fetchJobs(key, value));
 }
+
+export default useJobs;

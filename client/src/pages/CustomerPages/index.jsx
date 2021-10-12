@@ -110,7 +110,7 @@ const CustomerHome = () => {
                             selectionHandler={selectionHandler}
                             deleteHandler={deleteCustomerHandler}
                             searchTerm={searchTerm}
-                            customers={data.data}
+                            customers={data.data || []}
                         />
                         {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
 

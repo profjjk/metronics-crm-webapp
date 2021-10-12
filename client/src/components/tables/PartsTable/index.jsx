@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const PartsTable = ({ parts, searchTerm, selectionHandler, quantityHandler, deleteHandler }) => {
-    const [partList, setPartList] = useState(parts || [])
+    const [partList, setPartList] = useState(parts)
 
     // Search for parts
     useEffect(() => {

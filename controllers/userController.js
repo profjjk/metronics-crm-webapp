@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
     findAll: async (req, res) => {
+        console.log(req.query)
         try {
             const data = await db.User.find(req.query).select('-password').sort({ createdAt: 1 });
             res.status(200).json(data);
@@ -13,16 +14,16 @@ module.exports = {
     },
     findOne: async (req, res) => {
         try {
-            const data = await db.User.find({ username: req.body.username }).select('-password');
+            const data = await db.User.findOne(req.query).select('-password');
             res.status(200).json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
-    // updateById: async (req, res) => {
-    //     try {
-    //         const data = await db.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-    //         res.status(200).json(data);
-    //     } catch(err) { res.status(422).json(err) }
-    // },
+    updateById: async (req, res) => {
+        try {
+            const data = await db.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            res.status(200).json(data);
+        } catch(err) { res.status(422).json(err) }
+    },
     register: async (req, res) => {
         const { username, password, authorization } = req.body;
         try {
@@ -33,14 +34,14 @@ module.exports = {
                 password: await bcrypt.hash(password, 10),
                 authorization
             });
-            const accessToken = jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5 days' });
+            const accessToken = jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 hour' });
             res.status(201).json({ data, accessToken });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
-        const { username } = req.body;
+        const payload = { username: req.body.username, authorization: req.authorization };
         try {
-            const accessToken = jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5 days' });
+            const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 hour' });
             res.status(201).json({ accessToken });
         } catch(err) { res.status(422).json({ msg: err}) }
     },

@@ -3,16 +3,16 @@ const jobController = require('../../controllers/jobController');
 const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
-    .get(jobController.findAll)
-    .post(jobController.create);
+    .get(authenticate.token, jobController.findAll)
+    .post(authenticate.token, jobController.create);
 
 router.route('/:id')
-    .get(jobController.findById)
-    .put(jobController.updateById)
-    .delete(jobController.delete);
+    .get(authenticate.token, jobController.findById)
+    .put(authenticate.token, jobController.updateById)
+    .delete(authenticate.token, jobController.delete);
 
 router.route('/many/:id')
-    .delete(jobController.deleteMany);
+    .delete(authenticate.token, jobController.deleteMany);
 
 
 module.exports = router;

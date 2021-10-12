@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCustomers, useJobs } from '../../hooks';
-import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
+import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
 
@@ -72,8 +72,7 @@ const ServiceHome = () => {
     const submitHandler = async e => {
         try {
             e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target))
-            console.log(formData)
+            const formData = Object.fromEntries(new FormData(e.target));
             const jobData = {
                 status: formData.status,
                 type: formData.type,
@@ -141,7 +140,7 @@ const ServiceHome = () => {
                         >Create New Service Job
                         </button>
                         <JobsTable
-                            jobs={data.data}
+                            jobs={data.data || []}
                             searchTerm={searchTerm}
                             statusFilter={statusFilter}
                             setStatusFilter={setStatusFilter}

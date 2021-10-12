@@ -1,3 +1,6 @@
+const submitHandler = () => {
+    console.log("...")
+}
 
 const LoginForm = ({ submitHandler }) => {
     return (
@@ -14,7 +17,7 @@ const LoginForm = ({ submitHandler }) => {
                 name={"password"}
                 placeholder={"password"}
             />
-            <button className={"btn btn-primary m-3 form-btn"}>
+            <button className={"btn btn-primary m-3 form-btn"} type={"submit"}>
                 Login
             </button>
         </form>

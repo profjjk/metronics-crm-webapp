@@ -33,3 +33,5 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/metronicsDB")
 
 // Start the server
 app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));
+
+// TODO: deploy on Netlify?
