@@ -14,7 +14,7 @@ const authenticateUser = async (req, res, next) => {
         if (!validPassword) {
             return res.status(401).json({ msg: "Invalid credentials." });
         }
-        req.authorization = user.authorization
+        req.user = { username: user.username, authorization: user.authorization }
         next();
     } catch(err) { res.json({ msg: "Failed to authenticate user." }) }
 }

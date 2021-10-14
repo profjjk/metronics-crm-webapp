@@ -4,7 +4,7 @@ import { getStoredUser } from '../storage'
 const customerUrl = 'http://localhost:8080/api/customers';
 const jobUrl = 'http://localhost:8080/api/jobs';
 const partUrl = 'http://localhost:8080/api/parts';
-const userUrl = 'http://localhost:8080/api/user';
+const userUrl = 'http://localhost:8080/api/users';
 const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
@@ -62,8 +62,8 @@ const API = {
   },
 
   // USERS
-  getUsers(username) {
-    return axios.get(userUrl, { headers: authHeader() });
+  getUser(id) {
+    return axios.get(`${userUrl}/${id}`, { headers: authHeader() });
   },
   updateUser(id, data) {
     return axios.put(`${userUrl}/${id}`, data, { headers: authHeader() });
@@ -77,7 +77,7 @@ const API = {
     return axios.post(`${authUrl}/login`, data);
   },
   register(data) {
-    return axios.post(`${authUrl}/new`, data, { headers: authHeader() });
+    return axios.post(`${authUrl}/register`, data, { headers: authHeader() });
   }
 }
 
