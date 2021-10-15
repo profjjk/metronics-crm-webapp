@@ -5,11 +5,11 @@ import { WaitListTable, PartsReorderTable } from "../../components";
 const DashboardHome = () => {
     const { user } = useUser();
 
-    // if (!user) {
-    //     return <Redirect to={'/login'} />
-    // }
-
-    if (user.authorization !== 'administrator') {
+    // REDIRECTS
+    if (!user) {
+        return <Redirect to={'/login'} />
+    }
+    if (user.auth === 'public') {
         return <Redirect to={'/'} />
     }
 
