@@ -37,9 +37,9 @@ const CustomerHome = () => {
         }
     });
 
-    if (!user) {
-        return <Redirect to={'/login'} />
-    }
+    // if (!user) {
+    //     return <Redirect to={'/login'} />
+    // }
 
     // EVENT HANDLERS
     const selectionHandler = (e, customer) => {

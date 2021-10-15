@@ -5,9 +5,13 @@ const authenticate = require('../../middleware/authenticate');
 router.route('/')
     .get(authenticate.token, userController.findAll)
 
-router.route('/:username')
-    .get(authenticate.token, userController.findOne)
+router.route('/:id')
+    .get(authenticate.token, userController.findById)
     .put(authenticate.token, userController.update)
     .delete(authenticate.token, userController.delete)
+
+router.route('/:username')
+    .get(authenticate.token, userController.findOne)
+
 
 module.exports = router;
