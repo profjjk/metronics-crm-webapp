@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { useCustomers } from '../../hooks';
+import {useEffect, useState} from 'react';
+import {useCustomers, useUser} from '../../hooks';
 import { Searchbar, CustomersTable, CustomerForm } from "../../components";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
+import {Redirect} from "react-router-dom";
 
 const CustomerHome = () => {
+    const { user } = useUser();
     const [customer, setCustomer] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const [showForm, setShowForm] = useState(false);
@@ -34,6 +36,10 @@ const CustomerHome = () => {
             queryClient.invalidateQueries(["jobs", "all"]);
         }
     });
+
+    if (!user) {
+        return <Redirect to={'/login'} />
+    }
 
     // EVENT HANDLERS
     const selectionHandler = (e, customer) => {

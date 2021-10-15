@@ -1,6 +1,15 @@
 import { WaitListTable, PartsReorderTable } from "../../components";
+import {Redirect} from "react-router-dom";
+import {useUser} from "../../hooks";
+import {useEffect} from "react";
 
 const DashboardHome = () => {
+    const { user } = useUser();
+
+    if (!user) {
+        return <Redirect to={'/login'} />
+    }
+
     return (
         <>
             <main>

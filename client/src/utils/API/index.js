@@ -8,16 +8,16 @@ const userUrl = 'http://localhost:8080/api/users';
 const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
-  const token = getStoredUser();
-  if (token) {
-    return { 'metronics-access-token': token };
+  const user = getStoredUser();
+  if (user) {
+    return { 'metronics': user.token };
   } else {}
 }
 
 const API = {
 
   // CUSTOMERS
-  getCustomers(key, value) {
+  getCustomers() {
     return axios.get(customerUrl, { headers: authHeader() });
   },
   createCustomer(data) {
@@ -31,7 +31,7 @@ const API = {
   },
 
   // JOBS
-  getJobs(key, value) {
+  getJobs() {
     return axios.get(jobUrl, { headers: authHeader() });
   },
   createJob(data) {
@@ -48,7 +48,7 @@ const API = {
   },
 
   // PARTS
-  getParts(key, value) {
+  getParts() {
     return axios.get(partUrl, { headers: authHeader() });
   },
   createPart(data) {
@@ -62,14 +62,14 @@ const API = {
   },
 
   // USERS
-  getUser(id) {
-    return axios.get(`${userUrl}/${id}`, { headers: authHeader() });
+  getUser(username) {
+    return axios.get(`${userUrl}/${username}`, { headers: authHeader() });
   },
-  updateUser(id, data) {
-    return axios.put(`${userUrl}/${id}`, data, { headers: authHeader() });
+  updateUser(username, data) {
+    return axios.put(`${userUrl}/${username}`, data, { headers: authHeader() });
   },
-  deleteUser(id) {
-    return axios.delete(`${userUrl}/${id}`, { headers: authHeader() });
+  deleteUser(username) {
+    return axios.delete(`${userUrl}/${username}`, { headers: authHeader() });
   },
 
   // AUTHENTICATION

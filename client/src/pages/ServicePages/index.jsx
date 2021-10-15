@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
 // import { createJob, editJob, deleteJob, createCustomer, editCustomer } from "../../utils/mutations";
 import { useMutation, useQueryClient } from "react-query";
 import API from "../../utils/API";
+import {useUser} from "../../hooks";
+import {Redirect} from "react-router-dom";
 
 const ServiceHome = () => {
+    const { user } = useUser();
     const [showForm, setShowForm] = useState(false);
     const [found, setFound] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -43,6 +46,10 @@ const ServiceHome = () => {
             queryClient.invalidateQueries('customers');
         }
     });
+
+    if (!user) {
+        return <Redirect to={'/login'} />
+    }
 
     // EVENT HANDLERS
     const selectionHandler = (e, job) => {

@@ -1,22 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { getStoredUser, setStoredUser, clearStoredUser } from '../utils/storage';
-import API from "../utils/API";
 
-const fetchUser = async id => {
-    try {
-        return await API.getUser(id);
-    } catch(err) { console.error(err.message) }
-}
-
-const useUser = id => {
-    const [user, setUser] = useState(getStoredUser());
+const useUser = () => {
+    const [user, setUser] = useState(getStoredUser);
     const queryClient = useQueryClient();
 
-    useQuery('user', () => fetchUser(id), {
-        enabled: !!user,
-        onSuccess: data => console.log(data)
-    })
+    useEffect(() => {
+        queryClient.setQueryData('user', user);
+    }, [])
 
     const updateUser = newUser => {
         setUser(newUser);
@@ -28,7 +20,7 @@ const useUser = id => {
         setUser(null);
         clearStoredUser();
         queryClient.setQueryData('user', null);
-        queryClient.removeQueries('user');
+        queryClient.removeQueries(['user', 'jobs', 'customers', 'parts']);
     }
 
     return { user, updateUser, clearUser }

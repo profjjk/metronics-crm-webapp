@@ -20,7 +20,7 @@ const authenticateUser = async (req, res, next) => {
 }
 
 const authenticateToken = (req, res, next) => {
-    const token = req.headers['metronics-access-token'];
+    const token = req.headers['metronics'];
     if (!token) return res.status(401).json({ msg: "Access denied. No authorization token received." });
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
