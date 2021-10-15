@@ -8,7 +8,7 @@ const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
 
     useEffect(() => {
         if (status === 'success') setCustomerList(data.data);
-    }, [isFetching]);
+    }, [status]);
 
     // Search for customers
     useEffect(() => {
@@ -25,7 +25,7 @@ const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
                 })
             );
         }
-    }, [searchTerm, data]);
+    }, [searchTerm, data.data, status]);
 
     switch (status) {
         case "loading":

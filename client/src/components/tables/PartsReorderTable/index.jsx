@@ -8,7 +8,7 @@ const PartsReorderTable = () => {
 
     useEffect(() => {
         if (status === 'success') setPartList(data.data.filter(part => part.stock <= part.minimum));
-    }, [data]);
+    }, [status]);
 
     switch (status) {
         case "loading":

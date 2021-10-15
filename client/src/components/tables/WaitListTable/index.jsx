@@ -8,7 +8,7 @@ const WaitListTable = () => {
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data.filter(job => job.status === 'Waiting'));
-    }, [data]);
+    }, [status]);
 
     switch (status) {
         case "loading":

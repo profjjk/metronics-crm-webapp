@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
-import {useCustomers, useUser} from '../../hooks';
-import { Searchbar, CustomersTable, CustomerForm } from "../../components";
+import { useState } from 'react';
+import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
+import { useUser } from '../../hooks';
+import { Searchbar, CustomersTable, CustomerForm } from "../../components";
 import API from "../../utils/API";
-import {Redirect} from "react-router-dom";
 
 const CustomerHome = () => {
     const { user } = useUser();

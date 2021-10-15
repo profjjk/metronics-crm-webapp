@@ -1,7 +1,7 @@
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth, useUser } from "../../../hooks";
 import './style.css';
-import {useEffect, useState} from "react";
+import { useState } from "react";
 
 const SideNavbar = () => {
     const { user } = useUser();

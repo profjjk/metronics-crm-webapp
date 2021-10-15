@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { getStoredUser, setStoredUser, clearStoredUser } from '../utils/storage';
 
 const useUser = () => {
