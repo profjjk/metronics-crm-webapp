@@ -1,17 +1,13 @@
-import API from '../../utils/API';
-import { setStoredUser } from "../../utils/storage";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
 
 const LoginPage = () => {
+    const { user } = useUser();
+    const { login } = useAuth();
     const history = useHistory();
 
-    const login = async user => {
-        try {
-            const response = await API.login(user);
-            if (response.data.accessToken) {
-                setStoredUser(response.data.accessToken)
-            }
-        } catch(err) { console.error(err) }
+    if (user) {
+        return <Redirect to={'/dashboard'} />;
     }
 
     const submitHandler = async e => {
@@ -24,6 +20,7 @@ const LoginPage = () => {
             }
             await login(user);
             history.replace('/dashboard')
+            window.location.reload();
         } catch(err) { console.error(err) }
     }
 

@@ -4,20 +4,20 @@ import { getStoredUser } from '../storage'
 const customerUrl = 'http://localhost:8080/api/customers';
 const jobUrl = 'http://localhost:8080/api/jobs';
 const partUrl = 'http://localhost:8080/api/parts';
-const userUrl = 'http://localhost:8080/api/user';
+const userUrl = 'http://localhost:8080/api/users';
 const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
-  const token = getStoredUser();
-  if (token) {
-    return { 'metronics-access-token': token };
+  const user = getStoredUser();
+  if (user) {
+    return { 'metronics': user.token };
   } else {}
 }
 
 const API = {
 
   // CUSTOMERS
-  getCustomers(key, value) {
+  getCustomers() {
     return axios.get(customerUrl, { headers: authHeader() });
   },
   createCustomer(data) {
@@ -31,7 +31,7 @@ const API = {
   },
 
   // JOBS
-  getJobs(key, value) {
+  getJobs() {
     return axios.get(jobUrl, { headers: authHeader() });
   },
   createJob(data) {
@@ -48,7 +48,7 @@ const API = {
   },
 
   // PARTS
-  getParts(key, value) {
+  getParts() {
     return axios.get(partUrl, { headers: authHeader() });
   },
   createPart(data) {
@@ -62,14 +62,14 @@ const API = {
   },
 
   // USERS
-  getUsers(username) {
-    return axios.get(userUrl, { headers: authHeader() });
+  getUser(username) {
+    return axios.get(`${userUrl}/${username}`, { headers: authHeader() });
   },
-  updateUser(id, data) {
-    return axios.put(`${userUrl}/${id}`, data, { headers: authHeader() });
+  updateUser(username, data) {
+    return axios.put(`${userUrl}/${username}`, data, { headers: authHeader() });
   },
-  deleteUser(id) {
-    return axios.delete(`${userUrl}/${id}`, { headers: authHeader() });
+  deleteUser(username) {
+    return axios.delete(`${userUrl}/${username}`, { headers: authHeader() });
   },
 
   // AUTHENTICATION
@@ -77,7 +77,7 @@ const API = {
     return axios.post(`${authUrl}/login`, data);
   },
   register(data) {
-    return axios.post(`${authUrl}/new`, data, { headers: authHeader() });
+    return axios.post(`${authUrl}/register`, data, { headers: authHeader() });
   }
 }
 

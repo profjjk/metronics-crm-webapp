@@ -8,21 +8,22 @@ module.exports = {
         const { username, password, authorization } = req.body;
         try {
             const userExists = await db.User.findOne({ username });
-            if (userExists) return res.status(400).send(`Username "${username}" already exists.`);
-            const data = await db.User.create({
+            if (userExists) res.status(400).send(`Username "${username}" already exists.`);
+            const response = await db.User.create({
                 username,
                 password: await bcrypt.hash(password, 10),
                 authorization
             });
-            const accessToken = jwt.sign({ username, authorization }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ accessToken });
+            const user = { username: response.username, authorization: response.authorization }
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            res.status(201).json({ username: user.username, authorization: user.authorization, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
-        const payload = { username: req.body.username, authorization: req.authorization };
+        const user = req.user;
         try {
-            const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ accessToken });
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            res.status(201).json({ username: user.username, authorization: user.authorization, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }

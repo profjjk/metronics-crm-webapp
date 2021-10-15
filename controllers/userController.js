@@ -2,27 +2,26 @@ const db = require('../models');
 
 module.exports = {
     findAll: async (req, res) => {
-        console.log(req.query)
         try {
             const data = await db.User.find().select('-password').sort({ createdAt: 1 });
             res.status(200).json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
-    findById: async (req, res) => {
+    findOne: async (req, res) => {
         try {
-            const data = await db.User.findById(req.params.id).select('-password');
+            const data = await db.User.findOne({ username: req.params.username }).select('-password');
             res.status(200).json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
-    updateById: async (req, res) => {
+    update: async (req, res) => {
         try {
-            const data = await db.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            const data = await db.User.findOneAndUpdate({ username: req.params.username }, req.body, { new: true });
             res.status(200).json(data);
         } catch(err) { res.status(422).json(err) }
     },
     delete: async (req, res) => {
         try {
-            await db.User.deleteOne({ _id: req.params.id });
+            await db.User.deleteOne({ username: req.params.username });
             res.end();
         } catch(err) { res.status(422).json({ msg: err}) }
     }

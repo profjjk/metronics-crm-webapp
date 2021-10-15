@@ -1,10 +1,12 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useQueryClient, useMutation} from "react-query";
-import {useParts} from '../../hooks';
+import {useParts, useUser} from '../../hooks';
 import API from '../../utils/API';
 import {Searchbar, PartsTable, PartForm} from "../../components";
+import {Redirect} from "react-router-dom";
 
 const InventoryHome = () => {
+    const { user } = useUser();
     const [part, setPart] = useState();
     const [showForm, setShowForm] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -21,12 +23,16 @@ const InventoryHome = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('parts')
         }
-    })
+    });
     const deletePart = useMutation(id => API.deletePart(id), {
         onSuccess: () => {
             queryClient.invalidateQueries('parts')
         }
-    })
+    });
+
+    if (!user) {
+        return <Redirect to={'/login'} />
+    }
 
     // EVENT HANDLERS
     const submitHandler = async e => {
