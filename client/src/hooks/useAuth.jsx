@@ -8,6 +8,7 @@ const useAuth = () => {
         try {
             const response = await API.login(username, password);
             if (response.data) {
+                console.log("useAuth.login: ", response)
                 updateUser(response.data);
             }
         } catch(err) { console.error(err.message) }

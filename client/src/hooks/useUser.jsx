@@ -1,16 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
+import { useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { getStoredUser, setStoredUser, clearStoredUser } from '../utils/storage';
+import API from "../utils/API";
+
+const fetchUser = async (id) => {
+    try {
+        return await API.getUser(id);
+    } catch(err) { console.error(err.message) }
+}
 
 const useUser = () => {
     const [user, setUser] = useState(getStoredUser);
     const queryClient = useQueryClient();
 
-    useEffect(() => {
-        queryClient.setQueryData('user', user);
-    }, [])
+    useQuery('user', () => fetchUser(user._id), {
+        enabled: !!user,
+        onSuccess: res => {
+            const token = user.token
+            setUser({
+                _id: res.data._id,
+                username: res.data.username,
+                auth: res.data.authorization === 'administrator' ? 'private' : 'public',
+                token: token
+            })
+        }
+    })
 
     const updateUser = newUser => {
+        // Need to include the token with the newUser... not using this function at the moment.
         setUser(newUser);
         setStoredUser(newUser);
         queryClient.setQueryData('user', newUser);
