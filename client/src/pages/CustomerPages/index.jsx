@@ -41,6 +41,10 @@ const CustomerHome = () => {
         return <Redirect to={'/login'} />
     }
 
+    if (user.authorization !== 'administrator') {
+        return <Redirect to={'/'} />
+    }
+
     // EVENT HANDLERS
     const selectionHandler = (e, customer) => {
         e.preventDefault();

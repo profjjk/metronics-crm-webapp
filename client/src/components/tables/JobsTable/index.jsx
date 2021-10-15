@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useJobs} from "../../../hooks";
 
 const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
-    const {status, data, error, isFetching} = useJobs();
+    const { status, data, error, isFetching } = useJobs();
     const [jobList, setJobList] = useState([]);
     const headers = ["Invoice #", "Service Date", "Company Name", "City", "Type", "Status"];
 
@@ -25,7 +25,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                 } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
             }))
         }
-    }, [searchTerm, data.data, status]);
+    }, [searchTerm, status]);
 
     // Filter by status selection
     useEffect(() => {
@@ -42,7 +42,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                 setJobList(data.data);
             }
         }
-    }, [statusFilter, data.data, status]);
+    }, [statusFilter, status]);
 
     switch (status) {
         case "loading":

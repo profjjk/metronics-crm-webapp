@@ -9,6 +9,10 @@ const DashboardHome = () => {
         return <Redirect to={'/login'} />
     }
 
+    if (user.authorization !== 'administrator') {
+        return <Redirect to={'/'} />
+    }
+
     return (
         <>
             <main>

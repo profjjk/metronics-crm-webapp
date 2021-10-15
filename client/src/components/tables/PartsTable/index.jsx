@@ -17,7 +17,7 @@ const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandle
                     part.description.toLowerCase().includes(searchTerm.toLowerCase());
             }))
         }
-    }, [searchTerm, data.data, status]);
+    }, [searchTerm, status]);
 
     switch (status) {
         case "loading":

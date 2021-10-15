@@ -14,7 +14,7 @@ const WaitListTable = () => {
         case "loading":
             return <h1 className="text-center my-5">Loading</h1>;
         case "error":
-            return <h4 className="text-center my-5">Error: {error.message()}</h4>;
+            return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
             return (
                 <div className="my-5">

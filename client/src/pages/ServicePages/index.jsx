@@ -50,6 +50,10 @@ const ServiceHome = () => {
         return <Redirect to={'/login'} />
     }
 
+    if (user.authorization !== 'administrator') {
+        return <Redirect to={'/'} />
+    }
+
     // EVENT HANDLERS
     const selectionHandler = (e, job) => {
         e.preventDefault();

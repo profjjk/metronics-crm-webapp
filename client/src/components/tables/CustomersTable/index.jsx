@@ -25,7 +25,7 @@ const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
                 })
             );
         }
-    }, [searchTerm, data.data, status]);
+    }, [searchTerm, status]);
 
     switch (status) {
         case "loading":

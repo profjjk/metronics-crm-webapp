@@ -34,6 +34,10 @@ const InventoryHome = () => {
         return <Redirect to={'/login'} />
     }
 
+    if (user.authorization !== 'administrator') {
+        return <Redirect to={'/'} />
+    }
+
     // EVENT HANDLERS
     const submitHandler = async e => {
         try {
