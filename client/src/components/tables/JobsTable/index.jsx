@@ -8,7 +8,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data);
-    }, [isFetching]);
+    }, [status]);
 
     // Filter by search results
     useEffect(() => {
@@ -25,7 +25,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                 } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
             }))
         }
-    }, [searchTerm, data]);
+    }, [searchTerm, data.data, status]);
 
     // Filter by status selection
     useEffect(() => {
@@ -42,7 +42,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                 setJobList(data.data);
             }
         }
-    }, [statusFilter]);
+    }, [statusFilter, data.data, status]);
 
     switch (status) {
         case "loading":

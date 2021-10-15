@@ -2,7 +2,7 @@ import {useState, useEffect} from "react";
 import {useParts} from "../../../hooks";
 
 const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandler}) => {
-    const {status, data, error, isFetching} = useParts();
+    const { status, data, error } = useParts();
     const [partList, setPartList] = useState([])
 
     // Search for parts
@@ -17,7 +17,7 @@ const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandle
                     part.description.toLowerCase().includes(searchTerm.toLowerCase());
             }))
         }
-    }, [searchTerm, data]);
+    }, [searchTerm, data.data, status]);
 
     switch (status) {
         case "loading":

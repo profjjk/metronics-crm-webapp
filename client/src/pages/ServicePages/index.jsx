@@ -1,10 +1,9 @@
-import {useEffect, useState} from 'react';
-import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
-// import { createJob, editJob, deleteJob, createCustomer, editCustomer } from "../../utils/mutations";
+import { useState } from 'react';
+import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
+import { useUser } from "../../hooks";
+import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
 import API from "../../utils/API";
-import {useUser} from "../../hooks";
-import {Redirect} from "react-router-dom";
 
 const ServiceHome = () => {
     const { user } = useUser();

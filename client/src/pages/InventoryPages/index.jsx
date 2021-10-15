@@ -1,9 +1,9 @@
-import {useEffect, useState} from "react";
-import {useQueryClient, useMutation} from "react-query";
-import {useParts, useUser} from '../../hooks';
+import { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { useQueryClient, useMutation } from "react-query";
+import { useUser } from '../../hooks';
+import { Searchbar, PartsTable, PartForm } from "../../components";
 import API from '../../utils/API';
-import {Searchbar, PartsTable, PartForm} from "../../components";
-import {Redirect} from "react-router-dom";
 
 const InventoryHome = () => {
     const { user } = useUser();
