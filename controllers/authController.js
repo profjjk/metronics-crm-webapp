@@ -9,21 +9,21 @@ module.exports = {
         try {
             const userExists = await db.User.findOne({ username });
             if (userExists) res.status(400).send(`Username "${username}" already exists.`);
-            const response = await db.User.create({
+            const user = await db.User.create({
                 username,
                 password: await bcrypt.hash(password, 10),
                 authorization
             });
-            const user = { username: response.username, authorization: response.authorization }
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ username: user.username, authorization: user.authorization, token });
+            console.log("authController.register: ", user._id)
+            res.status(201).json({ id: user._id, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
-        const user = req.user;
+        const user = { id: req.user };
         try {
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ username: user.username, authorization: user.authorization, token });
+            const token = jwt.sign({ id: req.user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            res.status(201).json({ _id: user.id, token: token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }

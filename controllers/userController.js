@@ -13,15 +13,21 @@ module.exports = {
             res.status(200).json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
+    findById: async (req, res) => {
+        try {
+            const data = await db.User.findById({ _id: req.params.id }).select('-password');
+            res.status(200).json(data);
+        } catch(err) { res.status(422).json({ msg: err}) }
+    },
     update: async (req, res) => {
         try {
-            const data = await db.User.findOneAndUpdate({ username: req.params.username }, req.body, { new: true });
+            const data = await db.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
             res.status(200).json(data);
         } catch(err) { res.status(422).json(err) }
     },
     delete: async (req, res) => {
         try {
-            await db.User.deleteOne({ username: req.params.username });
+            await db.User.deleteOne({ _id: req.params.id });
             res.end();
         } catch(err) { res.status(422).json({ msg: err}) }
     }

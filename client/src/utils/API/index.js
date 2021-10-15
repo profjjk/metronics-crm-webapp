@@ -62,14 +62,14 @@ const API = {
   },
 
   // USERS
-  getUser(username) {
-    return axios.get(`${userUrl}/${username}`, { headers: authHeader() });
+  getUser(id) {
+    return axios.get(`${userUrl}/${id}`, { headers: authHeader() });
   },
-  updateUser(username, data) {
-    return axios.put(`${userUrl}/${username}`, data, { headers: authHeader() });
+  updateUser(id, data) {
+    return axios.put(`${userUrl}/${id}`, data, { headers: authHeader() });
   },
-  deleteUser(username) {
-    return axios.delete(`${userUrl}/${username}`, { headers: authHeader() });
+  deleteUser(id) {
+    return axios.delete(`${userUrl}/${id}`, { headers: authHeader() });
   },
 
   // AUTHENTICATION

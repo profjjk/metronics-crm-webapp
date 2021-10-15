@@ -14,7 +14,8 @@ const authenticateUser = async (req, res, next) => {
         if (!validPassword) {
             return res.status(401).json({ msg: "Invalid credentials." });
         }
-        req.user = { username: user.username, authorization: user.authorization }
+        req.user = user._id.toString()
+        console.log("authenticateUser: ", req.user)
         next();
     } catch(err) { res.json({ msg: "Failed to authenticate user." }) }
 }
@@ -25,7 +26,7 @@ const authenticateToken = (req, res, next) => {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) return res.status(403).json({ msg: err });
-            req.user = { username: decoded.username, authorization: decoded.authorization };
+            req.user = { id: decoded.id.toString() };
             next();
         })
     } catch(err) { res.json({ msg: "Failed to authenticate token." }) }
