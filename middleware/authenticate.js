@@ -15,7 +15,6 @@ const authenticateUser = async (req, res, next) => {
             return res.status(401).json({ msg: "Invalid credentials." });
         }
         req.user = user._id.toString()
-        console.log("authenticateUser: ", req.user)
         next();
     } catch(err) { res.json({ msg: "Failed to authenticate user." }) }
 }

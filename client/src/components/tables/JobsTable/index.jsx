@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {useJobs} from "../../../hooks";
+import { useEffect, useState } from "react";
+import { useJobs } from "../../../hooks";
 
 const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
     const { status, data, error, isFetching } = useJobs();
@@ -17,13 +17,13 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                 setJobList(data.data);
                 return;
             }
-            setJobList(data.data.filter(job => {
-                if (job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase())) {
-                    return true;
-                } else if (job.serviceDate.toLowerCase() !== null && job.serviceDate.toLowerCase().includes(searchTerm)) {
-                    return true;
-                } else return job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm);
-            }))
+            setJobList(
+                data.data.filter(job => {
+                    return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||
+                        (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
+                })
+            );
         }
     }, [searchTerm, status]);
 

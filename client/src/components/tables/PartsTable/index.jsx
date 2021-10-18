@@ -1,5 +1,5 @@
-import {useState, useEffect} from "react";
-import {useParts} from "../../../hooks";
+import { useState, useEffect } from "react";
+import { useParts } from "../../../hooks";
 
 const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandler}) => {
     const { status, data, error } = useParts();
@@ -12,10 +12,12 @@ const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandle
                 setPartList(data.data);
                 return;
             }
-            setPartList(data.data.filter(part => {
-                return part.partNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    part.description.toLowerCase().includes(searchTerm.toLowerCase());
-            }))
+            setPartList(
+                data.data.filter(part => {
+                    return part.partNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        part.description.toLowerCase().includes(searchTerm.toLowerCase());
+                })
+            );
         }
     }, [searchTerm, status]);
 

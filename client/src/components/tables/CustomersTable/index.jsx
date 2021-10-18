@@ -1,5 +1,5 @@
-import {useState, useEffect} from "react";
-import {useCustomers} from "../../../hooks";
+import { useState, useEffect } from "react";
+import { useCustomers } from "../../../hooks";
 
 const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
     const {status, data, error, isFetching} = useCustomers();
