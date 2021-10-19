@@ -21,7 +21,7 @@ module.exports = {
     login: async (req, res) => {
         const user = { id: req.user };
         try {
-            const token = jwt.sign({ id: req.user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
             res.status(201).json({ id: user.id, token: token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },

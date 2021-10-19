@@ -1,10 +1,10 @@
 import { useHistory, Redirect } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
+import {useEffect} from "react";
 
 const LoginPage = () => {
     const { user } = useUser();
     const { login } = useAuth();
-    const history = useHistory();
 
     if (user) {
         return <Redirect to={'/dashboard'} />;

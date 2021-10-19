@@ -2,16 +2,12 @@ const getStoredToken = () => {
     return JSON.parse(localStorage.getItem('metronics'))
 }
 
-const getStoredUser = () => {
-    return JSON.parse(localStorage.getItem('metronics'))
+const setStoredToken = token => {
+    localStorage.setItem('metronics', JSON.stringify(token));
 }
 
-const setStoredUser = user => {
-    localStorage.setItem('metronics', JSON.stringify(user));
-}
-
-const clearStoredUser = () => {
+const clearStoredToken = () => {
     localStorage.removeItem('metronics');
 }
 
-export { getStoredUser, setStoredUser, clearStoredUser };
+export { getStoredToken, setStoredToken, clearStoredToken };

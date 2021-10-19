@@ -3,7 +3,7 @@ import './style.css';
 const PartForm = ({ submitHandler, setShowForm, part }) => {
     return (
         <form className="p-5" onSubmit={submitHandler}>
-            <h1 className="text-primary text-center mb-5">New Part Form</h1>
+            <h1 className="text-primary text-center mb-5">{part ? "Edit Part Form" : "New Part Form"}</h1>
 
             <div className="my-3">
                 <h4 className={"px-3"}>Part Information</h4>

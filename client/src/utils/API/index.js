@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getStoredUser } from '../storage'
+import { getStoredToken } from '../storage'
 
 const customerUrl = 'http://localhost:8080/api/customers';
 const jobUrl = 'http://localhost:8080/api/jobs';
@@ -8,9 +8,9 @@ const userUrl = 'http://localhost:8080/api/users';
 const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
-  const user = getStoredUser();
-  if (user) {
-    return { 'metronics': user.token };
+  const token = getStoredToken().token;
+  if (token) {
+    return { 'metronics': token };
   } else {}
 }
 
