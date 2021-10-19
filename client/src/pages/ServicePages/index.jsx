@@ -50,9 +50,9 @@ const ServiceHome = () => {
     if (!user) {
         return <Redirect to={'/login'} />
     }
-    if (user.auth === 'public') {
-        return <Redirect to={'/'} />
-    }
+    // if (user.auth === 'public') {
+    //     return <Redirect to={'/'} />
+    // }
 
     // EVENT HANDLERS
     const selectionHandler = (e, job) => {

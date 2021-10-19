@@ -19,7 +19,6 @@ const LoginPage = () => {
                 password: formData.password
             }
             await login(user);
-            history.replace('/dashboard')
             window.location.reload();
         } catch(err) { console.error(err) }
     }
@@ -32,12 +31,14 @@ const LoginPage = () => {
                     type={"text"}
                     name={"username"}
                     placeholder={"username"}
+                    defaultValue={"metronics"}
                     required
                 />
                 <input
                     className={"form-control m-3 w-25"}
                     type={"password"}
                     name={"password"}
+                    defaultValue={"password"}
                     placeholder={"password"}
                     required
                 />

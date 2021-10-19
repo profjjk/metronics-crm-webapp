@@ -13,16 +13,18 @@ const useUser = () => {
     const [user, setUser] = useState(getStoredUser);
     const queryClient = useQueryClient();
 
-    useQuery('user', () => fetchUser(user._id), {
+    useQuery('user', () => fetchUser(user.id), {
         enabled: !!user,
         onSuccess: res => {
-            const token = user.token
-            setUser({
-                _id: res.data._id,
-                username: res.data.username,
-                auth: res.data.authorization === 'administrator' ? 'private' : 'public',
-                token: token
-            })
+            if (user) {
+                const token = user.token
+                setUser({
+                    id: res.data._id,
+                    username: res.data.username,
+                    auth: res.data.authorization === 'administrator' ? 'private' : 'public',
+                    token: token
+                })
+            }
         }
     })
 

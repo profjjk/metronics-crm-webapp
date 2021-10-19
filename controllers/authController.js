@@ -15,7 +15,6 @@ module.exports = {
                 authorization
             });
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            console.log("authController.register: ", user._id)
             res.status(201).json({ id: user._id, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
@@ -23,7 +22,7 @@ module.exports = {
         const user = { id: req.user };
         try {
             const token = jwt.sign({ id: req.user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ _id: user.id, token: token });
+            res.status(201).json({ id: user.id, token: token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }
