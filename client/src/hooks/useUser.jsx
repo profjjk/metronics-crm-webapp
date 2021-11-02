@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import {clearStoredToken, getStoredToken} from '../utils/storage';
+import { getStoredToken, clearStoredToken } from '../utils/storage';
 import API from "../utils/API";
 
 const fetchUser = async (id) => {
     try {
         return await API.getUser(id);
-    } catch(err) { console.error(err.message) }
+    } catch(err) {
+        clearStoredToken();
+        console.error(err.message)
+    }
 }
 
 const useUser = () => {
     const [user, setUser] = useState(getStoredToken());
     const queryClient = useQueryClient();
 
-    useQuery('user', () => fetchUser(user.id), {
+    useQuery('user', () => fetchUser(user._id), {
         enabled: !!user,
         onSuccess: res => {
             setUser({
-                id: res.data._id,
+                _id: res.data._id,
                 username: res.data.username,
                 auth: res.data.authorization === 'administrator' ? 'private' : 'public',
             })
@@ -26,7 +29,7 @@ const useUser = () => {
 
     const updateUser = newUser => {
         setUser({
-            id: newUser._id,
+            _id: newUser._id,
             username: newUser.username,
             auth: newUser.authorization === 'administrator' ? 'private' : 'public',
         });

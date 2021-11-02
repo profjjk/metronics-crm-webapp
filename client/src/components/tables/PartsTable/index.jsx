@@ -38,7 +38,7 @@ const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandle
                             <th scope="col" className="text-center">Purchase $</th>
                             <th scope="col" className="text-center">Sale $</th>
                             <th scope="col" className="text-center">In Stock</th>
-                            <th scope="col" className="text-center">Change Quantity</th>
+                            {/*<th scope="col" className="text-center">Change Quantity</th>*/}
                             <th scope="col"/>
                         </tr>
                         </thead>
@@ -51,20 +51,20 @@ const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandle
                                 <td className="text-center text-danger">{part.purchasePrice}</td>
                                 <td className="text-center text-success">{part.salePrice}</td>
                                 <td className="text-center">{part.stock}</td>
-                                <td className="d-flex justify-content-center">
-                                    <button
-                                        className="btn btn-secondary"
-                                        data-id={part._id}
-                                        onClick={e => quantityHandler(e, {...part, stock: part.stock + 1})}
-                                    >+
-                                    </button>
-                                    <button
-                                        className="btn btn-secondary ms-4"
-                                        data-id={part._id}
-                                        onClick={e => quantityHandler(e, {...part, stock: part.stock - 1})}
-                                    >-
-                                    </button>
-                                </td>
+                                {/*<td className="d-flex justify-content-center">*/}
+                                {/*    <button*/}
+                                {/*        className="btn btn-secondary"*/}
+                                {/*        data-id={part._id}*/}
+                                {/*        onClick={() => quantityHandler({...part, stock: part.stock + 1})}*/}
+                                {/*    >+*/}
+                                {/*    </button>*/}
+                                {/*    <button*/}
+                                {/*        className="btn btn-secondary ms-4"*/}
+                                {/*        data-id={part._id}*/}
+                                {/*        onClick={() => quantityHandler({...part, stock: part.stock - 1})}*/}
+                                {/*    >-*/}
+                                {/*    </button>*/}
+                                {/*</td>*/}
                                 <td>
                                     <div className="float-end">
                                         <button

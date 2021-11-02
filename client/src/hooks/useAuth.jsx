@@ -9,7 +9,7 @@ const useAuth = () => {
         try {
             const response = await API.login(username, password);
             if (response.data) {
-                setStoredToken({ id: response.data.id, token: response.data.token });
+                setStoredToken({ _id: response.data._id, token: response.data.token });
             }
         } catch(err) { console.error(err.message) }
     }

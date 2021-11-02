@@ -60,9 +60,8 @@ const InventoryHome = () => {
             console.error(err)
         }
     };
-    const quantityHandler = (e, part) => {
-        e.preventDefault();
-        updatePart.mutate({ id: e.target.dataset.id,  data: part });
+    const quantityHandler = (part) => {
+        updatePart.mutate({ id: part._id,  data: part });
     }
     const selectionHandler = (e, part) => {
         e.preventDefault();
@@ -115,3 +114,5 @@ const InventoryHome = () => {
 }
 
 export default InventoryHome;
+
+// TODO: For some reason, 'parts' stopped refreshing when editing unless I hard reload the page. Something to do with authentication? It worked fine before.
