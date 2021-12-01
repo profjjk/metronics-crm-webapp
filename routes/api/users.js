@@ -13,5 +13,4 @@ router.route('/:id')
 router.route('/:username')
     .get(authenticate.token, userController.findOne)
 
-
 module.exports = router;
