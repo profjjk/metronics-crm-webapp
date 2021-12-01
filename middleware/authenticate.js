@@ -25,7 +25,7 @@ const authenticateToken = (req, res, next) => {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) return res.status(403).json({ msg: err });
-            req.user = { id: decoded.id.toString() };
+            req.user = { _id: decoded._id.toString() };
             next();
         })
     } catch(err) { res.json({ msg: "Failed to authenticate token." }) }
@@ -39,5 +39,5 @@ module.exports = {
 // TODO: make use of the req.user property to restrict data access to administrators only. No public access allowed.
 //  - I probably need to do this in the controllers, or make different versions of the authenticateToken middleware.
 
-// TODO: maybe I should move the authenticateUser logic to the userController.
+// TODO: maybe I should move the authenticateUser logic to the messageController.
 //  - It looks nice as middleware, but is only used once at login.

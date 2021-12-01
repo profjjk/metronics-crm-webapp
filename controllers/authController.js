@@ -15,14 +15,14 @@ module.exports = {
                 authorization
             });
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ id: user._id, token });
+            res.status(201).json({ _id: user._id, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
-        const user = { id: req.user };
+        const user = { _id: req.user };
         try {
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
-            res.status(201).json({ id: user.id, token: token });
+            res.status(201).json({ _id: user._id, token: token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }
