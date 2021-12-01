@@ -1,3 +1,10 @@
+$dark: #0a1931;
+$yellow: #ffc947;
+$blue: #185adb;
+$red: #f05454;
+$light: #efefef;
+
+
 /***** GENERAL STYLES *****/
 * {
   margin: 0;
@@ -6,7 +13,7 @@
 }
 
 h1, h2, h3, h4, h5, h6, p, td, th {
-  color: #0a1931;
+  color: $dark;
 }
 
 /***** PAGE STYLES *****/
@@ -21,32 +28,25 @@ main {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
-
 #customer-area {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-
 #address {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   column-gap: 5px;
 }
-
 #parts-area {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 10px;
 }
-
 #parts-area .part-form {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   column-gap: 5px;
 }
-
 .form-btn {
   width: 100px;
 }
-
-/*# sourceMappingURL=App.css.map */

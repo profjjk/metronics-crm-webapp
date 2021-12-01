@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Routes from "./routes";

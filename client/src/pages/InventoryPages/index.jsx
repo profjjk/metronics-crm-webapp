@@ -16,17 +16,17 @@ const InventoryHome = () => {
     const queryClient = useQueryClient();
     const createPart = useMutation(part => API.createPart(part), {
         onSuccess: () => {
-            queryClient.invalidateQueries('parts')
+            queryClient.invalidateQueries('parts');
         }
     });
     const updatePart = useMutation(part => API.updatePart(part.id, part.data), {
         onSuccess: () => {
-            queryClient.invalidateQueries('parts')
+            queryClient.invalidateQueries('parts');
         }
     });
     const deletePart = useMutation(id => API.deletePart(id), {
         onSuccess: () => {
-            queryClient.invalidateQueries('parts')
+            queryClient.invalidateQueries('parts');
         }
     });
 
@@ -34,9 +34,6 @@ const InventoryHome = () => {
     if (!user) {
         return <Redirect to={'/login'} />
     }
-    // if (user.auth === 'public') {
-    //     return <Redirect to={'/'} />
-    // }
 
     // EVENT HANDLERS
     const submitHandler = async e => {
@@ -63,9 +60,8 @@ const InventoryHome = () => {
             console.error(err)
         }
     };
-    const quantityHandler = e => {
-        e.preventDefault();
-        updatePart.mutate({id: e.target.dataset.id, data: part});
+    const quantityHandler = (part) => {
+        updatePart.mutate({ id: part._id,  data: part });
     }
     const selectionHandler = (e, part) => {
         e.preventDefault();
@@ -83,7 +79,7 @@ const InventoryHome = () => {
         return (
             <main>
                 <PartForm
-                    part={edit ? part[0] : null}
+                    part={edit ? part : null}
                     submitHandler={submitHandler}
                     setShowForm={setShowForm}
                 />
@@ -118,3 +114,5 @@ const InventoryHome = () => {
 }
 
 export default InventoryHome;
+
+// TODO: For some reason, 'parts' stopped refreshing when editing unless I hard reload the page. Something to do with authentication? It worked fine before.

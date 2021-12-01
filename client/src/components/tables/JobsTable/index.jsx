@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useJobs } from "../../../hooks";
+import dayjs from "dayjs";
 
 const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
     const { status, data, error, isFetching } = useJobs();
@@ -75,11 +76,11 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                         <tbody>
                         {jobList.map(job => (
                             <tr key={job._id}>
-                                <td className="text-center">
+                                <td>
                                     {job.invoiceNumber ? job.invoiceNumber : "--"}
                                 </td>
-                                <td className="text-center">
-                                    {job.serviceDate ? job.serviceDate : "--"}
+                                <td>
+                                    {job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}
                                 </td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>

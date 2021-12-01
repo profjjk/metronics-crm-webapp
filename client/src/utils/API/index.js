@@ -1,16 +1,18 @@
 import axios from 'axios';
-import { getStoredUser } from '../storage'
+import { getStoredToken } from '../storage'
 
 const customerUrl = 'http://localhost:8080/api/customers';
 const jobUrl = 'http://localhost:8080/api/jobs';
 const partUrl = 'http://localhost:8080/api/parts';
+const messageUrl = 'http://localhost:8080/api/messages';
+const requestUrl = 'http://localhost:8080/api/requests';
 const userUrl = 'http://localhost:8080/api/users';
 const authUrl = 'http://localhost:8080/api/auth';
 
 const authHeader = () => {
-  const user = getStoredUser();
-  if (user) {
-    return { 'metronics': user.token };
+  const token = getStoredToken().token;
+  if (token) {
+    return { 'metronics': token };
   } else {}
 }
 
@@ -59,6 +61,22 @@ const API = {
   },
   deletePart(id) {
     return axios.delete(`${partUrl}/${id}`, { headers: authHeader() });
+  },
+
+  // MESSAGES
+  getMessages() {
+    return axios.get(messageUrl, { headers: authHeader() });
+  },
+  deleteMessage(id) {
+    return axios.delete(`${messageUrl}/${id}`, { headers: authHeader() });
+  },
+
+  // REQUESTS
+  getRequests() {
+    return axios.get(requestUrl, { headers: authHeader() });
+  },
+  deleteRequest(id) {
+    return axios.delete(`${requestUrl}/${id}`, { headers: authHeader() });
   },
 
   // USERS

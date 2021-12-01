@@ -1,5 +1,6 @@
 import useUser from "./useUser";
 import API from '../utils/API';
+import {clearStoredToken, setStoredToken} from "../utils/storage";
 
 const useAuth = () => {
     const { updateUser, clearUser } = useUser();
@@ -8,8 +9,7 @@ const useAuth = () => {
         try {
             const response = await API.login(username, password);
             if (response.data) {
-                console.log("useAuth.login: ", response)
-                updateUser(response.data);
+                setStoredToken({ _id: response.data._id, token: response.data.token });
             }
         } catch(err) { console.error(err.message) }
     }
@@ -30,6 +30,7 @@ const useAuth = () => {
     }
 
     const logout = () => {
+        clearStoredToken();
         clearUser();
     }
 
