@@ -4,7 +4,10 @@ import API from '../utils/API';
 const fetchCustomers = async () => {
     try {
         return await API.getCustomers();
-    } catch(err) { console.error(err.message) }
+    } catch(err) {
+        console.error(err.message)
+        window.location.reload();
+    }
 }
 
 const useCustomers = () => {

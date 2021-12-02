@@ -24,7 +24,9 @@ const authenticateToken = (req, res, next) => {
     if (!token) return res.status(401).json({ msg: "Access denied. No authorization token received." });
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-            if (err) return res.status(403).json({ msg: err });
+            if (err) {
+                return res.status(403).json({msg: err});
+            }
             req.user = { _id: decoded._id.toString() };
             next();
         })

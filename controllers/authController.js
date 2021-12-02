@@ -14,14 +14,14 @@ module.exports = {
                 password: await bcrypt.hash(password, 10),
                 authorization
             });
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5 hours' });
             res.status(201).json({ _id: user._id, token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
         const user = { _id: req.user };
         try {
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12 hours' });
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5 hours' });
             res.status(201).json({ _id: user._id, token: token });
         } catch(err) { res.status(422).json({ msg: err}) }
     },
