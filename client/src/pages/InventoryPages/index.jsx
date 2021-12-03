@@ -95,7 +95,7 @@ const InventoryHome = () => {
                     setSearch={setSearchTerm}
                 />
                 <button
-                    className="btn btn-success me-3 mt-5"
+                    className="btn-new"
                     onClick={() => {
                         setEdit(false);
                         setShowForm(true);

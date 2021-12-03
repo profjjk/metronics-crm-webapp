@@ -9,9 +9,6 @@ const DashboardHome = () => {
     if (!user) {
         return <Redirect to={'/login'} />
     }
-    // if (user.auth === 'public') {
-    //     return <Redirect to={'/'} />
-    // }
 
     return (
         <>

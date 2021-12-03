@@ -1,0 +1,58 @@
+$blue: #185adb;
+$yellow: #ffc947;
+$light: #efefef;
+$dark: #0a1931;
+$red: #d3232b;
+
+@mixin easeOut {
+  transition: all .3s ease-out;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100%;
+  background: $blue;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  ul {
+    margin: 50px auto;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 50px;
+  }
+}
+
+.nav-item {
+  font-size: 2rem;
+  a {
+    color: white;
+    &:hover {
+      color: $yellow;
+      @include easeOut;
+    }
+    &.active {
+      color: $yellow;
+    }
+  }
+}
+
+.btn-signOut {
+  margin: 25px auto;
+  padding: 0 5px;
+  background: none;
+  color: white;
+  font-size: 2rem;
+  border: none;
+  border-radius: 5px;
+  &:hover {
+    color: $red;
+    @include easeOut;
+  }
+}

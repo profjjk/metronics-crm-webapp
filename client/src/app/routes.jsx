@@ -11,7 +11,7 @@ const Routes = () => {
                 <Route exact path='/login' component={LoginPage}/>
                 <Route exact path='/dashboard' component={DashboardHome}/>
                 <Route exact path='/customers' component={CustomerHome}/>
-                <Route exact path='/service' component={ServiceHome}/>
+                <Route exact path='/service' component={ServiceHome}/> 
                 <Route exact path='/inventory' component={InventoryHome}/>
             </Switch>
         </Router>
