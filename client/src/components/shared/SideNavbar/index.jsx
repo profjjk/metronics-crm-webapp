@@ -74,7 +74,7 @@ const SideNavbar = () => {
                 <li className="nav-item">
                     <Link to={'/inventory'} >
                         <FontAwesomeIcon icon={faWarehouse} data-tip data-for='inventory' />
-                        <ReactTooltip id={"inventory"} effect={"solid"} place={"right"}>
+                        <ReactTooltip id={"inventory"} effect={"solid"}>
                             <span>Inventory</span>
                         </ReactTooltip>
                     </Link>
@@ -85,7 +85,7 @@ const SideNavbar = () => {
                     className={"btn-signOut"}
                     onClick={logOut}>
                     <FontAwesomeIcon icon={faSignOutAlt} data-tip data-for='sign-out'/>
-                    <ReactTooltip id={"sign-out"} effect={"solid"} place={"right"} type={"error"}>
+                    <ReactTooltip id={"sign-out"} effect={"solid"} type={"error"}>
                         <span>Sign Out</span>
                     </ReactTooltip>
                 </button>

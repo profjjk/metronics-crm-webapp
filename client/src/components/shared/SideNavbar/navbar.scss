@@ -9,10 +9,8 @@ $red: #d3232b;
 }
 
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100px;
+  position: relative;
+  width: 100%;
   height: 100%;
   background: $blue;
   display: flex;
@@ -25,7 +23,7 @@ $red: #d3232b;
     display: flex;
     flex-flow: column;
     align-items: center;
-    gap: 50px;
+    gap: 80px;
   }
 }
 
@@ -52,6 +50,7 @@ $red: #d3232b;
   border: none;
   border-radius: 5px;
   &:hover {
+    cursor: pointer;
     color: $red;
     @include easeOut;
   }

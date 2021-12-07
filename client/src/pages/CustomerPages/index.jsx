@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useUser } from '../../hooks';
-import { Searchbar, CustomersTable, CustomerForm } from "../../components";
+import {Searchbar, CustomersTable, CustomerForm, SideNavbar} from "../../components";
 import API from "../../utils/API";
 
 const CustomerHome = () => {
@@ -92,44 +92,55 @@ const CustomerHome = () => {
 
     if (!showForm) {
         return (
-            <main>
-                <Searchbar
-                    heading="Customer Search"
-                    subheading="Search by business name, city name, or phone #"
-                    placeholder="Business Name, city name, or phone #"
-                    setSearch={setSearchTerm}
-                />
-                <button
-                    className="btn btn-success me-3 mt-5"
-                    onClick={() => {
-                        setEdit(false);
-                        setShowForm(true);
-                    }}
-                >Create New Customer
-                </button>
-                <CustomersTable
-                    setShowFormUpdate={setShowForm}
-                    selectionHandler={selectionHandler}
-                    deleteHandler={deleteCustomerHandler}
-                    searchTerm={searchTerm}
-                />
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
 
-            </main>
+                <main className={"container"}>
+                    <Searchbar
+                        heading="Customer Search"
+                        subheading="Search by business name, city name, or phone #"
+                        placeholder="Business Name, city name, or phone #"
+                        setSearch={setSearchTerm}
+                    />
+                    <button
+                        className="btn btn-success me-3 mt-5"
+                        onClick={() => {
+                            setEdit(false);
+                            setShowForm(true);
+                        }}
+                    >Create New Customer
+                    </button>
+                    <CustomersTable
+                        setShowFormUpdate={setShowForm}
+                        selectionHandler={selectionHandler}
+                        deleteHandler={deleteCustomerHandler}
+                        searchTerm={searchTerm}
+                    />
+                </main>
+            </>
         )
     }
 
     if (showForm) {
         return (
-            <main>
-                <div className="p-5">
-                    <CustomerForm
-                        setShowForm={setShowForm}
-                        submitHandler={submitHandler}
-                        customer={edit ? customer : null}
-                    />
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
 
-                </div>
-            </main>
+                <main className={"container"}>
+                    <div className="p-5">
+                        <CustomerForm
+                            setShowForm={setShowForm}
+                            submitHandler={submitHandler}
+                            customer={edit ? customer : null}
+                        />
+
+                    </div>
+                </main>
+            </>
         )
     }
 }

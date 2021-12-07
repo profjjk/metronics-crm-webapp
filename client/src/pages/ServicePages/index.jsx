@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useUser } from "../../hooks";
-import { JobsTable, Searchbar, ServiceForm, AutoCompleteSearch } from "../../components";
+import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
 import API from "../../utils/API";
 
 const ServiceHome = () => {
@@ -125,48 +125,60 @@ const ServiceHome = () => {
 
     if (!showForm) {
         return (
-            <main>
-                <Searchbar
-                    heading={"Service Job Search"}
-                    subheading={"Search by invoice #, date, or customer"}
-                    placeholder={"Invoice #, date, or customer"}
-                    setSearch={setSearchTerm}
-                />
-                <button
-                    className="btn btn-success me-3 mt-5"
-                    onClick={() => {
-                        setEdit(false);
-                        setShowForm(true);
-                    }}
-                >Create New Service Job
-                </button>
-                <JobsTable
-                    searchTerm={searchTerm}
-                    statusFilter={statusFilter}
-                    setStatusFilter={setStatusFilter}
-                    selectionHandler={selectionHandler}
-                    deleteJobHandler={deleteJobHandler}
-                />
-            </main>
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
+
+                <main className={"container"}>
+                    <Searchbar
+                        heading={"Service Job Search"}
+                        subheading={"Search by invoice #, date, or customer"}
+                        placeholder={"Invoice #, date, or customer"}
+                        setSearch={setSearchTerm}
+                    />
+                    <button
+                        className="btn btn-success me-3 mt-5"
+                        onClick={() => {
+                            setEdit(false);
+                            setShowForm(true);
+                        }}
+                    >Create New Service Job
+                    </button>
+                    <JobsTable
+                        searchTerm={searchTerm}
+                        statusFilter={statusFilter}
+                        setStatusFilter={setStatusFilter}
+                        selectionHandler={selectionHandler}
+                        deleteJobHandler={deleteJobHandler}
+                    />
+                </main>
+            </>
         )
     }
     if (showForm) {
         return (
-            <main>
-                {!edit ? <AutoCompleteSearch
-                    setCustomer={setCustomer}
-                    setFound={setFound}
-                /> : <></>}
-                <ServiceForm
-                    submitHandler={submitHandler}
-                    removePartHandler={removePartHandler}
-                    customer={edit || found ? customer : null}
-                    parts={parts.length > 0 ? parts : []}
-                    job={edit ? job : null}
-                    setParts={setParts}
-                    setShowForm={setShowForm}
-                />
-            </main>
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
+
+                <main className={"container"}>
+                    {!edit ? <AutoCompleteSearch
+                        setCustomer={setCustomer}
+                        setFound={setFound}
+                    /> : <></>}
+                    <ServiceForm
+                        submitHandler={submitHandler}
+                        removePartHandler={removePartHandler}
+                        customer={edit || found ? customer : null}
+                        parts={parts.length > 0 ? parts : []}
+                        job={edit ? job : null}
+                        setParts={setParts}
+                        setShowForm={setShowForm}
+                    />
+                </main>
+            </>
         )
     }
 }

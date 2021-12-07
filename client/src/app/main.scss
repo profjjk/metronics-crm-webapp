@@ -1,3 +1,37 @@
+$blue: #185adb;
+$yellow: #ffc947;
+$light: #efefef;
+$dark: #0a1931;
+$red: #d3232b;
+
+@mixin easeOut {
+  transition: all .3s ease-out;
+}
+
 * {
   outline: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: $light;
+  font-family: 'Montserrat', sans-serif;
+  color: $dark;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100px;
+  height: 100%;
+}
+
+.container {
+  margin-left: 100px;
+  padding: 20px;
+  border: 1px solid black;
 }

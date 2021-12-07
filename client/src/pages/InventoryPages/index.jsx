@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useQueryClient, useMutation } from "react-query";
 import { useUser } from '../../hooks';
-import { Searchbar, PartsTable, PartForm } from "../../components";
+import {Searchbar, PartsTable, PartForm, SideNavbar} from "../../components";
 import API from '../../utils/API';
 
 const InventoryHome = () => {
@@ -77,38 +77,50 @@ const InventoryHome = () => {
 
     if (showForm) {
         return (
-            <main>
-                <PartForm
-                    part={edit ? part : null}
-                    submitHandler={submitHandler}
-                    setShowForm={setShowForm}
-                />
-            </main>
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
+
+                <main className={"container"}>
+                    <PartForm
+                        part={edit ? part : null}
+                        submitHandler={submitHandler}
+                        setShowForm={setShowForm}
+                    />
+                </main>
+            </>
         )
     } else {
         return (
-            <main>
-                <Searchbar
-                    heading="Inventory Search"
-                    subheading="Search by description or part #"
-                    placeholder="Description or part #"
-                    setSearch={setSearchTerm}
-                />
-                <button
-                    className="btn-new"
-                    onClick={() => {
-                        setEdit(false);
-                        setShowForm(true);
-                    }}
-                >Add Part to Inventory
-                </button>
-                <PartsTable
-                    searchTerm={searchTerm}
-                    selectionHandler={selectionHandler}
-                    quantityHandler={quantityHandler}
-                    deleteHandler={deleteHandler}
-                />
-            </main>
+            <>
+                <header>
+                    <SideNavbar/>
+                </header>
+
+                <main className={"container"}>
+                    <Searchbar
+                        heading="Inventory Search"
+                        subheading="Search by description or part #"
+                        placeholder="Description or part #"
+                        setSearch={setSearchTerm}
+                    />
+                    <button
+                        className="btn-new"
+                        onClick={() => {
+                            setEdit(false);
+                            setShowForm(true);
+                        }}
+                    >Add Part to Inventory
+                    </button>
+                    <PartsTable
+                        searchTerm={searchTerm}
+                        selectionHandler={selectionHandler}
+                        quantityHandler={quantityHandler}
+                        deleteHandler={deleteHandler}
+                    />
+                </main>
+            </>
         )
     }
 }

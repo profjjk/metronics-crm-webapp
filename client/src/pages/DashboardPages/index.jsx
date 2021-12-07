@@ -1,6 +1,8 @@
 import { Redirect } from "react-router-dom";
 import { useUser } from "../../hooks";
 import { WaitListTable, PartsReorderTable } from "../../components";
+import { SideNavbar } from "../../components";
+import './dashboard.scss';
 
 const DashboardHome = () => {
     const { user } = useUser();
@@ -12,7 +14,11 @@ const DashboardHome = () => {
 
     return (
         <>
-            <main>
+            <header>
+                <SideNavbar />
+            </header>
+            <main className={"container"}>
+                <h1>Dashboard</h1>
                 <WaitListTable/>
                 <PartsReorderTable />
             </main>
