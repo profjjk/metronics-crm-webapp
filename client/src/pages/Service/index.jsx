@@ -51,9 +51,6 @@ const ServiceHome = () => {
     if (!user) {
         return <Redirect to={'/login'} />
     }
-    // if (user.auth === 'public') {
-    //     return <Redirect to={'/'} />
-    // }
 
     // EVENT HANDLERS
     const selectionHandler = (e, job) => {
@@ -131,13 +128,13 @@ const ServiceHome = () => {
                     <SideNavbar/>
                 </header>
 
-                <main className={"container"}>
-                    <Searchbar
-                        heading={"Service Job Search"}
-                        subheading={"Search by invoice #, date, or customer"}
-                        placeholder={"Invoice #, date, or customer"}
-                        setSearch={setSearchTerm}
-                    />
+                <main className={"container"} id={"service"}>
+                    {/*<Searchbar*/}
+                    {/*    heading={"Service Job Search"}*/}
+                    {/*    subheading={"Search by invoice #, date, or customer"}*/}
+                    {/*    placeholder={"Invoice #, date, or customer"}*/}
+                    {/*    setSearch={setSearchTerm}*/}
+                    {/*/>*/}
                     <button
                         className="btn btn-success me-3 mt-5"
                         onClick={() => {

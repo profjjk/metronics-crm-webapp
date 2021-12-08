@@ -16,6 +16,7 @@ $blue: #185adb;
 }
 
 #form-login {
+  position: relative;
   display: flex;
   flex-flow: column;
   gap: 2rem;
@@ -24,6 +25,11 @@ $blue: #185adb;
     display: flex;
     flex-flow: column;
     gap: 0.5rem;
+  }
+
+  input {
+    padding-left: 45px;
+    font-size: 1.3rem;
   }
 
   button {
@@ -39,4 +45,20 @@ $blue: #185adb;
       color: white;
     }
   }
+}
+
+.icon-faUser {
+  position: absolute;
+  color: grey;
+  font-size: 15px;
+  top: 42px;
+  left: 13px;
+}
+
+.icon-faLock {
+  position: absolute;
+  color: grey;
+  font-size: 15px;
+  top: 145px;
+  left: 13px;
 }

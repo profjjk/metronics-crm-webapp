@@ -1,5 +1,7 @@
 import { Redirect } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 
 const LoginPage = () => {
@@ -28,6 +30,7 @@ const LoginPage = () => {
             <div id={"card-login"}>
                 <h1>Metronics</h1>
                 <form id={"form-login"} onSubmit={submitHandler}>
+                    <FontAwesomeIcon className={"icon-faUser"} icon={faUser}/>
                     <label>
                         Username
                         <input
@@ -38,6 +41,7 @@ const LoginPage = () => {
                         />
                     </label>
 
+                    <FontAwesomeIcon className={"icon-faLock"} icon={faLock}/>
                     <label>
                         Password
                         <input
