@@ -12,7 +12,8 @@ const requestSchema = new mongoose.Schema({
         zipcode: String
     },
     issueNotes: String,
-}, { timestamps: true })
+    converted: { type: Boolean, default: false }
+}, { timestamps: true });
 
 const Request = mongoose.model('Request', requestSchema);
 

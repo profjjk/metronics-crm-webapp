@@ -4,6 +4,7 @@ import { useQueryClient, useMutation } from "react-query";
 import { useUser } from '../../hooks';
 import {Searchbar, PartsTable, PartForm, SideNavbar} from "../../components";
 import API from '../../utils/API';
+import './style.scss';
 
 const InventoryHome = () => {
     const { user } = useUser();

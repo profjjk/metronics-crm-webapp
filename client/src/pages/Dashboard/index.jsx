@@ -1,8 +1,8 @@
 import { Redirect } from "react-router-dom";
-import { useUser } from "../../hooks";
-import { WaitListTable, PartsReorderTable } from "../../components";
+import { useUser, useMessages, useRequests } from "../../hooks";
+import { WaitListTable, PartsReorderTable, MessagesTable } from "../../components";
 import { SideNavbar } from "../../components";
-import './dashboard.scss';
+import './style.scss';
 
 const DashboardHome = () => {
     const { user } = useUser();
@@ -17,9 +17,10 @@ const DashboardHome = () => {
             <header>
                 <SideNavbar />
             </header>
-            <main className={"container"}>
+            <main className={"container"} id={"dashboard"}>
                 <h1>Dashboard</h1>
-                <WaitListTable/>
+                <MessagesTable />
+                <WaitListTable />
                 <PartsReorderTable />
             </main>
         </>

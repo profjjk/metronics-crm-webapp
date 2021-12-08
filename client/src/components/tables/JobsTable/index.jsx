@@ -47,16 +47,16 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
 
     switch (status) {
         case "loading":
-            return <h1 className="text-center my-5">Loading</h1>;
+            return <h1>Loading</h1>;
         case "error":
-            return <h4 className="text-center my-5">Error: {error.message}</h4>;
+            return <h4>Error: {error.message}</h4>;
         default:
             return (
-                <div className="mt-5">
-                    <h3 className="float-start">Service Jobs:</h3>
+                <div>
+                    <h3>Service Jobs:</h3>
 
-                    <div className="float-end">
-                        <select className="form-select" onChange={e => setStatusFilter(e.target.value)}>
+                    <div>
+                        <select onChange={e => setStatusFilter(e.target.value)}>
                             <option>Filter by status</option>
                             <option>Waiting</option>
                             <option>Scheduled</option>
@@ -65,7 +65,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                         </select>
                     </div>
 
-                    <table className="table">
+                    <table>
                         <thead>
                         <tr>
                             {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
@@ -75,7 +75,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr key={job._id}>
+                            <tr className={"table-item"} key={job._id}>
                                 <td>
                                     {job.invoiceNumber ? job.invoiceNumber : "--"}
                                 </td>
@@ -87,15 +87,15 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                                 <td>{job.type}</td>
                                 <td>{job.status}</td>
                                 <td>
-                                    <div className="float-end">
+                                    <div>
                                         <button
-                                            className="btn btn-secondary"
+                                            className={"btn-select"}
                                             data-id={job._id}
                                             onClick={e => selectionHandler(e, job)}
                                         >&#10162;
                                         </button>
                                         <button
-                                            className="btn btn-danger ms-4"
+                                            className={"btn-delete"}
                                             data-id={job._id}
                                             onClick={deleteJobHandler}
                                         >X
@@ -106,7 +106,7 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
                         ))}
                         </tbody>
                     </table>
-                    {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
+                    {isFetching ? <p>Getting information from database...</p> : ""}
                 </div>
             );
     }

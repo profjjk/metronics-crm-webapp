@@ -1,0 +1,6 @@
+#dashboard {
+  display: grid;
+  grid-template-rows: 1fr repeat(3, 4fr);
+  gap: 1rem;
+  height: 94vh;
+}

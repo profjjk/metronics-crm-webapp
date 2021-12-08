@@ -1,0 +1,14 @@
+$blue: #185adb;
+$yellow: #ffc947;
+$light: #efefef;
+$dark: #0a1931;
+$red: #d3232b;
+
+.message {
+  width: 85vw;
+  display: grid;
+  grid-template-columns: 1fr 2fr 7fr;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}

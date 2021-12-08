@@ -1,9 +1,5 @@
-// Private Pages
-export { default as LoginPage } from './LoginPage';
-export { default as DashboardHome } from './DashboardPages';
-export { default as ServiceHome } from './ServicePages';
-export { default as CustomerHome } from './CustomerPages';
-export { default as InventoryHome } from './InventoryPages';
-
-// Public Pages
-export { default as LandingPage } from './PublicPages/LandingPage';
+export { default as Login } from './Login';
+export { default as Dashboard } from './Dashboard';
+export { default as Service } from './Service';
+export { default as Customers } from './Customers';
+export { default as Inventory } from './Inventory';

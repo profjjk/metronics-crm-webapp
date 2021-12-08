@@ -8,8 +8,11 @@ $red: #d3232b;
   transition: all .3s ease-out;
 }
 
+/* LAYOUT */
 * {
   outline: none;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -35,3 +38,46 @@ header {
   padding: 20px;
   border: 1px solid black;
 }
+
+[class|=section] {
+  margin: 25px 0;
+}
+
+/* COMPONENTS */
+[class|=btn] {
+  padding: 5px 10px;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.table-item {
+  border: 1px solid $blue;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
+  &:hover {
+    cursor: pointer;
+    background: $blue;
+    color: white;
+  }
+}
+
+input {
+  padding: 0.6rem;
+  border: 0.5px solid lightgrey;
+  border-radius: 5px;
+  font-size: 1.3rem;
+}
+
+//.select {
+//  display: flex;
+//  justify-content: end;
+//  button {
+//    font-size: 1.5rem;
+//    background: $yellow;
+//    border: none;
+//    border-radius: 5px;
+//  }
+//}

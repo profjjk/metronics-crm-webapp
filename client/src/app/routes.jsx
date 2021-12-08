@@ -1,16 +1,17 @@
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {CustomerHome, DashboardHome, InventoryHome, LandingPage, LoginPage, ServiceHome} from "../pages";
+import {Customers, Dashboard, Inventory, Login, Service} from "../pages";
 
 const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route exact path='/' component={LandingPage}/>
-                <Route exact path='/login' component={LoginPage}/>
-                <Route exact path='/dashboard' component={DashboardHome}/>
-                <Route exact path='/customers' component={CustomerHome}/>
-                <Route exact path='/service' component={ServiceHome}/> 
-                <Route exact path='/inventory' component={InventoryHome}/>
+                <Route exact path='/' component={Login}/>
+                <Route exact path='/login' component={Login}/>
+                <Route exact path='/dashboard' component={Dashboard}/>
+                {/*<Route exact path='/messages' component={Messages}/>*/}
+                <Route exact path='/customers' component={Customers}/>
+                <Route exact path='/service' component={Service}/>
+                <Route exact path='/inventory' component={Inventory}/>
             </Switch>
         </Router>
     );

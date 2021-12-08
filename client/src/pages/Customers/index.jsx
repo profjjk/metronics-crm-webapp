@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useUser } from '../../hooks';
 import {Searchbar, CustomersTable, CustomerForm, SideNavbar} from "../../components";
 import API from "../../utils/API";
+import './style.scss';
 
 const CustomerHome = () => {
     const { user } = useUser();

@@ -1,0 +1,42 @@
+$blue: #185adb;
+
+#card-login {
+  margin: 15% auto;
+  padding: 2rem;
+  width: 20rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: $blue;
+  }
+}
+
+#form-login {
+  display: flex;
+  flex-flow: column;
+  gap: 2rem;
+
+  label {
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem;
+  }
+
+  button {
+    background: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    width: 50%;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 0.5px solid lightgrey;
+    &:hover {
+      background: $blue;
+      color: white;
+    }
+  }
+}

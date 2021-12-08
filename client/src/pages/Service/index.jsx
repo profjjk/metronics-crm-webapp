@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useUser } from "../../hooks";
 import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
 import API from "../../utils/API";
+import './style.scss';
 
 const ServiceHome = () => {
     const { user } = useUser();
