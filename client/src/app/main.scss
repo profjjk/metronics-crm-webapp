@@ -33,9 +33,18 @@ header {
   margin-left: 100px;
   padding: 20px;
   //border: 1px solid black;
+  h1 {
+    padding: 1rem;
+  }
 }
 [class|=section] {
-  margin: 25px auto;
+  margin: 1rem auto;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $blue;
 }
 
 /* COMPONENTS */
@@ -64,6 +73,11 @@ tr {
   display: flex;
   justify-content: space-between;
   padding: 5px 10px;
+}
+thead, tbody {
+  display: grid;
+  grid-template-columns: auto;
+  width: 85vw;
 }
 .table-item {
   border: 1px solid $blue;
@@ -118,4 +132,9 @@ input, select {
 }
 .blue {
   color: $blue;
+}
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: grey;
 }

@@ -1,5 +1,6 @@
 import { useParts } from "../../../hooks";
 import {useEffect, useState} from "react";
+import './style.scss';
 
 const PartsReorderTable = () => {
     const { status, data, error } = useParts(true);
@@ -17,34 +18,29 @@ const PartsReorderTable = () => {
             return <h4 className="text-center my-5">Error: {error.message()}</h4>;
         default:
             return (
-                <div className="my-5">
-                    <h4 className="pt-5"><strong>Parts that need to be re-ordered</strong></h4>
-                    <table className="table">
+                <section className="section-restock">
+                    <div className="section-header">
+                        <h2>Restock Inventory</h2>
+                    </div>
+                    <table>
                         <thead>
-                        <tr>
-                            {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
-                            <td />
-                        </tr>
+                            <tr>
+                                {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
+                            </tr>
                         </thead>
+
                         <tbody>
                         {partList.map(part => (
-                            <tr key={part._id}>
+                            <tr className={"table-item"} key={part._id}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
                                 <td>{part.stock}</td>
-                                <td>
-                                    <button
-                                        className={"btn btn-success"}
-                                        data-id={part._id}
-                                    >&#10162;
-                                    </button>
-                                </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
-                    {partList.length < 1 ? <p className={"text-center text-muted"}>** Inventory is fully stocked **</p> : <></>}
-                </div>
+                    {partList.length < 1 ? <p className={"empty"}>** Inventory is fully stocked **</p> : <></>}
+                </section>
             )
     }
 }

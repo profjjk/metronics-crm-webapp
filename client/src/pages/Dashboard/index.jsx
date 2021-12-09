@@ -1,6 +1,6 @@
 import { Redirect } from "react-router-dom";
-import { useUser, useMessages, useRequests } from "../../hooks";
-import { WaitListTable, PartsReorderTable, MessagesTable } from "../../components";
+import { useUser } from "../../hooks";
+import { WaitListTable, RestockTable, MessagesTable } from "../../components";
 import { SideNavbar } from "../../components";
 import './style.scss';
 
@@ -21,7 +21,7 @@ const DashboardHome = () => {
                 <h1>Dashboard</h1>
                 <MessagesTable />
                 <WaitListTable />
-                <PartsReorderTable />
+                <RestockTable />
             </main>
         </>
     )

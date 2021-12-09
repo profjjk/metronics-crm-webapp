@@ -3,7 +3,6 @@ import { useJobs } from "../../../hooks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import dayjs from "dayjs";
-import './style.scss';
 
 const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
     const { status, data, error, isFetching } = useJobs();
