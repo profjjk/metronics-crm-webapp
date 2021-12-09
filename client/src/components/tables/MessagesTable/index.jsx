@@ -34,9 +34,9 @@ const MessagesTable = () => {
                 return (
                     <table className={"section-messages"}>
                         <thead>
-                        <tr>
-                            <th>Messages</th>
-                        </tr>
+                            <tr>
+                                <th>Messages</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {msgList.map(msg => (

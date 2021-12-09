@@ -14,17 +14,14 @@ $red: #d3232b;
   margin: 0;
   padding: 0;
 }
-
 html {
   scroll-behavior: smooth;
 }
-
 body {
   background: $light;
   font-family: 'Montserrat', sans-serif;
   color: $dark;
 }
-
 header {
   position: fixed;
   left: 0;
@@ -32,15 +29,13 @@ header {
   width: 100px;
   height: 100%;
 }
-
 .container {
   margin-left: 100px;
   padding: 20px;
-  border: 1px solid black;
+  //border: 1px solid black;
 }
-
 [class|=section] {
-  margin: 25px 0;
+  margin: 25px auto;
 }
 
 /* COMPONENTS */
@@ -53,11 +48,28 @@ header {
   }
 }
 
+// TABLES
+table {
+  border-collapse: collapse;
+}
+td, th {
+  padding: 0.3rem;
+  width: 100%;
+  text-align: left;
+}
+th {
+  font-size: 1.2rem;
+}
+tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
 .table-item {
   border: 1px solid $blue;
   border-radius: 5px;
-  padding: 5px 10px;
   margin: 5px 0;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.2);
   &:hover {
     cursor: pointer;
     background: $blue;
@@ -65,19 +77,45 @@ header {
   }
 }
 
-input {
+// FORMS
+input, select {
   padding: 0.6rem;
   border: 0.5px solid lightgrey;
   border-radius: 5px;
 }
 
-//.select {
-//  display: flex;
-//  justify-content: end;
-//  button {
-//    font-size: 1.5rem;
-//    background: $yellow;
-//    border: none;
-//    border-radius: 5px;
-//  }
-//}
+// COMPONENTS
+.dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 12rem;
+  .faChevronDown {
+    position: absolute;
+    right: 12px;
+    top: 11px;
+  }
+  select {
+    appearance: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    padding-right: 1.8rem;
+  }
+}
+
+// TEXT STYLES
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.red {
+  color: $red;
+}
+.blue {
+  color: $blue;
+}

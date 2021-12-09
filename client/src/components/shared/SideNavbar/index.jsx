@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserFriends, faTools, faWarehouse, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import './navbar.scss';
+import './style.scss';
 
 const SideNavbar = () => {
     const { user } = useUser();

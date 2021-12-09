@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useJobs } from "../../../hooks";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import dayjs from "dayjs";
+import './style.scss';
 
 const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler, setStatusFilter}) => {
     const { status, data, error, isFetching } = useJobs();
     const [jobList, setJobList] = useState([]);
-    const headers = ["Invoice #", "Service Date", "Company Name", "City", "Type", "Status"];
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data);
@@ -52,62 +54,46 @@ const JobsTable = ({searchTerm, statusFilter, selectionHandler, deleteJobHandler
             return <h4>Error: {error.message}</h4>;
         default:
             return (
-                <div>
-                    <h3>Service Jobs:</h3>
-
-                    <div>
-                        <select onChange={e => setStatusFilter(e.target.value)}>
-                            <option>Filter by status</option>
-                            <option>Waiting</option>
-                            <option>Scheduled</option>
-                            <option>Completed</option>
-                            <option>Canceled</option>
-                        </select>
+                <section id={"jobsTable"}>
+                    <div className={"section-header"}>
+                        <h2>Service Jobs</h2>
+                        <div className={"dropdown"}>
+                            <FontAwesomeIcon className={"faChevronDown"} icon={faChevronDown}/>
+                            <select onChange={e => setStatusFilter(e.target.value)}>
+                                <option>Filter by status</option>
+                                <option>Waiting</option>
+                                <option>Scheduled</option>
+                                <option>Completed</option>
+                                <option>Canceled</option>
+                            </select>
+                        </div>
                     </div>
 
                     <table>
                         <thead>
-                        <tr>
-                            {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
-                            <td/>
-                        </tr>
+                            <tr>
+                                <th>Service Date</th>
+                                <th>Company Name</th>
+                                <th>City</th>
+                                <th className={"text-center"}>Invoice #</th>
+                                <th className={"text-center"}>Status</th>
+                            </tr>
                         </thead>
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id}>
-                                <td>
-                                    {job.invoiceNumber ? job.invoiceNumber : "--"}
-                                </td>
-                                <td>
-                                    {job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}
-                                </td>
+                            <tr className={"table-item"} key={job._id} onClick={e => selectionHandler(e, job)}>
+                                <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>
-                                <td>{job.type}</td>
-                                <td>{job.status}</td>
-                                <td>
-                                    <div>
-                                        <button
-                                            className={"btn-select"}
-                                            data-id={job._id}
-                                            onClick={e => selectionHandler(e, job)}
-                                        >&#10162;
-                                        </button>
-                                        <button
-                                            className={"btn-delete"}
-                                            data-id={job._id}
-                                            onClick={deleteJobHandler}
-                                        >X
-                                        </button>
-                                    </div>
-                                </td>
+                                <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
+                                {job.status === 'Waiting' ? <td className={"text-center red"}>{job.status}</td> : <td className={"text-center"}>{job.status}</td>}
                             </tr>
                         ))}
                         </tbody>
                     </table>
                     {isFetching ? <p>Getting information from database...</p> : ""}
-                </div>
+                </section>
             );
     }
 }

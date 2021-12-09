@@ -1,0 +1,19 @@
+$blue: #185adb;
+$yellow: #ffc947;
+$light: #efefef;
+$dark: #0a1931;
+$red: #d3232b;
+
+#jobsTable {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  thead, tbody {
+    display: grid;
+    grid-template-columns: auto;
+    width: 85vw;
+  }
+}
