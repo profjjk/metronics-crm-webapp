@@ -1,25 +1,26 @@
-import { useRef } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import './style.scss';
 
-const Searchbar = ({ heading, subheading, placeholder, setSearch }) => {
-  const search = useRef();
+const Searchbar = ({ placeholder, setSearch }) => {
 
   const searchJobs = e => {
     e.preventDefault();
-    setSearch(search.current.value);
+    setSearch(e.currentTarget.value);
   }
 
-  return (
-    <div id="search-bar">
-      <h5 className="text-center">{heading}</h5>
-      <p className="text-center">{subheading}</p>
-      <form onChange={searchJobs}>
-        <input className="form-control text-center w-50 mx-auto" 
-          type="text" 
-          placeholder={placeholder}
-          ref={search} />
-      </form>
-    </div>
-  )
+    return (
+        <div className={"searchbar"}>
+            <FontAwesomeIcon className={"faSearch"} icon={faSearch} />
+            <input
+                className={"search"}
+                name={"search"}
+                onChange={searchJobs}
+                type={"text"}
+                placeholder={placeholder}
+            />
+        </div>
+    )
 }
 
 export default Searchbar;
