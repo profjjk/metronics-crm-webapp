@@ -1,0 +1,27 @@
+$blue: #185adb;
+
+.searchbar {
+  position: relative;
+  display: flex;
+
+  div {
+    margin-left: 0.8rem;
+    align-self: center;
+    color: $blue;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.faSearch {
+  position: absolute;
+  top: 11px;
+  left: 10px;
+}
+
+.search {
+  min-width: 12rem;
+  padding: 0.6rem 0.5rem 0.5rem 2.2rem;
+  font-size: 1rem;
+}

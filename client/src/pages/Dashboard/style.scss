@@ -1,5 +1,4 @@
 #dashboard {
-  display: grid;
-  grid-template-rows: 1fr repeat(3, 4fr);
-  height: 94vh;
+  display: flex;
+  flex-flow: column wrap;
 }

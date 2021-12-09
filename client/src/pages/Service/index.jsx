@@ -11,15 +11,13 @@ const ServiceHome = () => {
     const [showForm, setShowForm] = useState(false);
     const [found, setFound] = useState(false);
     const [edit, setEdit] = useState(false);
+    const [viewRequests, setViewRequests] = useState(false);
 
     const [job, setJob] = useState();
     const [parts, setParts] = useState([]);
     const [customer, setCustomer] = useState();
 
-    const [searchTerm, setSearchTerm] = useState();
-    const [statusFilter, setStatusFilter] = useState();
-
-    // MUTATIONS
+    // DATA MUTATIONS
     const queryClient = useQueryClient();
     const createJob = useMutation(job => API.createJob(job), {
         onSuccess: () => {
@@ -68,11 +66,11 @@ const ServiceHome = () => {
             setParts([])
             deleteJob.mutate(e.target.dataset.id)
         }
-    }
+    };
     const removePartHandler = e => {
         e.preventDefault();
         setParts(parts.filter(part => part.partNumber !== e.target.dataset.id));
-    }
+    };
     const submitHandler = async e => {
         try {
             e.preventDefault();
@@ -120,6 +118,28 @@ const ServiceHome = () => {
         } catch(err) { console.error(err) }
     };
 
+    const Header = () => {
+        return (
+            <div className={"main-header"}>
+                <h1 onClick={() => window.location.reload()}>Service Jobs</h1>
+
+                <div className={"page-menu"}>
+                    <p className={"btn-pageMenu"} onClick={() => {
+                        setViewRequests(false);
+                    }}>View All</p>
+
+                    <p className={"btn-pageMenu"} onClick={() => {
+                        setViewRequests(true);
+                    }}>View Pending</p>
+
+                    <p className={"btn-pageMenu"} onClick={() => {
+                        setEdit(false);
+                        setShowForm(true);
+                    }}>Create New</p>
+                </div>
+            </div>
+        )
+    }
 
     if (!showForm) {
         return (
@@ -128,27 +148,14 @@ const ServiceHome = () => {
                     <SideNavbar/>
                 </header>
 
-                <main className={"container"} id={"service"}>
-                    {/*<Searchbar*/}
-                    {/*    heading={"Service Job Search"}*/}
-                    {/*    subheading={"Search by invoice #, date, or customer"}*/}
-                    {/*    placeholder={"Invoice #, date, or customer"}*/}
-                    {/*    setSearch={setSearchTerm}*/}
-                    {/*/>*/}
-                    <button
-                        className="btn btn-success me-3 mt-5"
-                        onClick={() => {
-                            setEdit(false);
-                            setShowForm(true);
-                        }}
-                    >Create New Service Job
-                    </button>
+                <main className={"container"}>
+                    <Header />
+
                     <JobsTable
-                        searchTerm={searchTerm}
-                        statusFilter={statusFilter}
-                        setStatusFilter={setStatusFilter}
                         selectionHandler={selectionHandler}
                         deleteJobHandler={deleteJobHandler}
+                        viewRequests={viewRequests}
+                        setViewRequests={setViewRequests}
                     />
                 </main>
             </>
@@ -162,6 +169,8 @@ const ServiceHome = () => {
                 </header>
 
                 <main className={"container"}>
+                    <Header new={true} pending={false}/>
+
                     {!edit ? <AutoCompleteSearch
                         setCustomer={setCustomer}
                         setFound={setFound}
