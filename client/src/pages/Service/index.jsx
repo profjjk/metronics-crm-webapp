@@ -81,7 +81,7 @@ const ServiceHome = () => {
                 serviceDate: formData.serviceDate,
                 invoiceNumber: formData.invoiceNumber.trim(),
                 issueNotes: formData.issueNotes.trim(),
-                repairNotes: formData.repairNotes.trim(),
+                serviceNotes: formData.serviceNotes.trim(),
                 totalBill: parseFloat(formData.totalBill.trim()),
                 isPaid: formData.isPaid === "on",
                 parts: parts
@@ -126,11 +126,13 @@ const ServiceHome = () => {
                 <div className={"page-menu"}>
                     <p className={"btn-pageMenu"} onClick={() => {
                         setViewRequests(false);
+                        setShowForm(false);
                     }}>View All</p>
 
                     <p className={"btn-pageMenu"} onClick={() => {
+                        setShowForm(false);
                         setViewRequests(true);
-                    }}>View Pending</p>
+                    }}>View Online Requests</p>
 
                     <p className={"btn-pageMenu"} onClick={() => {
                         setEdit(false);
@@ -169,7 +171,7 @@ const ServiceHome = () => {
                 </header>
 
                 <main className={"container"}>
-                    <Header new={true} pending={false}/>
+                    <Header />
 
                     {!edit ? <AutoCompleteSearch
                         setCustomer={setCustomer}

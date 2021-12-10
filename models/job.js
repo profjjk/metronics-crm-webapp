@@ -5,13 +5,12 @@ const jobSchema = new mongoose.Schema({
     serviceDate: { type: String, index: true },
     invoiceNumber: { type: String, index: true },
     issueNotes: String,
-    repairNotes: String,
-    status: { type: String, default: 'Waiting' },
-    type: { type: String, default: 'Unknown' },
+    serviceNotes: String,
+    status: { type: String, default: 'Pending' },
     parts: Array,
     totalBill: { type: Number, default: 0 },
     isPaid: { type: Boolean, default: false }
-}, { timestamps: true })
+}, { timestamps: true });
 
 const Job = mongoose.model('Job', jobSchema);
 
