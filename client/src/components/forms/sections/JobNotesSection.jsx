@@ -7,11 +7,11 @@ const JobNotesSection = ({ job }) => {
                 name="issueNotes"
                 defaultValue={job ? job.issueNotes : ""}
             />
-            <h6 className="mt-3">Repair Notes</h6>
+            <h6 className="mt-3">Service Notes</h6>
             <textarea
                 className="form-control"
-                name="repairNotes"
-                defaultValue={job ? job.repairNotes : ""}
+                name="serviceNotes"
+                defaultValue={job ? job.serviceNotes : ""}
             />
         </div>
     )
