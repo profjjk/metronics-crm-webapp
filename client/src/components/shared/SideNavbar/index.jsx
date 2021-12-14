@@ -13,12 +13,9 @@ const SideNavbar = () => {
     const history = useHistory();
 
     const logOut = () => {
-        if (isLoggedIn) {
-            logout();
-            setIsLoggedIn(false);
-            history.push('/login')
-            window.location.reload();
-        }
+        logout();
+        history.push('/login')
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -45,51 +42,50 @@ const SideNavbar = () => {
     })
 
     return (
-        <nav className="navbar">
+        <nav className={"navbar"}>
             <ul>
-                <li className="nav-item">
+                <li className={"nav-item"}>
                     <Link to={'/dashboard'}>
-                        <FontAwesomeIcon icon={faHome} data-tip data-for='dashboard' />
-                        <ReactTooltip id={"dashboard"} effect={"solid"}>
+                        <FontAwesomeIcon icon={faHome} data-for={'dashboard'} />
+                        <ReactTooltip id={"dashboard"} effect={"solid"} place={"right"}>
                             <span>Dashboard</span>
                         </ReactTooltip>
                     </Link>
                 </li>
-                <li className="nav-item">
+                <li className={"nav-item"}>
                     <Link to={'/customers'}>
-                        <FontAwesomeIcon icon={faUserFriends} data-tip data-for='customers' />
-                        <ReactTooltip id={"customers"} effect={"solid"}>
+                        <FontAwesomeIcon icon={faUserFriends} data-for={'customers'} />
+                        <ReactTooltip id={"customers"} effect={"solid"} place={"right"}>
                             <span>Customers</span>
                         </ReactTooltip>
                     </Link>
                 </li>
-                <li className="nav-item">
+                <li className={"nav-item"}>
                     <Link to={'/service'}>
-                        <FontAwesomeIcon icon={faTools} data-tip data-for='service' />
-                        <ReactTooltip id={"service"} effect={"solid"}>
+                        <FontAwesomeIcon icon={faTools} data-for={'service'} />
+                        <ReactTooltip id={"service"} effect={"solid"} place={"right"}>
                             <span>Service Jobs</span>
                         </ReactTooltip>
                     </Link>
                 </li>
-                <li className="nav-item">
+                <li className={"nav-item"}>
                     <Link to={'/inventory'} >
-                        <FontAwesomeIcon icon={faWarehouse} data-tip data-for='inventory' />
-                        <ReactTooltip id={"inventory"} effect={"solid"}>
+                        <FontAwesomeIcon icon={faWarehouse} data-for={'inventory'}/>
+                        <ReactTooltip id={"inventory"} effect={"solid"} place={"right"}>
                             <span>Inventory</span>
                         </ReactTooltip>
                     </Link>
                 </li>
             </ul>
-            {isLoggedIn ? (
-                <button
-                    className={"btn-signOut"}
-                    onClick={logOut}>
-                    <FontAwesomeIcon icon={faSignOutAlt} data-tip data-for='sign-out'/>
-                    <ReactTooltip id={"sign-out"} effect={"solid"} type={"error"}>
-                        <span>Sign Out</span>
-                    </ReactTooltip>
-                </button>
-            ) : (<></>)}
+
+            <button
+                className={"signOut"}
+                onClick={logOut}>
+                <FontAwesomeIcon icon={faSignOutAlt} data-for={'sign-out'}/>
+                <ReactTooltip id={"sign-out"} effect={"solid"} place={"top"}>
+                    <span>Sign Out</span>
+                </ReactTooltip>
+            </button>
         </nav>
     )
 }

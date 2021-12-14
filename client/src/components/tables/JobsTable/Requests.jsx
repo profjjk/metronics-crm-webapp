@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
-import {useRequests} from '../../../hooks';
+import { useEffect, useState } from 'react';
+import { useRequests } from '../../../hooks';
 import { Searchbar } from '../../index';
 import dayjs from 'dayjs';
 
-const Requests = ({ selectionHandler }) => {
+const Requests = ({ selectJob, setSubmissionType }) => {
     const { status, data, error, isFetching } = useRequests();
     const [jobList, setJobList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +56,7 @@ const Requests = ({ selectionHandler }) => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={e => selectionHandler(e, job)}>
+                            <tr className={"table-item"} key={job._id} onClick={() => selectJob(job)}>
                                 <td>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}, {job.customer.address.state}</td>
@@ -70,7 +70,6 @@ const Requests = ({ selectionHandler }) => {
                 </section>
             )
     }
-
 }
 
 export default Requests;

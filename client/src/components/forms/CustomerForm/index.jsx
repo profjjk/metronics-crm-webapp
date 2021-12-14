@@ -1,10 +1,8 @@
-import { CustomerSection, SaveButton } from "../sections";
-
 const CustomerForm = ({ customer, submitHandler, setShowForm }) => {
     return (
         <form className="p-5" onSubmit={submitHandler}>
             <h1 className="text-primary text-center mb-5">Customer Form</h1>
-            <CustomerSection customer={customer} />
+            {/*<CustomerSection customer={customer} />*/}
             <div className={"px-3"}>
                 <textarea
                     className="form-control"
@@ -13,7 +11,7 @@ const CustomerForm = ({ customer, submitHandler, setShowForm }) => {
                     defaultValue={customer ? customer.notes : ""}>
                 </textarea>
             </div>
-            <SaveButton setShowForm={setShowForm} />
+            {/*<SaveButton setShowForm={setShowForm} />*/}
         </form>
     );
 }

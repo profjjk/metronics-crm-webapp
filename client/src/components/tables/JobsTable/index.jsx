@@ -1,14 +1,19 @@
 import Jobs from './Jobs';
 import Requests from './Requests';
+import Unpaid from './Unpaid';
 
-const JobsTable = ({ selectionHandler, viewRequests }) => {
+const JobsTable = ({ selectJob, setSubmissionType, viewRequests, viewUnpaid }) => {
     if (viewRequests) {
         return (
-            <Requests selectionHandler={selectionHandler} />
+            <Requests selectJob={selectJob} setSubmissionType={setSubmissionType} />
+        )
+    } else if (viewUnpaid) {
+        return (
+            <Unpaid selectJob={selectJob} setSubmissionType={setSubmissionType} />
         )
     } else {
         return (
-            <Jobs selectionHandler={selectionHandler} />
+            <Jobs selectJob={selectJob} setSubmissionType={setSubmissionType} />
         )
     }
 }

@@ -23,7 +23,7 @@ $red: #d3232b;
     display: flex;
     flex-flow: column;
     align-items: center;
-    gap: 80px;
+    gap: 6rem;
   }
 }
 
@@ -41,7 +41,7 @@ $red: #d3232b;
   }
 }
 
-.btn-signOut {
+.signOut {
   margin: 25px auto;
   padding: 0 5px;
   background: none;

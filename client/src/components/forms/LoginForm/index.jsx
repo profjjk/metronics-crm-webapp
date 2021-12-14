@@ -13,7 +13,7 @@ const LoginForm = ({ submitHandler }) => {
                 name={"password"}
                 placeholder={"password"}
             />
-            <button className={"btn btn-primary m-3 form-btn"} type={"submit"}>
+            <button className={"btn"} type={"submit"}>
                 Login
             </button>
         </form>

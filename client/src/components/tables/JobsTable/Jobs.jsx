@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 
-const Jobs = ({ selectionHandler }) => {
+const Jobs = ({ selectJob, setSubmissionType }) => {
     const { status, data, error, isFetching } = useJobs();
     const [jobList, setJobList] = useState([]);
     const [statusFilter, setStatusFilter] = useState("");
@@ -87,7 +87,10 @@ const Jobs = ({ selectionHandler }) => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={e => selectionHandler(e, job)}>
+                            <tr className={"table-item"} key={job._id} onClick={e => {
+                                setSubmissionType("edit");
+                                selectJob(job);
+                            }}>
                                 <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>

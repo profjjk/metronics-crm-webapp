@@ -62,9 +62,19 @@ header {
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
+  background: $blue;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
   &:hover {
     cursor: pointer;
   }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 // TABLES
@@ -107,25 +117,75 @@ input, select {
   padding: 0.6rem;
   border: 0.5px solid lightgrey;
   border-radius: 5px;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+label {
+  font-weight: 600;
+}
+
+textarea {
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.6rem;
+  font-size: 1rem;
 }
 
 // COMPONENTS
-.dropdown {
-  position: relative;
+.input-sm, .dropdown {
   width: 100%;
   max-width: 12rem;
+
+}
+
+.dropdown {
+  position: relative;
   .faChevronDown {
     position: absolute;
     right: 12px;
-    top: 11px;
+    top: 14px;
   }
   select {
     appearance: none;
     cursor: pointer;
     width: 100%;
-    font-size: 1rem;
     padding-right: 1.8rem;
   }
+}
+
+.invoiceInput {
+  position: relative;
+  .faHashtag {
+    position: absolute;
+    top: 13px;
+    left: 9px;
+  }
+  input {
+    appearance: none;
+    padding-left: 30px;
+  }
+}
+
+.dollarInput {
+  position: relative;
+  .faDollarSign {
+    position: absolute;
+    top: 13px;
+    left: 11px;
+  }
+  input {
+    padding-left: 25px;
+  }
+}
+
+.button-area {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-form {
+  width: 6rem;
+  height: 2.5rem;
 }
 
 // TEXT STYLES

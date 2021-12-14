@@ -9,7 +9,7 @@ const App = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <Routes />
-            {/*<ReactQueryDevtools/>*/}
+            <ReactQueryDevtools/>
         </QueryClientProvider>
     );
 };

@@ -2,15 +2,20 @@ import { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useUser } from "../../hooks";
-import {JobsTable, Searchbar, ServiceForm, AutoCompleteSearch, SideNavbar} from "../../components";
+import { JobsTable, ServiceForm, SideNavbar } from "../../components";
 import API from "../../utils/API";
 import './style.scss';
 
+// TODO:
+//  - BUG: Query cache not refetching from database after saving new job. Invalidating queries not working? Only refreshes on page reload.
+//  - Need a mutation to delete Requests by id when converting them to saved jobs.
+
 const ServiceHome = () => {
     const { user } = useUser();
+
     const [showForm, setShowForm] = useState(false);
-    const [found, setFound] = useState(false);
-    const [edit, setEdit] = useState(false);
+
+    const [submissionType, setSubmissionType] = useState('new');
     const [viewRequests, setViewRequests] = useState(false);
 
     const [job, setJob] = useState();
@@ -51,33 +56,34 @@ const ServiceHome = () => {
     }
 
     // EVENT HANDLERS
-    const selectionHandler = (e, job) => {
-        e.preventDefault();
+    const selectJob = job => {
         setJob(job);
         setCustomer(job.customer)
         setParts(job.parts)
-        setEdit(true)
         setShowForm(true);
     };
-    const deleteJobHandler = e => {
-        e.preventDefault();
+    const removeJob = id => {
         let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
         if (answer) {
             setParts([])
-            deleteJob.mutate(e.target.dataset.id)
+            deleteJob.mutate(id)
         }
     };
-    const removePartHandler = e => {
+    const removePart = e => {
         e.preventDefault();
         setParts(parts.filter(part => part.partNumber !== e.target.dataset.id));
     };
-    const submitHandler = async e => {
+    const testSubmit = e => {
+        e.preventDefault();
+        const formData = Object.fromEntries(new FormData(e.target));
+        console.log(formData)
+    }
+    const submit = async e => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
             const jobData = {
                 status: formData.status,
-                type: formData.type,
                 serviceDate: formData.serviceDate,
                 invoiceNumber: formData.invoiceNumber.trim(),
                 issueNotes: formData.issueNotes.trim(),
@@ -98,23 +104,23 @@ const ServiceHome = () => {
                     zipcode: formData.zipcode.trim()
                 },
             }
-            if (found) {
+            if (submissionType === 'add') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 createJob.mutate({ customer: customer._id, ...jobData });
-                setFound(false);
                 setShowForm(false);
                 return
             }
-            if (edit) {
+            if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 editJob.mutate({ id: job._id, data: jobData });
-                setEdit(false);
                 setShowForm(false);
                 return
             }
-            const newCustomer = await createCustomer.mutateAsync(customerData);
-            createJob.mutate({ customer: newCustomer.data._id, ...jobData });
-            setShowForm(false);
+            if (submissionType === 'new') {
+                const newCustomer = await createCustomer.mutateAsync(customerData);
+                createJob.mutate({ customer: newCustomer.data._id, ...jobData });
+                setShowForm(false);
+            }
         } catch(err) { console.error(err) }
     };
 
@@ -123,24 +129,27 @@ const ServiceHome = () => {
             <div className={"main-header"}>
                 <h1 onClick={() => window.location.reload()}>Service Jobs</h1>
 
-                <div className={"page-menu"}>
-                    <p className={"btn-pageMenu"} onClick={() => {
+                <div className={"button-area"}>
+                    <p className={"btn"} onClick={() => {
                         setViewRequests(false);
                         setShowForm(false);
                     }}>View All</p>
 
-                    <p className={"btn-pageMenu"} onClick={() => {
+                    <p className={"btn"} onClick={() => {
                         setShowForm(false);
                         setViewRequests(true);
                     }}>View Online Requests</p>
 
-                    <p className={"btn-pageMenu"} onClick={() => {
+                    <p className={"btn"} onClick={() => {
                         setShowForm(false);
                         setViewRequests(false);
                     }}>View Unpaid</p>
 
-                    <p className={"btn-pageMenu"} onClick={() => {
-                        setEdit(false);
+                    <p className={"btn"} onClick={() => {
+                        setSubmissionType("new")
+                        setViewRequests(false)
+                        setJob(null);
+                        setCustomer(null);
                         setShowForm(true);
                     }}>Create New</p>
                 </div>
@@ -159,10 +168,9 @@ const ServiceHome = () => {
                     <Header />
 
                     <JobsTable
-                        selectionHandler={selectionHandler}
-                        deleteJobHandler={deleteJobHandler}
+                        selectJob={selectJob}
                         viewRequests={viewRequests}
-                        setViewRequests={setViewRequests}
+                        setSubmissionType={setSubmissionType}
                     />
                 </main>
             </>
@@ -178,21 +186,19 @@ const ServiceHome = () => {
                 <main className={"container"}>
                     <Header />
 
-                    <ServiceForm setShowForm={setShowForm} />
-
-                    {/*{!edit ? <AutoCompleteSearch*/}
-                    {/*    setCustomer={setCustomer}*/}
-                    {/*    setFound={setFound}*/}
-                    {/*/> : <></>}*/}
-                    {/*<ServiceForm*/}
-                    {/*    submitHandler={submitHandler}*/}
-                    {/*    removePartHandler={removePartHandler}*/}
-                    {/*    customer={edit || found ? customer : null}*/}
-                    {/*    parts={parts.length > 0 ? parts : []}*/}
-                    {/*    job={edit ? job : null}*/}
-                    {/*    setParts={setParts}*/}
-                    {/*    setShowForm={setShowForm}*/}
-                    {/*/>*/}
+                    <ServiceForm
+                        submit={submit}
+                        setShowForm={setShowForm}
+                        submissionType={submissionType}
+                        setSubmissionType={setSubmissionType}
+                        viewRequests={viewRequests}
+                        setViewRequests={setViewRequests}
+                        job={job}
+                        setJob={setJob}
+                        customer={customer}
+                        setCustomer={setCustomer}
+                        removeJob={removeJob}
+                    />
                 </main>
             </>
         )
