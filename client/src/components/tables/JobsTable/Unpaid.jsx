@@ -1,15 +1,17 @@
+import { useJobs } from '../../../hooks';
 import { useEffect, useState } from 'react';
-import { useRequests } from '../../../hooks';
 import { Searchbar } from '../../index';
 import dayjs from 'dayjs';
 
-const Requests = ({ selectJob, setSubmissionType }) => {
-    const { status, data, error, isFetching } = useRequests();
+const Unpaid = ({ setSubmissionType, selectJob }) => {
+    const { status, data, error, isFetching } = useJobs();
     const [jobList, setJobList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        if (status === 'success') setJobList(data.data);
+        if (status === 'success') {
+            setJobList(data.data.filter(job => !job.isPaid))
+        }
     }, [status, data]);
 
     // Filter by search term
@@ -46,25 +48,23 @@ const Requests = ({ selectJob, setSubmissionType }) => {
                     <table>
                         <thead>
                         <tr>
-                            <th>Date Submitted</th>
+                            <th>Service Date</th>
                             <th>Business Name</th>
-                            <th>City</th>
-                            <th>Contact Name</th>
-                            <th>Phone #</th>
+                            <th className={"text-center"}>Invoice #</th>
+                            <th className={"text-center"}>Total Bill</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         {jobList.map(job => (
                             <tr className={"table-item"} key={job._id} onClick={() => {
-                                setSubmissionType("new");
-                                selectJob(job)
+                                setSubmissionType("edit");
+                                selectJob(job);
                             }}>
-                                <td>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
+                                <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
-                                <td>{job.customer.address.city}, {job.customer.address.state}</td>
-                                <td>{job.customer.contactName}</td>
-                                <td>{job.customer.phone}</td>
+                                <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
+                                <td className={"text-center"}>$ {job.totalBill}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -75,4 +75,4 @@ const Requests = ({ selectJob, setSubmissionType }) => {
     }
 }
 
-export default Requests;
+export default Unpaid;

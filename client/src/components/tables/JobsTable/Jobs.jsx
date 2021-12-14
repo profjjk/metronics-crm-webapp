@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks';
 import { Searchbar } from '../../index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 
-const Jobs = ({ selectionHandler }) => {
+const Jobs = ({ selectJob, setSubmissionType }) => {
     const { status, data, error, isFetching } = useJobs();
     const [jobList, setJobList] = useState([]);
     const [statusFilter, setStatusFilter] = useState("");
@@ -13,7 +13,7 @@ const Jobs = ({ selectionHandler }) => {
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data);
-    }, [status]);
+    }, [status, data]);
 
     // Filter by status
     useEffect(() => {
@@ -34,15 +34,17 @@ const Jobs = ({ selectionHandler }) => {
 
     // Filter by search term
     useEffect(() => {
-        if (searchTerm !== "") {
-            setJobList(
-                jobList.filter(job => {
-                    return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||
-                        (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
-                })
-            );
+        if (status === 'success') {
+            if (searchTerm !== "") {
+                setJobList(
+                    data.data.filter(job => {
+                        return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                            (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||
+                            (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
+                    })
+                );
+            }
         }
     }, [searchTerm]);
 
@@ -66,7 +68,7 @@ const Jobs = ({ selectionHandler }) => {
                             <FontAwesomeIcon className={"faChevronDown"} icon={faChevronDown}/>
                             <select onChange={e => setStatusFilter(e.target.value)}>
                                 <option>Filter by status</option>
-                                <option>Waiting</option>
+                                <option>Pending</option>
                                 <option>Scheduled</option>
                                 <option>Completed</option>
                                 <option>Canceled</option>
@@ -87,7 +89,10 @@ const Jobs = ({ selectionHandler }) => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={e => selectionHandler(e, job)}>
+                            <tr className={"table-item"} key={job._id} onClick={() => {
+                                setSubmissionType("edit");
+                                selectJob(job);
+                            }}>
                                 <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>
@@ -101,7 +106,6 @@ const Jobs = ({ selectionHandler }) => {
                 </section>
             )
     }
-
 }
 
 export default Jobs;

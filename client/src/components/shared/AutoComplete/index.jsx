@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useCustomers } from "../../../hooks";
-import './style.css';
+import './style.scss';
 
-const AutoCompleteSearch = ({ setCustomer, setFound }) => {
+const AutoComplete = ({ setCustomer, setSubmissionType }) => {
   const { data } = useCustomers()
   const [activeSuggestion, setActiveSuggestion] = useState(0); // index of a selected suggestion
   const [filteredSuggestions, setFilteredSuggestions] = useState([]); // an array of suggestions matching user input
@@ -10,12 +10,9 @@ const AutoCompleteSearch = ({ setCustomer, setFound }) => {
   const [userInput, setUserInput] = useState("");
 
   const onChange = e => {
-    const suggestions = data.data.map(customer => customer.businessName.toLowerCase());
+    const suggestions = data.data;
     const userInput = e.target.value;
-    const filtered = suggestions.filter(
-      suggestion => suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    );
-
+    const filtered = suggestions.filter(suggestion => suggestion.businessName.toLowerCase().indexOf(userInput.toLowerCase()) > -1);
     setActiveSuggestion(0);
     setFilteredSuggestions(filtered);
     setShowSuggestions(true);
@@ -23,12 +20,12 @@ const AutoCompleteSearch = ({ setCustomer, setFound }) => {
   }
 
   const onClick = e => {
+    let customer = data.data.filter(customer => customer._id === e.target.dataset.id);
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
-    setUserInput(e.target.innerText);
-    setFound(true);
-    let customer = data.data.filter(customer => customer.businessName.toLowerCase() === e.target.innerText.toLowerCase());
+    setUserInput(customer[0].businessName)
+    setSubmissionType("add");
     setCustomer(customer[0]);
   }
 
@@ -55,7 +52,7 @@ const AutoCompleteSearch = ({ setCustomer, setFound }) => {
   if (showSuggestions && userInput) {
     if (filteredSuggestions.length) {
       suggestionsListComponent = (
-        <ul className="suggestions mx-auto">
+        <ul className="suggestions">
           {filteredSuggestions.map((suggestion, index) => {
             let className;
 
@@ -64,37 +61,30 @@ const AutoCompleteSearch = ({ setCustomer, setFound }) => {
               className = "suggestion-active";
             }
             return (
-              <li className={className} key={suggestion} onClick={onClick}>
-                {suggestion}
+              <li className={className} key={suggestion._id} data-id={suggestion._id} onClick={onClick}>
+                {suggestion.businessName} - {suggestion.address.street1}, {suggestion.address.city}
               </li>
             );
           })}
         </ul>
       );
     }
-  } else {
-    suggestionsListComponent = (
-      <div className="no-suggestions text-center">
-        <em>No suggestions available.</em>
-      </div>
-    );
   }
 
   return (
-    <div id="search-bar">
-      <h5 className="text-center">Customer Search</h5>
-      <p className="text-center">Search for existing customers</p>
-      <input
-        className="form-control text-center w-50 mx-auto"
-        type="text"
-        placeholder="business name"
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        value={userInput}
-      />
-      {filteredSuggestions.length ? suggestionsListComponent : ""}
-    </div>
+      <>
+        <input
+            type="text"
+            placeholder="Business Name"
+            name={"businessName"}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            value={userInput}
+            required
+        />
+        {filteredSuggestions.length ? suggestionsListComponent : ""}
+      </>
   );
 }
 
-export default AutoCompleteSearch;
+export default AutoComplete;

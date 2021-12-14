@@ -33,17 +33,11 @@ $blue: #185adb;
   }
 
   button {
-    background: white;
     font-size: 1.2rem;
-    font-weight: 700;
     width: 50%;
     margin: 0 auto;
     padding: 1rem;
     border: 0.5px solid lightgrey;
-    &:hover {
-      background: $blue;
-      color: white;
-    }
   }
 }
 
@@ -51,7 +45,7 @@ $blue: #185adb;
   position: absolute;
   color: grey;
   font-size: 15px;
-  top: 42px;
+  top: 39px;
   left: 13px;
 }
 
@@ -59,6 +53,6 @@ $blue: #185adb;
   position: absolute;
   color: grey;
   font-size: 15px;
-  top: 145px;
+  top: 137px;
   left: 13px;
 }

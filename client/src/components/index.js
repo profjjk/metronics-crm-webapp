@@ -10,7 +10,7 @@ export { default as MessagesTable } from './tables/MessagesTable';
 // Job
 export { default as JobsTable } from './tables/JobsTable';
 export { default as ServiceForm } from './forms/ServiceForm';
-export { default as AutoCompleteSearch } from './shared/AutoCompleteSearch';
+export { default as AutoComplete } from './shared/AutoComplete';
 
 // Customer
 export { default as CustomersTable } from './tables/CustomersTable';

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 
-const LoginPage = () => {
+const Login = () => {
     const { user } = useUser();
     const { login } = useAuth();
 
@@ -63,4 +63,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage;
+export default Login;
