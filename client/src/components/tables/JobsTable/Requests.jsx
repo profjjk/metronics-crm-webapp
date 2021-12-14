@@ -10,7 +10,7 @@ const Requests = ({ selectJob, setSubmissionType }) => {
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data);
-    }, [status]);
+    }, [status, data]);
 
     // Filter by search term
     useEffect(() => {
@@ -56,7 +56,10 @@ const Requests = ({ selectJob, setSubmissionType }) => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={() => selectJob(job)}>
+                            <tr className={"table-item"} key={job._id} onClick={() => {
+                                setSubmissionType("new");
+                                selectJob(job)
+                            }}>
                                 <td>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}, {job.customer.address.state}</td>

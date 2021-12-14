@@ -12,12 +12,10 @@ import './style.scss';
 
 const ServiceHome = () => {
     const { user } = useUser();
-
     const [showForm, setShowForm] = useState(false);
-
     const [submissionType, setSubmissionType] = useState('new');
     const [viewRequests, setViewRequests] = useState(false);
-
+    const [viewUnpaid, setViewUnpaid] = useState(false);
     const [job, setJob] = useState();
     const [parts, setParts] = useState([]);
     const [customer, setCustomer] = useState();
@@ -49,6 +47,11 @@ const ServiceHome = () => {
             queryClient.invalidateQueries('customers');
         }
     });
+    const deleteRequest = useMutation(id => API.deleteRequest(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('requests');
+        }
+    })
 
     // REDIRECTS
     if (!user) {
@@ -69,15 +72,9 @@ const ServiceHome = () => {
             deleteJob.mutate(id)
         }
     };
-    const removePart = e => {
-        e.preventDefault();
-        setParts(parts.filter(part => part.partNumber !== e.target.dataset.id));
+    const removeRequest = id => {
+        deleteRequest.mutate(id);
     };
-    const testSubmit = e => {
-        e.preventDefault();
-        const formData = Object.fromEntries(new FormData(e.target));
-        console.log(formData)
-    }
     const submit = async e => {
         try {
             e.preventDefault();
@@ -107,6 +104,9 @@ const ServiceHome = () => {
             if (submissionType === 'add') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 createJob.mutate({ customer: customer._id, ...jobData });
+                if(viewRequests) {
+                    removeRequest(job._id)
+                }
                 setShowForm(false);
                 return
             }
@@ -119,6 +119,9 @@ const ServiceHome = () => {
             if (submissionType === 'new') {
                 const newCustomer = await createCustomer.mutateAsync(customerData);
                 createJob.mutate({ customer: newCustomer.data._id, ...jobData });
+                if(viewRequests) {
+                    removeRequest(job._id)
+                }
                 setShowForm(false);
             }
         } catch(err) { console.error(err) }
@@ -132,22 +135,27 @@ const ServiceHome = () => {
                 <div className={"button-area"}>
                     <p className={"btn"} onClick={() => {
                         setViewRequests(false);
+                        setViewUnpaid(false)
                         setShowForm(false);
+                        queryClient.invalidateQueries('jobs');
                     }}>View All</p>
 
                     <p className={"btn"} onClick={() => {
                         setShowForm(false);
+                        setViewUnpaid(false)
                         setViewRequests(true);
                     }}>View Online Requests</p>
 
                     <p className={"btn"} onClick={() => {
                         setShowForm(false);
                         setViewRequests(false);
+                        setViewUnpaid(true);
                     }}>View Unpaid</p>
 
                     <p className={"btn"} onClick={() => {
                         setSubmissionType("new")
                         setViewRequests(false)
+                        setViewUnpaid(false)
                         setJob(null);
                         setCustomer(null);
                         setShowForm(true);
@@ -170,6 +178,7 @@ const ServiceHome = () => {
                     <JobsTable
                         selectJob={selectJob}
                         viewRequests={viewRequests}
+                        viewUnpaid={viewUnpaid}
                         setSubmissionType={setSubmissionType}
                     />
                 </main>
@@ -198,6 +207,7 @@ const ServiceHome = () => {
                         customer={customer}
                         setCustomer={setCustomer}
                         removeJob={removeJob}
+                        removeRequest={removeRequest}
                     />
                 </main>
             </>

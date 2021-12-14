@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks';
 import { Searchbar } from '../../index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ const Jobs = ({ selectJob, setSubmissionType }) => {
 
     useEffect(() => {
         if (status === 'success') setJobList(data.data);
-    }, [status]);
+    }, [status, data]);
 
     // Filter by status
     useEffect(() => {
@@ -34,15 +34,17 @@ const Jobs = ({ selectJob, setSubmissionType }) => {
 
     // Filter by search term
     useEffect(() => {
-        if (searchTerm !== "") {
-            setJobList(
-                jobList.filter(job => {
-                    return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||
-                        (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
-                })
-            );
+        if (status === 'success') {
+            if (searchTerm !== "") {
+                setJobList(
+                    data.data.filter(job => {
+                        return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                            (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||
+                            (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
+                    })
+                );
+            }
         }
     }, [searchTerm]);
 
@@ -66,7 +68,7 @@ const Jobs = ({ selectJob, setSubmissionType }) => {
                             <FontAwesomeIcon className={"faChevronDown"} icon={faChevronDown}/>
                             <select onChange={e => setStatusFilter(e.target.value)}>
                                 <option>Filter by status</option>
-                                <option>Waiting</option>
+                                <option>Pending</option>
                                 <option>Scheduled</option>
                                 <option>Completed</option>
                                 <option>Canceled</option>
@@ -87,7 +89,7 @@ const Jobs = ({ selectJob, setSubmissionType }) => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={e => {
+                            <tr className={"table-item"} key={job._id} onClick={() => {
                                 setSubmissionType("edit");
                                 selectJob(job);
                             }}>
@@ -104,7 +106,6 @@ const Jobs = ({ selectJob, setSubmissionType }) => {
                 </section>
             )
     }
-
 }
 
 export default Jobs;

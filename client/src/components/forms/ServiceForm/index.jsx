@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useCustomers } from '../../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
-import './style.scss';
 import { AutoComplete } from '../../index';
+import './style.scss';
 
-
-const ServiceForm = ({ setShowForm, job, setJob, customer, setCustomer, submit, removeJob, submissionType, setSubmissionType, viewRequests }) => {
+const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, removeJob, removeRequest,
+                         submissionType, setSubmissionType, viewRequests }) => {
     const { status, data, error } = useCustomers();
     const [matchFound, setMatchFound] = useState(null);
 
@@ -74,7 +74,7 @@ const ServiceForm = ({ setShowForm, job, setJob, customer, setCustomer, submit, 
                                     Status
                                     <div className={"dropdown"}>
                                         <FontAwesomeIcon className={"faChevronDown"} icon={faChevronDown}/>
-                                        <select >
+                                        <select name={"status"}>
                                             {job ? <option>{job.status}</option> : <></>}
                                             {job && job.status === "Pending" ? "" : <option>Pending</option>}
                                             {job && job.status === "Scheduled" ? "" : <option>Scheduled</option>}
@@ -98,7 +98,7 @@ const ServiceForm = ({ setShowForm, job, setJob, customer, setCustomer, submit, 
                                     Total Bill
                                     <div className={"dollarInput"}>
                                         <FontAwesomeIcon className={"faDollarSign"} icon={faDollarSign}/>
-                                        <input type={"number"} name={"totalBill"}
+                                        <input type={"text"} name={"totalBill"}
                                                defaultValue={job ? job.totalBill : 0}/>
                                     </div>
                                 </label>
@@ -170,14 +170,18 @@ const ServiceForm = ({ setShowForm, job, setJob, customer, setCustomer, submit, 
                                     Cancel
                                 </button>
 
-                                <button className={"btn-form"} onClick={() => {
-                                    removeJob(job._id);
+                                {job && job._id ? (<button className={"btn-form delete"} onClick={() => {
+                                    if (viewRequests) {
+                                        removeRequest(job._id)
+                                    } else {
+                                        removeJob(job._id);
+                                    }
                                     setJob(null)
                                     setCustomer(null)
                                     setShowForm(false)
                                 }}>
                                     Delete
-                                </button>
+                                </button>) : <></>}
                             </div>
                         </form>
                     </section>

@@ -157,7 +157,7 @@ textarea {
   position: relative;
   .faHashtag {
     position: absolute;
-    top: 13px;
+    top: 11px;
     left: 9px;
   }
   input {
@@ -170,7 +170,7 @@ textarea {
   position: relative;
   .faDollarSign {
     position: absolute;
-    top: 13px;
+    top: 11px;
     left: 11px;
   }
   input {
@@ -186,6 +186,13 @@ textarea {
 .btn-form {
   width: 6rem;
   height: 2.5rem;
+}
+
+.delete {
+  margin-left: auto;
+  &:hover {
+    background: $red;
+  }
 }
 
 // TEXT STYLES

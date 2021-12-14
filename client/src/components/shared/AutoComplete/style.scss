@@ -12,6 +12,7 @@ $red: #d3232b;
 .suggestions {
   position: absolute;
   transform: translateY(62px);
+  background: white;
   border: 1px solid $blue;
   border-radius: 5px;
   border-top-width: 0;
@@ -27,7 +28,7 @@ $red: #d3232b;
   padding: 0.5rem;
 }
 .suggestion-active, .suggestions li:hover {
-  background-color: $blue;
+  background: $blue;
   color: $yellow;
   cursor: pointer;
   font-weight: 600;
