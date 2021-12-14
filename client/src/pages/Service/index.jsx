@@ -135,6 +135,11 @@ const ServiceHome = () => {
                     }}>View Online Requests</p>
 
                     <p className={"btn-pageMenu"} onClick={() => {
+                        setShowForm(false);
+                        setViewRequests(false);
+                    }}>View Unpaid</p>
+
+                    <p className={"btn-pageMenu"} onClick={() => {
                         setEdit(false);
                         setShowForm(true);
                     }}>Create New</p>
@@ -173,19 +178,21 @@ const ServiceHome = () => {
                 <main className={"container"}>
                     <Header />
 
-                    {!edit ? <AutoCompleteSearch
-                        setCustomer={setCustomer}
-                        setFound={setFound}
-                    /> : <></>}
-                    <ServiceForm
-                        submitHandler={submitHandler}
-                        removePartHandler={removePartHandler}
-                        customer={edit || found ? customer : null}
-                        parts={parts.length > 0 ? parts : []}
-                        job={edit ? job : null}
-                        setParts={setParts}
-                        setShowForm={setShowForm}
-                    />
+                    <ServiceForm setShowForm={setShowForm} />
+
+                    {/*{!edit ? <AutoCompleteSearch*/}
+                    {/*    setCustomer={setCustomer}*/}
+                    {/*    setFound={setFound}*/}
+                    {/*/> : <></>}*/}
+                    {/*<ServiceForm*/}
+                    {/*    submitHandler={submitHandler}*/}
+                    {/*    removePartHandler={removePartHandler}*/}
+                    {/*    customer={edit || found ? customer : null}*/}
+                    {/*    parts={parts.length > 0 ? parts : []}*/}
+                    {/*    job={edit ? job : null}*/}
+                    {/*    setParts={setParts}*/}
+                    {/*    setShowForm={setShowForm}*/}
+                    {/*/>*/}
                 </main>
             </>
         )
