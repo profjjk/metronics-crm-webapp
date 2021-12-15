@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useUser } from '../../hooks';
-import {Searchbar, CustomersTable, CustomerForm, SideNavbar} from "../../components";
+import { CustomersTable, CustomerForm, SideNavbar } from "../../components";
+import CustomerHistory from './CustomerHistory';
 import API from "../../utils/API";
 import './style.scss';
 
 const CustomerHome = () => {
     const { user } = useUser();
     const [customer, setCustomer] = useState();
-    const [searchTerm, setSearchTerm] = useState('');
     const [showForm, setShowForm] = useState(false);
-    const [edit, setEdit] = useState(false);
+    const [submissionType, setSubmissionType] = useState('new');
 
     // MUTATIONS
     const queryClient = useQueryClient();
@@ -42,18 +42,13 @@ const CustomerHome = () => {
     if (!user) {
         return <Redirect to={'/login'} />
     }
-    // if (user.auth === 'public') {
-    //     return <Redirect to={'/'} />
-    // }
 
     // EVENT HANDLERS
-    const selectionHandler = (e, customer) => {
-        e.preventDefault();
+    const selectCustomer = customer => {
         setCustomer(customer)
-        setEdit(true);
         setShowForm(true);
     };
-    const deleteCustomerHandler = async e => {
+    const removeCustomer = async e => {
         e.preventDefault();
         let answer = window.confirm("Are you sure you want to delete?\n" +
             "This will delete the customer and their service history from the database.\n" +
@@ -63,7 +58,7 @@ const CustomerHome = () => {
             deleteJobs.mutate(e.target.dataset.id)
         }
     }
-    const submitHandler = async e => {
+    const submit = async e => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target))
@@ -80,44 +75,52 @@ const CustomerHome = () => {
                 },
                 notes: FormData.notes.trim()
             }
-            if (edit) {
+            if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
-                setEdit(false);
                 setShowForm(false);
                 return
             }
-            await createCustomer.mutateAsync(customerData);
-            setShowForm(false);
+            if (submissionType === 'new') {
+                await createCustomer.mutateAsync(customerData);
+                setShowForm(false);
+            }
         } catch(err) { console.error(err) }
     };
+
+    const Header = () => {
+        return (
+            <div className={"main-header"}>
+                <h1 onClick={() => window.location.reload()}>Customers</h1>
+
+                <div className={"button-area"}>
+                    <p className={"btn"} onClick={() => {
+                        setShowForm(false);
+                    }}>View All</p>
+
+                    <p className={"btn"} onClick={() => {
+                        setSubmissionType("new")
+                        setCustomer(null);
+                        setShowForm(true);
+                    }}>Create New</p>
+                </div>
+            </div>
+        )
+    }
 
     if (!showForm) {
         return (
             <>
                 <header>
-                    <SideNavbar/>
+                    <SideNavbar />
                 </header>
 
                 <main className={"container"}>
-                    <Searchbar
-                        heading="Customer Search"
-                        subheading="Search by business name, city name, or phone #"
-                        placeholder="Business Name, city name, or phone #"
-                        setSearch={setSearchTerm}
-                    />
-                    <button
-                        className="btn btn-success me-3 mt-5"
-                        onClick={() => {
-                            setEdit(false);
-                            setShowForm(true);
-                        }}
-                    >Create New Customer
-                    </button>
+                    <Header />
+
                     <CustomersTable
-                        setShowFormUpdate={setShowForm}
-                        selectionHandler={selectionHandler}
-                        deleteHandler={deleteCustomerHandler}
-                        searchTerm={searchTerm}
+                        setSubmissionType={setSubmissionType}
+                        selectCustomer={selectCustomer}
+                        removeCustomer={removeCustomer}
                     />
                 </main>
             </>
@@ -128,22 +131,79 @@ const CustomerHome = () => {
         return (
             <>
                 <header>
-                    <SideNavbar/>
+                    <SideNavbar />
                 </header>
 
                 <main className={"container"}>
-                    <div className="p-5">
-                        <CustomerForm
-                            setShowForm={setShowForm}
-                            submitHandler={submitHandler}
-                            customer={edit ? customer : null}
-                        />
+                    <Header />
 
-                    </div>
+                    <CustomerForm
+                        customer={customer}
+                        setCustomer={setCustomer}
+                        setShowForm={setShowForm}
+                    />
+
+                    <CustomerHistory
+                        customerId={customer._id}
+                    />
                 </main>
             </>
         )
     }
+
+    // if (!showForm) {
+    //     return (
+    //         <>
+    //             <header>
+    //                 <SideNavbar/>
+    //             </header>
+    //
+    //             <main className={"container"}>
+    //                 <Searchbar
+    //                     heading="Customer Search"
+    //                     subheading="Search by business name, city name, or phone #"
+    //                     placeholder="Business Name, city name, or phone #"
+    //                     setSearch={setSearchTerm}
+    //                 />
+    //                 <button
+    //                     className="btn btn-success me-3 mt-5"
+    //                     onClick={() => {
+    //                         setEdit(false);
+    //                         setShowForm(true);
+    //                     }}
+    //                 >Create New Customer
+    //                 </button>
+    //                 <CustomersTable
+    //                     setShowFormUpdate={setShowForm}
+    //                     selectionHandler={selectionHandler}
+    //                     deleteHandler={deleteCustomerHandler}
+    //                     searchTerm={searchTerm}
+    //                 />
+    //             </main>
+    //         </>
+    //     )
+    // }
+    //
+    // if (showForm) {
+    //     return (
+    //         <>
+    //             <header>
+    //                 <SideNavbar/>
+    //             </header>
+    //
+    //             <main className={"container"}>
+    //                 <div className="p-5">
+    //                     <CustomerForm
+    //                         setShowForm={setShowForm}
+    //                         submitHandler={submitHandler}
+    //                         customer={edit ? customer : null}
+    //                     />
+    //
+    //                 </div>
+    //             </main>
+    //         </>
+    //     )
+    // }
 }
 
 export default CustomerHome;
