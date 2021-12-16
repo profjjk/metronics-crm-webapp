@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Redirect } from "react-router-dom";
-import { useQueryClient } from "react-query";
+import { useQueryClient, useQuery } from "react-query";
 import { useUser } from "../../hooks";
-import { JobsTable, ServiceForm, SideNavbar } from "../../components";
+import { ServiceTable, ServiceForm, SideNavbar } from "../../components";
 import './style.scss';
 
 const ServiceHome = () => {
     const queryClient = useQueryClient();
     const { user } = useUser();
-    const showForm = queryClient.getQueryData('showForm');
+    const { data: showForm } = useQuery('showForm', () => {});
+
     const [viewRequests, setViewRequests] = useState(false);
     const [viewUnpaid, setViewUnpaid] = useState(false);
 
@@ -63,9 +64,9 @@ const ServiceHome = () => {
             <main className={"container"}>
                 <Header />
                 {showForm ? (
-                    <ServiceForm viewRequests={viewRequests} />
+                    <ServiceForm viewRequests={viewRequests}/>
                 ) : (
-                    <JobsTable viewRequests={viewRequests} viewUnpaid={viewUnpaid} />
+                    <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid}/>
                 )}
             </main>
         </>

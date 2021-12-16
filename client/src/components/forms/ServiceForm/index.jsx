@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useCustomers } from '../../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
@@ -10,11 +10,10 @@ import API from '../../../utils/API';
 const ServiceForm = ({ viewRequests }) => {
     const queryClient = useQueryClient();
     const { status, data, error } = useCustomers();
-    const job = queryClient.getQueryData('selectedJob');
-    let customer = queryClient.getQueryData('selectedCustomer');
+    const { data: job } = useQuery('selectedJob', () => {});
+    const { data: customer } = useQuery('selectedCustomer', () => {});
     const submissionType = queryClient.getQueryData('submissionType');
     const [matchFound, setMatchFound] = useState(null);
-    // const [parts, setParts] = useState([]);
 
     useEffect(() => {
         if (status === 'success' && viewRequests) {
@@ -63,16 +62,9 @@ const ServiceForm = ({ viewRequests }) => {
     })
 
     // EVENT HANDLERS
-    const selectJob = job => {
-        queryClient.setQueryData('selectedJob', job);
-        queryClient.setQueryData('selectedCustomer', job.customer);
-        // setParts(job.parts)
-        queryClient.setQueryData('showForm', true);
-    };
     const removeJob = id => {
         let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
         if (answer) {
-            // setParts([])
             deleteJob.mutate(id)
         }
     };
@@ -91,7 +83,6 @@ const ServiceForm = ({ viewRequests }) => {
                 serviceNotes: formData.serviceNotes.trim(),
                 totalBill: parseFloat(formData.totalBill.trim()),
                 isPaid: formData.isPaid === "on",
-                // parts: parts
             }
             const customerData = {
                 businessName: formData.businessName.trim(),
@@ -137,12 +128,7 @@ const ServiceForm = ({ viewRequests }) => {
             _id: matchFound._id,
             businessName: matchFound.businessName,
             address: matchFound.address
-        }, {
-            onSuccess: () => {
-                customer = queryClient.refetchQueries('selectedCustomer');
-                console.log(customer);
-            }
-        })
+        });
         setMatchFound(null);
     }
 

@@ -77,7 +77,8 @@ const Jobs = ({ jobs }) => {
                 {jobList.map(job => (
                     <tr className={"table-item"} key={job._id} onClick={() => {
                         queryClient.setQueryData('submissionType', 'edit');
-                        queryClient.setQueryData('selectedJob', 'job');
+                        queryClient.setQueryData('selectedJob', job);
+                        queryClient.setQueryData('selectedCustomer', job.customer);
                         queryClient.setQueryData('showForm', true);
                     }}>
                         <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>

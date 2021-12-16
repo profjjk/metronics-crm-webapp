@@ -1,9 +1,8 @@
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from '../hooks';
 import Routes from "./routes";
 import './main.scss';
-
-const queryClient = new QueryClient();
 
 const App = () => {
     return (

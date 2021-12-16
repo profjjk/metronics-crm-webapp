@@ -15,7 +15,7 @@ const JobsTable = ({ viewRequests, viewUnpaid }) => {
         default:
             if (viewRequests) {
                 return (
-                    <Requests requests={requests.data.data} />
+                    <Requests requests={requests.data.data}/>
                 )
             } else if (viewUnpaid) {
                 return (

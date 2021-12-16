@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { Redirect } from "react-router-dom";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useUser } from '../../hooks';
 import { CustomersTable, CustomerForm, SideNavbar } from "../../components";
 import CustomerHistory from './CustomerHistory';
@@ -10,7 +9,7 @@ const CustomerHome = () => {
     const queryClient = useQueryClient();
     const { user } = useUser();
     const customer = queryClient.getQueryData('selectedCustomer');
-    const showForm = queryClient.getQueryData('showForm');
+    const { data: showForm } = useQuery('showForm', () => {});
 
     // REDIRECT
     if (!user) {

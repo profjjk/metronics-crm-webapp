@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useJobs } from '../../hooks';
 import dayjs from 'dayjs';
 
@@ -9,7 +9,7 @@ const CustomerHistory = () => {
     const history = useHistory();
     const { status, data, error } = useJobs();
     const [jobList, setJobList] = useState([]);
-    const customer = queryClient.getQueryData('selectedCustomer');
+    const { data: customer } = useQuery('selectedCustomer', () => {});
 
     useEffect(() => {
         if (status === 'success') {
