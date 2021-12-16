@@ -1,14 +1,19 @@
-import { useJobs } from '../../hooks';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useQuery, useQueryClient } from 'react-query';
+import { useJobs } from '../../hooks';
 import dayjs from 'dayjs';
 
-const CustomerHistory = ({ customerId }) => {
+const CustomerHistory = () => {
+    const queryClient = useQueryClient();
+    const history = useHistory();
     const { status, data, error } = useJobs();
     const [jobList, setJobList] = useState([]);
+    const { data: customer } = useQuery('selectedCustomer', () => {});
 
     useEffect(() => {
         if (status === 'success') {
-            const customerJobs = data.data.filter(job => job.customer._id === customerId && job.status === 'Completed');
+            const customerJobs = data.data.filter(job => job.customer._id === customer._id && job.status === 'Completed');
             setJobList(customerJobs);
         }
     }, [status, data])
@@ -34,8 +39,10 @@ const CustomerHistory = ({ customerId }) => {
                         <tbody>
                         {jobList.length ? jobList.map(job => (
                             <tr className={"table-item"} key={job._id} onClick={() => {
-                                // setSubmissionType("edit");
-                                // selectJob(job);
+                                queryClient.setQueryData('submissionType', 'edit');
+                                queryClient.setQueryData('selectedJob', job);
+                                queryClient.setQueryData('showForm', true);
+                                history.push('/service');
                             }}>
                                 <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>

@@ -1,24 +1,26 @@
 import { useState, useEffect } from "react";
+import { useQueryClient } from 'react-query';
 import { useCustomers } from "../../../hooks";
 import { Searchbar } from '../../index';
 
-const CustomersTable = ({ setSubmissionType, selectCustomer }) => {
+const CustomersTable = () => {
+    const queryClient = useQueryClient();
     const {status, data, error, isFetching} = useCustomers();
-    const [customerList, selectCustomerList] = useState([]);
+    const [customerList, setCustomerList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        if (status === 'success') selectCustomerList(data.data);
+        if (status === 'success') setCustomerList(data.data);
     }, [status, data]);
 
     // Search for customers
     useEffect(() => {
         if (status === 'success') {
             if (searchTerm === "") {
-                selectCustomerList(data.data);
+                setCustomerList(data.data);
                 return;
             }
-            selectCustomerList(
+            setCustomerList(
                 data.data.filter(customer => {
                     return customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         customer.address.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -58,8 +60,9 @@ const CustomersTable = ({ setSubmissionType, selectCustomer }) => {
                         <tbody>
                         {customerList.map(customer => (
                             <tr className={"table-item"} key={customer._id} onClick={() => {
-                                setSubmissionType("edit");
-                                selectCustomer(customer);
+                                queryClient.setQueryData('submissionType', 'edit');
+                                queryClient.setQueryData('selectedCustomer', customer);
+                                queryClient.setQueryData('showForm', true);
                             }}>
                                 <td>{customer.businessName}</td>
                                 <td>

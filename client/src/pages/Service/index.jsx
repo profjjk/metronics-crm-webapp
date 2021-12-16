@@ -1,131 +1,22 @@
 import { useState } from 'react';
 import { Redirect } from "react-router-dom";
-import { useMutation, useQueryClient } from "react-query";
+import { useQueryClient, useQuery } from "react-query";
 import { useUser } from "../../hooks";
-import { JobsTable, ServiceForm, SideNavbar } from "../../components";
-import API from "../../utils/API";
+import { ServiceTable, ServiceForm, SideNavbar } from "../../components";
 import './style.scss';
 
-// TODO:
-//  - BUG: Query cache not refetching from database after saving new job. Invalidating queries not working? Only refreshes on page reload.
-//  - Need a mutation to delete Requests by id when converting them to saved jobs.
-
 const ServiceHome = () => {
+    const queryClient = useQueryClient();
     const { user } = useUser();
-    const [showForm, setShowForm] = useState(false);
-    const [submissionType, setSubmissionType] = useState('new');
+    const { data: showForm } = useQuery('showForm', () => {});
+
     const [viewRequests, setViewRequests] = useState(false);
     const [viewUnpaid, setViewUnpaid] = useState(false);
-    const [job, setJob] = useState();
-    const [parts, setParts] = useState([]);
-    const [customer, setCustomer] = useState();
-
-    // DATA MUTATIONS
-    const queryClient = useQueryClient();
-    const createJob = useMutation(job => API.createJob(job), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('jobs');
-        }
-    });
-    const editJob = useMutation(job => API.updateJob(job.id, job.data), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('jobs');
-        }
-    });
-    const deleteJob = useMutation(id => API.deleteJob(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('jobs');
-        }
-    });
-    const createCustomer = useMutation(customer => API.createCustomer(customer), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('customers');
-        }
-    });
-    const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('customers');
-        }
-    });
-    const deleteRequest = useMutation(id => API.deleteRequest(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('requests');
-        }
-    })
 
     // REDIRECTS
     if (!user) {
         return <Redirect to={'/login'} />
     }
-
-    // EVENT HANDLERS
-    const selectJob = job => {
-        setJob(job);
-        setCustomer(job.customer)
-        setParts(job.parts)
-        setShowForm(true);
-    };
-    const removeJob = id => {
-        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
-        if (answer) {
-            setParts([])
-            deleteJob.mutate(id)
-        }
-    };
-    const removeRequest = id => {
-        deleteRequest.mutate(id);
-    };
-    const submit = async e => {
-        try {
-            e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target));
-            const jobData = {
-                status: formData.status,
-                serviceDate: formData.serviceDate,
-                invoiceNumber: formData.invoiceNumber.trim(),
-                issueNotes: formData.issueNotes.trim(),
-                serviceNotes: formData.serviceNotes.trim(),
-                totalBill: parseFloat(formData.totalBill.trim()),
-                isPaid: formData.isPaid === "on",
-                parts: parts
-            }
-            const customerData = {
-                businessName: formData.businessName.trim(),
-                contactName: formData.contactName.trim(),
-                phone: formData.phone.trim(),
-                address: {
-                    street1: formData.street1.trim(),
-                    street2: formData.street2.trim(),
-                    city: formData.city.trim(),
-                    state: formData.state.trim(),
-                    zipcode: formData.zipcode.trim()
-                },
-            }
-            if (submissionType === 'add') {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                createJob.mutate({ customer: customer._id, ...jobData });
-                if(viewRequests) {
-                    removeRequest(job._id)
-                }
-                setShowForm(false);
-                return
-            }
-            if (submissionType === 'edit') {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                editJob.mutate({ id: job._id, data: jobData });
-                setShowForm(false);
-                return
-            }
-            if (submissionType === 'new') {
-                const newCustomer = await createCustomer.mutateAsync(customerData);
-                createJob.mutate({ customer: newCustomer.data._id, ...jobData });
-                if(viewRequests) {
-                    removeRequest(job._id)
-                }
-                setShowForm(false);
-            }
-        } catch(err) { console.error(err) }
-    };
 
     const Header = () => {
         return (
@@ -135,84 +26,51 @@ const ServiceHome = () => {
                 <div className={"button-area"}>
                     <p className={"btn"} onClick={() => {
                         setViewRequests(false);
-                        setViewUnpaid(false)
-                        setShowForm(false);
+                        setViewUnpaid(false);
                         queryClient.invalidateQueries('jobs');
+                        queryClient.setQueryData('showForm', false);
                     }}>View All</p>
 
                     <p className={"btn"} onClick={() => {
-                        setShowForm(false);
-                        setViewUnpaid(false)
+                        queryClient.setQueryData('showForm', false);
+                        setViewUnpaid(false);
                         setViewRequests(true);
                     }}>View Online Requests</p>
 
                     <p className={"btn"} onClick={() => {
-                        setShowForm(false);
+                        queryClient.setQueryData('showForm', false);
                         setViewRequests(false);
                         setViewUnpaid(true);
                     }}>View Unpaid</p>
 
                     <p className={"btn"} onClick={() => {
-                        setSubmissionType("new")
-                        setViewRequests(false)
-                        setViewUnpaid(false)
-                        setJob(null);
-                        setCustomer(null);
-                        setShowForm(true);
+                        setViewRequests(false);
+                        setViewUnpaid(false);
+                        queryClient.removeQueries(['selectedJob', 'selectedCustomer']);
+                        queryClient.setQueryData('submissionType', 'new');
+                        queryClient.setQueryData('showForm', true);
                     }}>Create New</p>
                 </div>
             </div>
         )
     }
 
-    if (!showForm) {
-        return (
-            <>
-                <header>
-                    <SideNavbar/>
-                </header>
+    return (
+        <>
+            <header>
+                <SideNavbar/>
+            </header>
 
-                <main className={"container"}>
-                    <Header />
-
-                    <JobsTable
-                        selectJob={selectJob}
-                        viewRequests={viewRequests}
-                        viewUnpaid={viewUnpaid}
-                        setSubmissionType={setSubmissionType}
-                    />
-                </main>
-            </>
-        )
-    }
-    if (showForm) {
-        return (
-            <>
-                <header>
-                    <SideNavbar/>
-                </header>
-
-                <main className={"container"}>
-                    <Header />
-
-                    <ServiceForm
-                        submit={submit}
-                        setShowForm={setShowForm}
-                        submissionType={submissionType}
-                        setSubmissionType={setSubmissionType}
-                        viewRequests={viewRequests}
-                        setViewRequests={setViewRequests}
-                        job={job}
-                        setJob={setJob}
-                        customer={customer}
-                        setCustomer={setCustomer}
-                        removeJob={removeJob}
-                        removeRequest={removeRequest}
-                    />
-                </main>
-            </>
-        )
-    }
+            <main className={"container"}>
+                <Header />
+                {showForm ? (
+                    <ServiceForm viewRequests={viewRequests}/>
+                ) : (
+                    <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid}/>
+                )}
+            </main>
+        </>
+    )
 }
 
 export default ServiceHome;
