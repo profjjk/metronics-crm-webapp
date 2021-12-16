@@ -1,5 +1,5 @@
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {Customers, Dashboard, Inventory, Login, Service} from "../pages";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Customers, Dashboard, Inventory, Login, Service } from "../pages";
 
 const Routes = () => {
     return (

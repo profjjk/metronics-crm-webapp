@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useQueryClient } from 'react-query';
 import { useCustomers } from "../../../hooks";
 import './style.scss';
 
-const AutoComplete = ({ setCustomer, setSubmissionType }) => {
+const AutoComplete = () => {
+  const queryClient = useQueryClient();
   const { data } = useCustomers()
   const [activeSuggestion, setActiveSuggestion] = useState(0); // index of a selected suggestion
   const [filteredSuggestions, setFilteredSuggestions] = useState([]); // an array of suggestions matching user input
@@ -24,9 +26,9 @@ const AutoComplete = ({ setCustomer, setSubmissionType }) => {
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
-    setUserInput(customer[0].businessName)
-    setSubmissionType("add");
-    setCustomer(customer[0]);
+    setUserInput(customer[0].businessName);
+    queryClient.setQueryData('submissionType', 'add');
+    queryClient.setQueryData('selectedCustomer', customer[0]);
   }
 
   const onKeyDown = e => {

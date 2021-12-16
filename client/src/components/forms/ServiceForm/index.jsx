@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import { useCustomers } from '../../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { AutoComplete } from '../../index';
 import './style.scss';
+import API from '../../../utils/API';
 
-const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, removeJob, removeRequest,
-                         submissionType, setSubmissionType, viewRequests }) => {
+const ServiceForm = ({ viewRequests }) => {
+    const queryClient = useQueryClient();
     const { status, data, error } = useCustomers();
+    const job = queryClient.getQueryData('selectedJob');
+    let customer = queryClient.getQueryData('selectedCustomer');
+    const submissionType = queryClient.getQueryData('submissionType');
     const [matchFound, setMatchFound] = useState(null);
+    // const [parts, setParts] = useState([]);
 
     useEffect(() => {
         if (status === 'success' && viewRequests) {
@@ -24,14 +30,119 @@ const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, r
         }
     }, [])
 
+    // DATA MUTATIONS
+    const createJob = useMutation(job => API.createJob(job), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('jobs');
+        }
+    });
+    const editJob = useMutation(job => API.updateJob(job.id, job.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('jobs');
+        }
+    });
+    const deleteJob = useMutation(id => API.deleteJob(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('jobs');
+        }
+    });
+    const createCustomer = useMutation(customer => API.createCustomer(customer), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('customers');
+        }
+    });
+    const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('customers');
+        }
+    });
+    const deleteRequest = useMutation(id => API.deleteRequest(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('requests');
+        }
+    })
+
+    // EVENT HANDLERS
+    const selectJob = job => {
+        queryClient.setQueryData('selectedJob', job);
+        queryClient.setQueryData('selectedCustomer', job.customer);
+        // setParts(job.parts)
+        queryClient.setQueryData('showForm', true);
+    };
+    const removeJob = id => {
+        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
+        if (answer) {
+            // setParts([])
+            deleteJob.mutate(id)
+        }
+    };
+    const removeRequest = id => {
+        deleteRequest.mutate(id);
+    };
+    const submit = async e => {
+        try {
+            e.preventDefault();
+            const formData = Object.fromEntries(new FormData(e.target));
+            const jobData = {
+                status: formData.status,
+                serviceDate: formData.serviceDate,
+                invoiceNumber: formData.invoiceNumber.trim(),
+                issueNotes: formData.issueNotes.trim(),
+                serviceNotes: formData.serviceNotes.trim(),
+                totalBill: parseFloat(formData.totalBill.trim()),
+                isPaid: formData.isPaid === "on",
+                // parts: parts
+            }
+            const customerData = {
+                businessName: formData.businessName.trim(),
+                contactName: formData.contactName.trim(),
+                phone: formData.phone.trim(),
+                address: {
+                    street1: formData.street1.trim(),
+                    street2: formData.street2.trim(),
+                    city: formData.city.trim(),
+                    state: formData.state.trim(),
+                    zipcode: formData.zipcode.trim()
+                },
+            }
+            if (submissionType === 'add') {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                createJob.mutate({ customer: customer._id, ...jobData });
+                if(viewRequests) {
+                    removeRequest(job._id)
+                }
+                queryClient.setQueryData('showForm', false);
+                return
+            }
+            if (submissionType === 'edit') {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                editJob.mutate({ id: job._id, data: jobData });
+                queryClient.setQueryData('showForm', false);
+                return
+            }
+            if (submissionType === 'new') {
+                const newCustomer = await createCustomer.mutateAsync(customerData);
+                createJob.mutate({ customer: newCustomer.data._id, ...jobData });
+                if(viewRequests) {
+                    removeRequest(job._id)
+                }
+                queryClient.setQueryData('showForm', false);
+            }
+        } catch(err) { console.error(err) }
+    };
     const useExisting = () => {
-        setSubmissionType("add");
-        setCustomer({
+        queryClient.setQueryData('submissionType', 'add');
+        queryClient.setQueryData('selectedCustomer', {
             ...customer,
             _id: matchFound._id,
             businessName: matchFound.businessName,
             address: matchFound.address
-        });
+        }, {
+            onSuccess: () => {
+                customer = queryClient.refetchQueries('selectedCustomer');
+                console.log(customer);
+            }
+        })
         setMatchFound(null);
     }
 
@@ -115,7 +226,7 @@ const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, r
                                     <label>
                                         Contact Information
                                         {!viewRequests && submissionType !== "edit" ? (
-                                            <AutoComplete customer={customer} setCustomer={setCustomer} setSubmissionType={setSubmissionType} />
+                                            <AutoComplete />
                                         ) : (
                                             <input type={"text"} name={"businessName"} placeholder={"Business Name"} required
                                                    defaultValue={customer ? customer.businessName : ""}/>
@@ -163,9 +274,8 @@ const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, r
                                 </button>
 
                                 <button className={"btn-form"} onClick={() => {
-                                    setJob(null)
-                                    setCustomer(null)
-                                    setShowForm(false)
+                                    queryClient.removeQueries(['selectedCustomer', 'selectedJob']);
+                                    queryClient.setQueryData('showForm', false);
                                 }}>
                                     Cancel
                                 </button>
@@ -176,9 +286,8 @@ const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, r
                                     } else {
                                         removeJob(job._id);
                                     }
-                                    setJob(null)
-                                    setCustomer(null)
-                                    setShowForm(false)
+                                    queryClient.removeQueries(['selectedCustomer', 'selectedJob']);
+                                    queryClient.setQueryData('showForm', false);
                                 }}>
                                     Delete
                                 </button>) : <></>}

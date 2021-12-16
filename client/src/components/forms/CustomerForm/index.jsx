@@ -1,9 +1,80 @@
+import { useMutation, useQueryClient } from "react-query";
+import API from '../../../utils/API';
 import './style.scss';
 
-const CustomerForm = ({ customer, setCustomer, submit, setShowForm, removeCustomer }) => {
+const CustomerForm = () => {
+    const queryClient = useQueryClient();
+    const customer = queryClient.getQueryData('selectedCustomer');
+    const submissionType = queryClient.getQueryData('submissionType');
+
+    // MUTATIONS
+    const createCustomer = useMutation(customer => API.createCustomer(customer), {
+        onSuccess: () => {
+            queryClient.invalidateQueries("customers");
+        }
+    });
+    const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries("customers");
+            queryClient.invalidateQueries("jobs");
+        }
+    });
+    const deleteCustomer = useMutation(id => API.deleteCustomer(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries("customers");
+            console.log("Customer deleted!");
+        },
+    });
+    const deleteJobs = useMutation(id => API.deleteJobsByCustomerId(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries("jobs");
+        }
+    });
+
+    // EVENTS
+    const removeCustomer = async () => {
+        let answer = window.confirm("Are you sure you want to delete?\n" +
+            "This will delete the customer and their service history from the database.\n" +
+            "This cannot be undone.");
+        if (answer) {
+            await deleteCustomer.mutate(customer._id);
+            deleteJobs.mutate(customer._id);
+            queryClient.removeQueries('selectedCustomer');
+            queryClient.setQueryData('showForm', false);
+        }
+    }
+    const submitForm = async e => {
+        try {
+            e.preventDefault();
+            const formData = Object.fromEntries(new FormData(e.target));
+            const customerData = {
+                businessName: formData.businessName.trim(),
+                contactName: formData.contactName.trim(),
+                phone: formData.phone.trim(),
+                address: {
+                    street1: formData.street1.trim(),
+                    street2: formData.street2.trim(),
+                    city: formData.city.trim(),
+                    state: formData.state.trim(),
+                    zipcode: formData.zipcode.trim()
+                },
+                notes: formData.notes.trim()
+            }
+            if (submissionType === 'edit') {
+                editCustomer.mutate({ id: customer._id, data: customerData});
+                queryClient.setQueryData('showForm', false);
+                return
+            }
+            if (submissionType === 'new') {
+                await createCustomer.mutateAsync(customerData);
+                queryClient.setQueryData('showForm', false);
+            }
+        } catch(err) { console.error(err) }
+    };
+
     return (
         <section>
-            <form id={"form-customer"} onSubmit={submit}>
+            <form id={"form-customer"} onSubmit={submitForm}>
                 <div className={"customer-area"}>
                     <div>
                         <label>
@@ -48,15 +119,13 @@ const CustomerForm = ({ customer, setCustomer, submit, setShowForm, removeCustom
                     </button>
 
                     <button className={"btn-form"} onClick={() => {
-                        setCustomer(null)
-                        setShowForm(false)
+                        queryClient.removeQueries('selectedCustomer');
+                        queryClient.setQueryData('showForm', false);
                     }}>
                         Cancel
                     </button>
 
-                    {customer && customer._id ? (<button className={"btn-form delete"} onClick={() => {
-                        removeCustomer(customer._id);
-                    }}>
+                    {customer && customer._id ? (<button className={"btn-form delete"} onClick={removeCustomer}>
                         Delete
                     </button>) : <></>}
                 </div>
