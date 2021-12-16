@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import { useCustomers } from "../../../hooks";
+import { Searchbar } from '../../index';
 
-const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
+const CustomersTable = ({ setSubmissionType, selectCustomer }) => {
     const {status, data, error, isFetching} = useCustomers();
-    const [customerList, setCustomerList] = useState([]);
-    const headers = ["Business Name", "Address", "Phone #", "Contact Name"];
+    const [customerList, selectCustomerList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        if (status === 'success') setCustomerList(data.data);
-    }, [status]);
+        if (status === 'success') selectCustomerList(data.data);
+    }, [status, data]);
 
     // Search for customers
     useEffect(() => {
         if (status === 'success') {
             if (searchTerm === "") {
-                setCustomerList(data.data);
+                selectCustomerList(data.data);
                 return;
             }
-            setCustomerList(
+            selectCustomerList(
                 data.data.filter(customer => {
                     return customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         customer.address.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -33,52 +34,48 @@ const CustomersTable = ({selectionHandler, deleteHandler, searchTerm}) => {
         case "error":
             return <h4 className="text-center my-5">Error: {error.message}</h4>;
         default:
-            return (
-                <div className="mt-5">
-                    <h3 className="float-start">Customer Search Results:</h3>
-                    <table className="table">
+        return (
+                <section>
+                    <div className={"section-header"}>
+                        <div>
+                            <Searchbar
+                                placeholder={"Search"}
+                                setSearch={setSearchTerm}
+                            />
+                        </div>
+                    </div>
+
+                    <table>
                         <thead>
-                        <tr>
-                            {headers.map(header => <th scope={"col"} key={header}>{header}</th>)}
-                            <td/>
-                        </tr>
+                            <tr>
+                                <th>Business Name</th>
+                                <th>Address</th>
+                                <th className={"text-center"}>Contact</th>
+                                <th className={"text-center"}>Phone #</th>
+                            </tr>
                         </thead>
 
                         <tbody>
                         {customerList.map(customer => (
-                            <tr key={customer._id}>
+                            <tr className={"table-item"} key={customer._id} onClick={() => {
+                                setSubmissionType("edit");
+                                selectCustomer(customer);
+                            }}>
                                 <td>{customer.businessName}</td>
                                 <td>
                                     {customer.address.street1}
-                                    {customer.address.street2 !== "" ? ", " + customer.address.street2 : ""}
-                                    <br/>
+                                    {customer.address.street2 !== "" ? ", " + customer.address.street2 : ""}<br/>
                                     {customer.address.city}, {customer.address.state} {customer.address.zipcode}
                                 </td>
-                                <td>{customer.phone}</td>
-                                <td>{customer.contactName}</td>
-                                <td>
-                                    <div className="float-end">
-                                        <button
-                                            className="btn btn-warning"
-                                            data-id={customer._id}
-                                            onClick={e => selectionHandler(e, customer)}
-                                        >view
-                                        </button>
-                                        <button
-                                            className="btn btn-danger ms-4"
-                                            data-id={customer._id}
-                                            onClick={deleteHandler}
-                                        >X
-                                        </button>
-                                    </div>
-                                </td>
+                                <td className={"text-center"}>{customer.contactName ? customer.contactName : "--"}</td>
+                                <td className={"text-center"}>{customer.phone}</td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
-                    {isFetching ? <p className="text-center my-5">Getting information from database...</p> : ""}
-                </div>
-            );
+                    {isFetching ? <p>Getting information from database...</p> : ""}
+                </section>
+            )
     }
 }
 

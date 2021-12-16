@@ -99,7 +99,7 @@ const ServiceForm = ({setShowForm, job, setJob, customer, setCustomer, submit, r
                                     <div className={"dollarInput"}>
                                         <FontAwesomeIcon className={"faDollarSign"} icon={faDollarSign}/>
                                         <input type={"text"} name={"totalBill"}
-                                               defaultValue={job ? job.totalBill : 0}/>
+                                               defaultValue={job ? job.totalBill : "0"}/>
                                     </div>
                                 </label>
 
