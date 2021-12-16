@@ -1,15 +1,15 @@
+import { useState } from 'react';
 import { Redirect } from "react-router-dom";
-import { useQuery, useQueryClient } from "react-query";
-import { useUser } from '../../hooks';
+import { useQueryClient } from "react-query";
+import { useData, useUser } from '../../react-query';
 import { CustomersTable, CustomerForm, SideNavbar } from "../../components";
-import CustomerHistory from './CustomerHistory';
 import './style.scss';
 
 const CustomerHome = () => {
     const queryClient = useQueryClient();
     const { user } = useUser();
-    const customer = queryClient.getQueryData('selectedCustomer');
-    const { data: showForm } = useQuery('showForm', () => {});
+    const [showHistory, setShowHistory] = useState(true);
+    const showCustomerForm = useData('showCustomerForm');
 
     // REDIRECT
     if (!user) {
@@ -25,43 +25,35 @@ const CustomerHome = () => {
                     <p className={"btn"} onClick={() => {
                         queryClient.setQueryData('submissionType', 'new')
                         queryClient.removeQueries('selectedCustomer');
-                        queryClient.setQueryData('showForm', true);
+                        setShowHistory(false);
+                        if (showCustomerForm) {
+                            const formFields = document.querySelectorAll('input, textarea');
+                            for (let field of formFields) field.value = "";
+                        } else {
+                            queryClient.setQueryData('showCustomerForm', true);
+                        }
                     }}>Create New</p>
                 </div>
             </div>
         )
     }
 
-    if (!showForm) {
-        return (
-            <>
-                <header>
-                    <SideNavbar />
-                </header>
+    return (
+        <>
+            <header>
+                <SideNavbar />
+            </header>
 
-                <main className={"container"}>
-                    <Header />
-                    <CustomersTable />
-                </main>
-            </>
-        )
-    }
-
-    if (showForm) {
-        return (
-            <>
-                <header>
-                    <SideNavbar />
-                </header>
-
-                <main className={"container"}>
-                    <Header />
-                    <CustomerForm />
-                    {customer ? <CustomerHistory /> : <></>}
-                </main>
-            </>
-        )
-    }
+            <main className={"container"}>
+                <Header />
+                {showCustomerForm ? (
+                    <CustomerForm showHistory={showHistory} />
+                ) : (
+                    <CustomersTable setShowHistory={setShowHistory}/>
+                )}
+            </main>
+        </>
+    )
 }
 
 export default CustomerHome;

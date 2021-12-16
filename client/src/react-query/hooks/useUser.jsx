@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { getStoredToken, clearStoredToken } from '../utils/storage';
-import API from "../utils/API";
+import { getStoredToken, clearStoredToken } from '../../utils/storage';
+import API from "../../utils/API";
 
 const fetchUser = async (id) => {
     try {

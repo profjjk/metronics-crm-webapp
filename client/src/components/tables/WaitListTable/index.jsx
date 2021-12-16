@@ -1,4 +1,4 @@
-import { useJobs } from '../../../hooks';
+import { useJobs } from '../../../react-query';
 import { useState, useEffect } from "react";
 import dayjs from 'dayjs';
 

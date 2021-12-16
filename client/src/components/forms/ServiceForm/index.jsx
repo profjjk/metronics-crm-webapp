@@ -1,33 +1,29 @@
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useCustomers } from '../../../hooks';
+import { useMutation, useQueryClient } from 'react-query';
+import { useCustomers, useData } from '../../../react-query';
+import { AutoComplete } from '../../index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
-import { AutoComplete } from '../../index';
-import './style.scss';
 import API from '../../../utils/API';
+import './style.scss';
 
 const ServiceForm = ({ viewRequests }) => {
     const queryClient = useQueryClient();
     const { status, data, error } = useCustomers();
-    const { data: job } = useQuery('selectedJob', () => {});
-    const { data: customer } = useQuery('selectedCustomer', () => {});
-    const submissionType = queryClient.getQueryData('submissionType');
-    const [matchFound, setMatchFound] = useState(null);
+    const customer = useData('selectedCustomer');
+    const job = useData('selectedJob');
+    const submissionType = useData('submissionType');
+    const [existingCustomer, setExistingCustomer] = useState(null);
 
     useEffect(() => {
         if (status === 'success' && viewRequests) {
-            const findMatch = data.data.filter(customer => {
+            const found = data.data.filter(customer => {
                 return job.customer.address.street1.toLowerCase() === customer.address.street1.toLowerCase() &&
                     job.customer.address.city.toLowerCase() === customer.address.city.toLowerCase()
             })
-            if (findMatch.length) {
-                setMatchFound(findMatch[0]);
-            } else {
-                setMatchFound(null);
-            }
+            if (found.length) setExistingCustomer(found[0]);
         }
-    }, [])
+    }, []);
 
     // DATA MUTATIONS
     const createJob = useMutation(job => API.createJob(job), {
@@ -102,13 +98,13 @@ const ServiceForm = ({ viewRequests }) => {
                 if(viewRequests) {
                     removeRequest(job._id)
                 }
-                queryClient.setQueryData('showForm', false);
+                queryClient.setQueryData('showServiceForm', false);
                 return
             }
             if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 editJob.mutate({ id: job._id, data: jobData });
-                queryClient.setQueryData('showForm', false);
+                queryClient.setQueryData('showServiceForm', false);
                 return
             }
             if (submissionType === 'new') {
@@ -117,7 +113,7 @@ const ServiceForm = ({ viewRequests }) => {
                 if(viewRequests) {
                     removeRequest(job._id)
                 }
-                queryClient.setQueryData('showForm', false);
+                queryClient.setQueryData('showServiceForm', false);
             }
         } catch(err) { console.error(err) }
     };
@@ -125,11 +121,10 @@ const ServiceForm = ({ viewRequests }) => {
         queryClient.setQueryData('submissionType', 'add');
         queryClient.setQueryData('selectedCustomer', {
             ...customer,
-            _id: matchFound._id,
-            businessName: matchFound.businessName,
-            address: matchFound.address
+            _id: existingCustomer._id,
+            businessName: existingCustomer.businessName,
+            address: existingCustomer.address
         });
-        setMatchFound(null);
     }
 
     switch (status) {
@@ -138,20 +133,20 @@ const ServiceForm = ({ viewRequests }) => {
         case "error":
             return <h4>Error: {error.message}</h4>;
         default:
-            if (matchFound) {
+            if (existingCustomer) {
                 return (
                     <section>
                         <div className={"use-existing-customer"}>
                             <h4>The address matches an existing customer:</h4>
                             <p className={"match"}>
-                                <strong>{matchFound.businessName}</strong><br/>
-                                {matchFound.address.street1} {matchFound.address.street2 ? (", " + matchFound.address.street2) : <></>}<br/>
-                                {matchFound.address.city}, {matchFound.address.state} {matchFound.address.zipcode}
+                                <strong>{existingCustomer.businessName}</strong><br/>
+                                {existingCustomer.address.street1} {existingCustomer.address.street2 ? (", " + existingCustomer.address.street2) : <></>}<br/>
+                                {existingCustomer.address.city}, {existingCustomer.address.state} {existingCustomer.address.zipcode}
                             </p>
                             <div>
-                                <p>Add this job to <strong>{matchFound.businessName}</strong>?</p>
+                                <p>Add this job to <strong>{existingCustomer.businessName}</strong>?</p>
                                 <button onClick={useExisting}>Yes</button>
-                                <button onClick={() => setMatchFound(null)}>No</button>
+                                <button onClick={() => setExistingCustomer(null)}>No</button>
                             </div>
                         </div>
                     </section>
@@ -260,8 +255,9 @@ const ServiceForm = ({ viewRequests }) => {
                                 </button>
 
                                 <button className={"btn-form"} onClick={() => {
-                                    queryClient.removeQueries(['selectedCustomer', 'selectedJob']);
-                                    queryClient.setQueryData('showForm', false);
+                                    queryClient.removeQueries('selectedCustomer');
+                                    queryClient.removeQueries('selectedJob');
+                                    queryClient.setQueryData('showServiceForm', false);
                                 }}>
                                     Cancel
                                 </button>
@@ -272,8 +268,9 @@ const ServiceForm = ({ viewRequests }) => {
                                     } else {
                                         removeJob(job._id);
                                     }
-                                    queryClient.removeQueries(['selectedCustomer', 'selectedJob']);
-                                    queryClient.setQueryData('showForm', false);
+                                    queryClient.removeQueries('selectedCustomer');
+                                    queryClient.removeQueries('selectedJob');
+                                    queryClient.setQueryData('showServiceForm', false);
                                 }}>
                                     Delete
                                 </button>) : <></>}

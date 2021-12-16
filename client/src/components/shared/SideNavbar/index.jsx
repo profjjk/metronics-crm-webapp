@@ -1,14 +1,12 @@
 import { Link, useHistory } from 'react-router-dom';
-import { useAuth, useUser } from "../../../hooks";
-import { useState, useEffect } from "react";
+import { useAuth } from "../../../react-query";
+import { useEffect } from "react";
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserFriends, faTools, faWarehouse, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 
 const SideNavbar = () => {
-    const { user } = useUser();
-    const [isLoggedIn, setIsLoggedIn] = useState(!!user)
     const { logout } = useAuth();
     const history = useHistory();
 

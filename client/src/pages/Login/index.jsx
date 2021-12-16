@@ -1,5 +1,5 @@
 import { Redirect } from "react-router-dom";
-import { useAuth, useUser } from "../../hooks";
+import { useAuth, useUser } from "../../react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useQueryClient } from 'react-query';
-import { useCustomers } from "../../../hooks";
+import { useCustomers } from "../../../react-query";
 import { Searchbar } from '../../index';
 
-const CustomersTable = () => {
+const CustomersTable = ({ setShowHistory }) => {
     const queryClient = useQueryClient();
     const {status, data, error, isFetching} = useCustomers();
     const [customerList, setCustomerList] = useState([]);
@@ -62,7 +62,8 @@ const CustomersTable = () => {
                             <tr className={"table-item"} key={customer._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedCustomer', customer);
-                                queryClient.setQueryData('showForm', true);
+                                setShowHistory(true);
+                                queryClient.setQueryData('showCustomerForm', true);
                             }}>
                                 <td>{customer.businessName}</td>
                                 <td>

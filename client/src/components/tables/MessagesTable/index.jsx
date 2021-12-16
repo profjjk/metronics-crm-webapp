@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useMessages } from "../../../hooks";
+import { useMessages } from "../../../react-query";
 import dayjs from "dayjs";
 import ViewMsg from './ViewMsg';
 // import './style.scss';
 
 const MessagesTable = () => {
-    const { status, data, error, isFetching } = useMessages();
+    const { status, data, error } = useMessages();
     const [msgList, setMsgList] = useState([]);
     const [viewMsg, setViewMsg] = useState(false);
     const [selectedMsg, setSelectedMsg] = useState(null);

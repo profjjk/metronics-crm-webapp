@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Redirect } from "react-router-dom";
-import { useQueryClient, useQuery } from "react-query";
-import { useUser } from "../../hooks";
+import { useQueryClient } from "react-query";
+import { useUser, useData } from "../../react-query";
 import { ServiceTable, ServiceForm, SideNavbar } from "../../components";
 import './style.scss';
 
 const ServiceHome = () => {
     const queryClient = useQueryClient();
     const { user } = useUser();
-    const { data: showForm } = useQuery('showForm', () => {});
-
+    const showServiceForm = useData('showServiceForm');
     const [viewRequests, setViewRequests] = useState(false);
     const [viewUnpaid, setViewUnpaid] = useState(false);
 
@@ -27,18 +26,18 @@ const ServiceHome = () => {
                     <p className={"btn"} onClick={() => {
                         setViewRequests(false);
                         setViewUnpaid(false);
-                        queryClient.invalidateQueries('jobs');
-                        queryClient.setQueryData('showForm', false);
+                        queryClient.refetchQueries('jobs');
+                        queryClient.setQueryData('showServiceForm', false);
                     }}>View All</p>
 
                     <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('showForm', false);
+                        queryClient.setQueryData('showServiceForm', false);
                         setViewUnpaid(false);
                         setViewRequests(true);
                     }}>View Online Requests</p>
 
                     <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('showForm', false);
+                        queryClient.setQueryData('showServiceForm', false);
                         setViewRequests(false);
                         setViewUnpaid(true);
                     }}>View Unpaid</p>
@@ -46,9 +45,15 @@ const ServiceHome = () => {
                     <p className={"btn"} onClick={() => {
                         setViewRequests(false);
                         setViewUnpaid(false);
-                        queryClient.removeQueries(['selectedJob', 'selectedCustomer']);
+                        queryClient.removeQueries('selectedCustomer');
+                        queryClient.removeQueries('selectedJob');
                         queryClient.setQueryData('submissionType', 'new');
-                        queryClient.setQueryData('showForm', true);
+                        if (showServiceForm) {
+                            const formFields = document.querySelectorAll('input, textarea');
+                            for (let field of formFields) field.value = "";
+                        } else {
+                            queryClient.setQueryData('showServiceForm', true);
+                        }
                     }}>Create New</p>
                 </div>
             </div>
@@ -63,7 +68,7 @@ const ServiceHome = () => {
 
             <main className={"container"}>
                 <Header />
-                {showForm ? (
+                {showServiceForm ? (
                     <ServiceForm viewRequests={viewRequests}/>
                 ) : (
                     <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid}/>

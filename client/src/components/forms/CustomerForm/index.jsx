@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "react-query";
+import CustomerHistory from './CustomerHistory';
 import API from '../../../utils/API';
 import './style.scss';
+import { useData } from '../../../react-query';
 
-const CustomerForm = () => {
+const CustomerForm = ({ showHistory }) => {
     const queryClient = useQueryClient();
-    const customer = queryClient.getQueryData('selectedCustomer');
+    const customer = useData('selectedCustomer');
     const submissionType = queryClient.getQueryData('submissionType');
 
     // MUTATIONS
@@ -40,7 +42,7 @@ const CustomerForm = () => {
             await deleteCustomer.mutate(customer._id);
             deleteJobs.mutate(customer._id);
             queryClient.removeQueries('selectedCustomer');
-            queryClient.setQueryData('showForm', false);
+            queryClient.setQueryData('showCustomerForm', false);
         }
     }
     const submitForm = async e => {
@@ -62,12 +64,12 @@ const CustomerForm = () => {
             }
             if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
-                queryClient.setQueryData('showForm', false);
+                queryClient.setQueryData('showCustomerForm', false);
                 return
             }
             if (submissionType === 'new') {
                 await createCustomer.mutateAsync(customerData);
-                queryClient.setQueryData('showForm', false);
+                queryClient.setQueryData('showCustomerForm', false);
             }
         } catch(err) { console.error(err) }
     };
@@ -120,7 +122,7 @@ const CustomerForm = () => {
 
                     <button className={"btn-form"} onClick={() => {
                         queryClient.removeQueries('selectedCustomer');
-                        queryClient.setQueryData('showForm', false);
+                        queryClient.setQueryData('showCustomerForm', false);
                     }}>
                         Cancel
                     </button>
@@ -130,6 +132,8 @@ const CustomerForm = () => {
                     </button>) : <></>}
                 </div>
             </form>
+
+            {showHistory ? <CustomerHistory/> : <></>}
         </section>
     )
 }

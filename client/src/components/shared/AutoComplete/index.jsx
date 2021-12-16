@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useQueryClient } from 'react-query';
-import { useCustomers } from "../../../hooks";
+import { useCustomers } from "../../../react-query";
 import './style.scss';
 
 const AutoComplete = () => {
   const queryClient = useQueryClient();
   const { data } = useCustomers()
-  const [activeSuggestion, setActiveSuggestion] = useState(0); // index of a selected suggestion
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]); // an array of suggestions matching user input
+  const [activeSuggestion, setActiveSuggestion] = useState(0);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInput, setUserInput] = useState("");
 
@@ -58,7 +58,6 @@ const AutoComplete = () => {
           {filteredSuggestions.map((suggestion, index) => {
             let className;
 
-            // Flag the active suggestion with a class
             if (index === activeSuggestion) {
               className = "suggestion-active";
             }

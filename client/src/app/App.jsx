@@ -1,6 +1,6 @@
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientProvider } from 'react-query';
-import { queryClient } from '../hooks';
+import { queryClient } from '../react-query';
 import Routes from "./routes";
 import './main.scss';
 

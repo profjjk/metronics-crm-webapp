@@ -1,4 +1,4 @@
-import { useParts } from "../../../hooks";
+import { useParts } from "../../../react-query";
 import {useEffect, useState} from "react";
 import './style.scss';
 

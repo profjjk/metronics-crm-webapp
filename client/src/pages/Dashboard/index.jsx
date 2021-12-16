@@ -1,5 +1,5 @@
 import { Redirect } from "react-router-dom";
-import { useUser } from "../../hooks";
+import { useUser } from "../../react-query";
 import { WaitListTable, RestockTable, MessagesTable } from "../../components";
 import { SideNavbar } from "../../components";
 import './style.scss';

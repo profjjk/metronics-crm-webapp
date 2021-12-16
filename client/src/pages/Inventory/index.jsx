@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useQueryClient, useMutation } from "react-query";
-import { useUser } from '../../hooks';
+import { useUser } from '../../react-query';
 import {Searchbar, PartsTable, PartForm, SideNavbar} from "../../components";
 import API from '../../utils/API';
 import './style.scss';

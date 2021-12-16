@@ -1,6 +1,6 @@
 import useUser from "./useUser";
-import API from '../utils/API';
-import {clearStoredToken, setStoredToken} from "../utils/storage";
+import API from '../../utils/API';
+import {clearStoredToken, setStoredToken} from "../../utils/storage";
 
 const useAuth = () => {
     const { updateUser, clearUser } = useUser();

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
-import { useJobs } from '../../hooks';
+import { useJobs } from '../../../react-query';
 import dayjs from 'dayjs';
 
 const CustomerHistory = () => {
@@ -41,7 +41,7 @@ const CustomerHistory = () => {
                             <tr className={"table-item"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedJob', job);
-                                queryClient.setQueryData('showForm', true);
+                                queryClient.setQueryData('showServiceForm', true);
                                 history.push('/service');
                             }}>
                                 <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>

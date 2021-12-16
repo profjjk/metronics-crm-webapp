@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParts } from "../../../hooks";
+import { useParts } from "../../../react-query";
 
 const PartsTable = ({searchTerm, selectionHandler, quantityHandler, deleteHandler}) => {
     const { status, data, error } = useParts();
