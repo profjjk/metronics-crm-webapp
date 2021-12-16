@@ -1,9 +1,9 @@
 import './style.scss';
 
-const CustomerForm = ({ customer, setCustomer, submit, setShowForm }) => {
+const CustomerForm = ({ customer, setCustomer, submit, setShowForm, removeCustomer }) => {
     return (
         <section>
-            <form id={"form-customer"}>
+            <form id={"form-customer"} onSubmit={submit}>
                 <div className={"customer-area"}>
                     <div>
                         <label>
@@ -54,18 +54,11 @@ const CustomerForm = ({ customer, setCustomer, submit, setShowForm }) => {
                         Cancel
                     </button>
 
-                    {/*{job && job._id ? (<button className={"btn-form delete"} onClick={() => {*/}
-                    {/*    if (viewRequests) {*/}
-                    {/*        removeRequest(job._id)*/}
-                    {/*    } else {*/}
-                    {/*        removeJob(job._id);*/}
-                    {/*    }*/}
-                    {/*    setJob(null)*/}
-                    {/*    setCustomer(null)*/}
-                    {/*    setShowForm(false)*/}
-                    {/*}}>*/}
-                    {/*    Delete*/}
-                    {/*</button>) : <></>}*/}
+                    {customer && customer._id ? (<button className={"btn-form delete"} onClick={() => {
+                        removeCustomer(customer._id);
+                    }}>
+                        Delete
+                    </button>) : <></>}
                 </div>
             </form>
         </section>

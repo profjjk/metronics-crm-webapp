@@ -32,7 +32,7 @@ const CustomerHistory = ({ customerId }) => {
                         </thead>
 
                         <tbody>
-                        {jobList.map(job => (
+                        {jobList.length ? jobList.map(job => (
                             <tr className={"table-item"} key={job._id} onClick={() => {
                                 // setSubmissionType("edit");
                                 // selectJob(job);
@@ -41,7 +41,7 @@ const CustomerHistory = ({ customerId }) => {
                                 <td>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
                                 <td>{job.serviceNotes ? job.serviceNotes : ""}</td>
                             </tr>
-                        ))}
+                        )) : <tr><td className={"empty"}>** No job history to display **</td></tr>}
                         </tbody>
                     </table>
                 </section>
