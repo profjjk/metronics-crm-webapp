@@ -22,7 +22,7 @@ const Requests = () => {
                 })
             );
         }
-    }, [searchTerm, data.data]);
+    }, [searchTerm, data]);
 
     switch (status) {
         case "loading":
@@ -54,7 +54,7 @@ const Requests = () => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={() => {
+                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'new');
                                 queryClient.setQueryData('selectedJob', job);
                                 queryClient.setQueryData('selectedCustomer', job.customer);

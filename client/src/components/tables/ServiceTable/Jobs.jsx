@@ -28,7 +28,7 @@ const Jobs = () => {
                 setJobList(data.data);
             }
         }
-    }, [statusFilter, data.data]);
+    }, [statusFilter, data]);
 
     // Filter by search term
     useEffect(() => {
@@ -44,7 +44,7 @@ const Jobs = () => {
                 );
             }
         }
-    }, [searchTerm, data.data]);
+    }, [searchTerm, data]);
 
     switch (status) {
         case "loading":
@@ -87,7 +87,7 @@ const Jobs = () => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={() => {
+                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedJob', job);
                                 queryClient.setQueryData('selectedCustomer', job.customer);

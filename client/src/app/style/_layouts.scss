@@ -1,0 +1,65 @@
+@import "config";
+
+/* ==================
+   LAYOUT
+   ================== */
+
+/* GENERAL LAYOUT */
+* {
+  outline: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: $light;
+  font-family: 'Montserrat', sans-serif;
+  color: $dark;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100px;
+  height: 100%;
+}
+
+.container {
+  margin-left: 100px;
+  padding: 20px 40px;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  color: $blue;
+  margin: 1rem auto 3.5rem auto;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $blue;
+  margin-bottom: 1.5rem;
+}
+
+.button-area {
+  display: flex;
+  gap: 1rem;
+}

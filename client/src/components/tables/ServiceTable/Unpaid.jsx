@@ -14,7 +14,7 @@ const Unpaid = () => {
         if (status === 'success') {
             setJobList(data.data.filter(job => !job.isPaid && job.status === 'Completed'));
         }
-    }, [data.data])
+    }, [data])
 
     // Filter by search term
     useEffect(() => {
@@ -59,7 +59,7 @@ const Unpaid = () => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item"} key={job._id} onClick={() => {
+                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedJob', job);
                                 queryClient.setQueryData('selectedCustomer', job.customer);

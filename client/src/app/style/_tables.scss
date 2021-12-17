@@ -1,0 +1,48 @@
+@import "config";
+
+/* ==================
+   TABLES
+   ================== */
+
+table {
+  width: 100%;
+}
+
+td, th {
+  padding: 0.3rem;
+  width: 100%;
+  text-align: left;
+}
+
+th {
+  font-size: 1.1rem;
+}
+
+tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+thead, tbody {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+}
+
+.table-item {
+  background: white;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.clickable {
+  border: 1px solid $blue;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.2);
+  &:hover {
+    cursor: pointer;
+    background: $blue;
+    color: white;
+  }
+}

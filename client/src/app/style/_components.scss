@@ -1,0 +1,51 @@
+@import "config";
+
+/* ==================
+   COMPONENTS
+   ================== */
+
+[class|=btn] {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background: $blue;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.inventory-buttons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+
+
+  .quantity {
+    padding: 2px 6px;
+    color: $dark;
+    font-size: 1rem;
+    font-weight: 700;
+    border: 1px solid $dark;
+    border-radius: 50%;
+    &:hover {
+      cursor: pointer;
+      background: $blue;
+      border-color: $blue;
+      color: white;
+    }
+  }
+
+  .select {
+    margin: -10px;
+    color: $dark;
+    font-size: 1.8rem;
+    font-weight: 700;
+    &:hover {
+      cursor: pointer;
+      color: $blue;
+    }
+  }
+}

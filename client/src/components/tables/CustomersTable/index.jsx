@@ -59,7 +59,7 @@ const CustomersTable = ({ setShowHistory }) => {
 
                         <tbody>
                         {customerList.map(customer => (
-                            <tr className={"table-item"} key={customer._id} onClick={() => {
+                            <tr className={"table-item clickable"} key={customer._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedCustomer', customer);
                                 setShowHistory(true);

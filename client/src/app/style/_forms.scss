@@ -1,0 +1,80 @@
+@import "config";
+
+/* ==================
+   FORMS
+   ================== */
+
+input, select {
+  padding: 0.6rem;
+  border: 0.5px solid lightgrey;
+  border-radius: 5px;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+label {
+  font-weight: 600;
+}
+
+textarea {
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.6rem;
+  font-size: 1rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-sm, .dropdown {
+  width: 100%;
+  max-width: 12rem;
+
+}
+
+.dropdown {
+  position: relative;
+  .faChevronDown {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+  }
+  select {
+    appearance: none;
+    cursor: pointer;
+    width: 100%;
+    padding-right: 1.8rem;
+  }
+}
+
+.invoiceInput {
+  position: relative;
+  .faHashtag {
+    position: absolute;
+    top: 11px;
+    left: 9px;
+  }
+  input {
+    appearance: none;
+    padding-left: 30px;
+  }
+}
+
+.dollarInput {
+  position: relative;
+  .faDollarSign {
+    position: absolute;
+    top: 11px;
+    left: 11px;
+  }
+  input {
+    padding-left: 25px;
+  }
+}
+
+.btn-form {
+  width: 6rem;
+  height: 2.5rem;
+}
