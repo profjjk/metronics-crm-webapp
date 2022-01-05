@@ -35,6 +35,7 @@ const CustomerForm = ({ showHistory }) => {
 
     // EVENTS
     const removeCustomer = async () => {
+        // TODO: create custom modal for confirmation so the page doesn't reload.
         let answer = window.confirm("Are you sure you want to delete?\n" +
             "This will delete the customer and their service history from the database.\n" +
             "This cannot be undone.");
@@ -110,7 +111,7 @@ const CustomerForm = ({ showHistory }) => {
 
                 <div className={"notes-area"}>
                     <label>
-                        Customer Notes
+                        Notes
                         <textarea name={"notes"} defaultValue={customer ? customer.notes : ""} />
                     </label>
                 </div>
@@ -133,7 +134,7 @@ const CustomerForm = ({ showHistory }) => {
                 </div>
             </form>
 
-            {showHistory ? <CustomerHistory/> : <></>}
+            {showHistory ? <CustomerHistory /> : <></>}
         </section>
     )
 }

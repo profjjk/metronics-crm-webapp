@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import { useData, useUser } from '../../react-query';
-import { CustomersTable, CustomerForm, SideNavbar } from "../../components";
+import { CustomersTable, CustomerForm, SideNavbar, ServiceForm } from "../../components";
 import './style.scss';
 
 const CustomerHome = () => {
@@ -49,7 +49,7 @@ const CustomerHome = () => {
                 {showCustomerForm ? (
                     <CustomerForm showHistory={showHistory} />
                 ) : (
-                    <CustomersTable setShowHistory={setShowHistory}/>
+                    <CustomersTable setShowHistory={setShowHistory} />
                 )}
             </main>
         </>

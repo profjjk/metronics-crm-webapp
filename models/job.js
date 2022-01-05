@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema({
     customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true },
-    serviceDate: { type: String, index: true },
+    serviceDate: { type: String },
     invoiceNumber: { type: String, index: true },
     issueNotes: String,
     serviceNotes: String,

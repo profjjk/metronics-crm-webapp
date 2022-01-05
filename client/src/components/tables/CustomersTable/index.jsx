@@ -49,7 +49,7 @@ const CustomersTable = ({ setShowHistory }) => {
 
                     <table>
                         <thead>
-                            <tr>
+                            <tr className={"tr-customer"}>
                                 <th>Business Name</th>
                                 <th>Address</th>
                                 <th className={"text-center"}>Contact</th>
@@ -59,16 +59,16 @@ const CustomersTable = ({ setShowHistory }) => {
 
                         <tbody>
                         {customerList.map(customer => (
-                            <tr className={"table-item clickable"} key={customer._id} onClick={() => {
+                            <tr className={"table-item tr-customer clickable"} key={customer._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedCustomer', customer);
-                                setShowHistory(true);
                                 queryClient.setQueryData('showCustomerForm', true);
+                                setShowHistory(true);
                             }}>
                                 <td>{customer.businessName}</td>
                                 <td>
                                     {customer.address.street1}
-                                    {customer.address.street2 !== "" ? ", " + customer.address.street2 : ""}<br/>
+                                    {customer.address.street2 !== "" ? ", " + customer.address.street2 + ", " : ", "}
                                     {customer.address.city}, {customer.address.state} {customer.address.zipcode}
                                 </td>
                                 <td className={"text-center"}>{customer.contactName ? customer.contactName : "--"}</td>

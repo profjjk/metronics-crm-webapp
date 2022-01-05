@@ -43,32 +43,33 @@ const Requests = () => {
 
                     <table>
                         <thead>
-                        <tr>
-                            <th>Date Submitted</th>
+                        <tr className={"tr-job"}>
+                            <th className={"text-center"}>Date Submitted</th>
                             <th>Business Name</th>
                             <th>City</th>
-                            <th>Contact Name</th>
-                            <th>Phone #</th>
+                            <th className={"text-center"}>Contact Name</th>
+                            <th className={"text-center"}>Phone #</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
+                            <tr className={"table-item tr-job clickable"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'new');
                                 queryClient.setQueryData('selectedJob', job);
                                 queryClient.setQueryData('selectedCustomer', job.customer);
                                 queryClient.setQueryData('showServiceForm', true);
                             }}>
-                                <td>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
+                                <td className={"text-center"}>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}, {job.customer.address.state}</td>
-                                <td>{job.customer.contactName}</td>
-                                <td>{job.customer.phone}</td>
+                                <td className={"text-center"}>{job.customer.contactName}</td>
+                                <td className={"text-center"}>{job.customer.phone}</td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
+                    {jobList.length < 1 ? <p className={"empty"}>** No online requests to display **</p> : <></>}
                 </section>
             )
     }

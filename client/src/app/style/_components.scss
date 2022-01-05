@@ -49,3 +49,12 @@
     }
   }
 }
+
+.mark-paid {
+  color: $blue;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+}

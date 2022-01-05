@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
-import { Searchbar } from '../../index';
-import dayjs from 'dayjs';
+import { useMutation, useQueryClient } from 'react-query';
 import { useJobs } from '../../../react-query';
+import { Searchbar } from '../../index';
+import sortByServiceDate from '../../../utils/sort';
+import API from '../../../utils/API';
+import dayjs from 'dayjs';
 
 const Unpaid = () => {
     const queryClient = useQueryClient();
@@ -12,7 +14,7 @@ const Unpaid = () => {
 
     useEffect(() => {
         if (status === 'success') {
-            setJobList(data.data.filter(job => !job.isPaid && job.status === 'Completed'));
+            setJobList(sortByServiceDate(data.data.filter(job => !job.isPaid && job.status === 'Completed')));
         }
     }, [data])
 
@@ -20,15 +22,26 @@ const Unpaid = () => {
     useEffect(() => {
         if (searchTerm !== "") {
             setJobList(
-                jobList.filter(job => {
+                sortByServiceDate(jobList.filter(job => {
                     return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (job.customer.contactName.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (job.customer.phone.includes(searchTerm));
-                })
+                }))
             );
         }
     }, [searchTerm]);
+
+    // MUTATION
+    const editJob = useMutation(job => API.updateJob(job.id, job.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('jobs');
+        }
+    });
+
+    const markPaid = (job) => {
+        editJob.mutate({ id: job._id, data: {...job, isPaid: true} });
+    }
 
     switch (status) {
         case "loading":
@@ -49,30 +62,28 @@ const Unpaid = () => {
 
                     <table>
                         <thead>
-                        <tr>
-                            <th>Service Date</th>
+                        <tr className={"tr-job"}>
+                            <th className={"text-center"}>Service Date</th>
                             <th>Business Name</th>
                             <th className={"text-center"}>Invoice #</th>
                             <th className={"text-center"}>Total Bill</th>
+                            <th/>
                         </tr>
                         </thead>
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
-                                queryClient.setQueryData('submissionType', 'edit');
-                                queryClient.setQueryData('selectedJob', job);
-                                queryClient.setQueryData('selectedCustomer', job.customer);
-                                queryClient.setQueryData('showServiceForm', true);
-                            }}>
-                                <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
+                            <tr className={"table-item tr-job"} key={job._id}>
+                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
                                 <td className={"text-center"}>$ {job.totalBill}</td>
+                                <td className={"mark-paid text-center"} onClick={() => markPaid(job)}>Mark as paid</td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
+                    {jobList.length < 1 ? <p className={"empty"}>** No unpaid jobs to display **</p> : <></>}
                 </section>
             )
     }

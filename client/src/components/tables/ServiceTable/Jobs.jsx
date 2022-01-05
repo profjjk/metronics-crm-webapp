@@ -77,7 +77,7 @@ const Jobs = () => {
                     <table>
                         <thead>
                         <tr className={"tr-job"}>
-                            <th>Service Date</th>
+                            <th className={"text-center"}>Service Date</th>
                             <th>Business Name</th>
                             <th>City</th>
                             <th className={"text-center"}>Invoice #</th>
@@ -93,7 +93,7 @@ const Jobs = () => {
                                 queryClient.setQueryData('selectedCustomer', job.customer);
                                 queryClient.setQueryData('showServiceForm', true);
                             }}>
-                                <td>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
+                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>
                                 <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
@@ -102,6 +102,7 @@ const Jobs = () => {
                         ))}
                         </tbody>
                     </table>
+                    {jobList.length < 1 ? <p className={"empty"}>** No jobs to display **</p> : <></>}
                 </section>
             )
     }

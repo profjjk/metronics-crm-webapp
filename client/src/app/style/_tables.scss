@@ -48,14 +48,16 @@ thead, tbody {
 }
 
 .tr-customer {
-
+  display: grid;
+  grid-template-columns: 3fr 5fr 2fr 2fr;
+}
+.tr-history {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
 }
 .tr-job {
   display: grid;
-  grid-template-columns: 2fr 4fr 3fr 1fr 2fr;
-}
-.tr-request {
-
+  grid-template-columns: 2fr 4fr 2fr 2fr 2fr;
 }
 .tr-part {
   display: grid;
