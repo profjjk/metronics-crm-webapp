@@ -13,7 +13,7 @@ const authHeader = () => {
   const token = getStoredToken().token;
   if (token) {
     return { 'metronics': token };
-  } else {}
+  }
 }
 
 const API = {

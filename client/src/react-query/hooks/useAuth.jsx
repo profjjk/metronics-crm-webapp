@@ -14,11 +14,11 @@ const useAuth = () => {
         } catch(err) { console.error(err.message) }
     }
 
-    const register = async (username, password, authorization) => {
+    const register = async ({ username, password }) => {
+        console.log(username, password)
         const newUser = {
             username: username,
-            password: password,
-            authorization: authorization
+            password: password
         }
         try {
             const response = await API.register(newUser);

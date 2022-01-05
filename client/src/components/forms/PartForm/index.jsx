@@ -1,72 +1,122 @@
+import { useData } from '../../../react-query';
+import { useMutation, useQueryClient } from 'react-query';
+import API from '../../../utils/API';
 import './style.scss';
 
-const PartForm = ({ submitHandler, setShowForm, part }) => {
+const PartForm = () => {
+    const queryClient = useQueryClient();
+    const part = useData('selectedPart');
+    const submissionType = useData('submissionType');
+
+    // MUTATIONS
+    const createPart = useMutation(part => API.createPart(part), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('parts');
+        }
+    });
+    const updatePart = useMutation(part => API.updatePart(part.id, part.data), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('parts');
+        }
+    });
+    const deletePart = useMutation(id => API.deletePart(id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries('parts');
+        }
+    });
+
+    // EVENT HANDLERS
+    const submit = async e => {
+        try {
+            e.preventDefault();
+            const formData = Object.fromEntries(new FormData(e.target))
+            const partData = {
+                partNumber: formData.partNumber.toUpperCase().trim(),
+                description: formData.description.trim(),
+                purchasePrice: parseFloat(formData.purchasePrice.trim()),
+                salePrice: parseFloat(formData.salePrice.trim()),
+                stock: parseInt(formData.stock.trim()),
+                minimum: parseInt(formData.minimum.trim())
+            }
+            if (submissionType === 'edit') {
+                await updatePart.mutate({id: part._id, data: partData});
+                queryClient.setQueryData('showPartForm', false);
+                return
+            }
+            if (submissionType === 'new') {
+                await createPart.mutate(partData);
+                queryClient.setQueryData('showPartForm', false);
+            }
+        } catch (err) { console.error(err) }
+    };
+
+    const removePart = (id) => {
+        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.");
+        if (answer) deletePart.mutate(id);
+    }
+
     return (
-        <form className="p-5" onSubmit={submitHandler}>
-            <h1 className="text-primary text-center mb-5">{part ? "Edit Part Form" : "New Part Form"}</h1>
-
-            <div className="my-3">
-                <h4 className={"px-3"}>Part Information</h4>
-                <div className="p-3" id={"partForm-top"}>
-                    <input
-                        type="text"
-                        className="form-control text-center"
-                        name="partNumber"
-                        placeholder={"Part #"}
-                        defaultValue={part ? part.partNumber : ""}
-                    />
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="description"
-                        placeholder={"Description"}
-                        defaultValue={part ? part.description : ""}
-                    />
-                    <input
-                        type="text"
-                        className="form-control text-center"
-                        name="stock"
-                        placeholder={"# in stock"}
-                        defaultValue={part ? part.stock : ""}
-                    />
+        <section>
+            <form id={"form-part"} onSubmit={submit}>
+                <div>
+                    <label className={'text-center'}>
+                        Part #
+                        <input className={'text-center'} type={'text'} name={'partNumber'}
+                            placeholder={"Part #"}
+                            defaultValue={part ? part.partNumber : ""}
+                        />
+                    </label>
+                    <label>
+                        Description
+                        <input type={'text'} name={'description'}
+                            placeholder={"Description"}
+                            defaultValue={part ? part.description : ""}
+                        />
+                    </label>
+                    <label className={'text-center'}>
+                        In Stock
+                        <input className={'text-center'} type={'text'} name={'stock'}
+                            placeholder={"#"}
+                            defaultValue={part ? part.stock : ""}
+                        />
+                    </label>
                 </div>
-                <div className="p-3" id={"partForm-middle"}>
-                    <input
-                        type="text"
-                        className="form-control text-center"
-                        name="purchasePrice"
-                        placeholder={"Purchase $"}
-                        defaultValue={part ? part.purchasePrice : ""}
-                    />
-                    <input
-                        type="text"
-                        className="form-control text-center"
-                        name="salePrice"
-                        placeholder={"Sale $"}
-                        defaultValue={part ? part.salePrice : ""}
-                    />
-                    <label className={"text-end"}>Notify me when stock drops below:</label>
-                    <input
-                        type="text"
-                        className="form-control text-center"
-                        name="minimum"
-                        placeholder={"#"}
-                        defaultValue={part ? part.minimum : ""}
-                    />
-                </div>
-            </div>
 
-            <div className="mt-4 px-3">
-                <button className="btn btn-primary me-3 form-btn" type="submit">
-                    Save
-                </button>
-                <button
-                    className="btn btn-secondary form-btn"
-                    onClick={() => setShowForm(false)}
+                <div>
+                    <label className={'stock-notification'}>
+                        Notify me when stock drops below:
+                        <input className={'text-center'} type={'text'} name={'minimum'}
+                            placeholder={"#"}
+                            defaultValue={part ? part.minimum : ""}
+                        />
+                    </label>
+                </div>
+
+                <div className={"button-area"}>
+                    <button className={"btn-form "} type={'submit'}>
+                        Save
+                    </button>
+
+                    <button
+                        className={"btn-form "}
+                        onClick={() => {
+                            queryClient.removeQueries('selectedPart');
+                            queryClient.setQueryData('showPartForm', false);
+                        }}
                     >Cancel
-                </button>
-            </div>
-        </form>
+                    </button>
+
+                    {part && part._id ? (<button className={"btn-form delete"} onClick={() => {
+                        removePart(part._id);
+                        queryClient.removeQueries('selectedCustomer');
+                        queryClient.removeQueries('selectedJob');
+                        queryClient.setQueryData('showServiceForm', false);
+                    }}>
+                        Delete
+                    </button>) : <></>}
+                </div>
+            </form>
+        </section>
     )
 }
 

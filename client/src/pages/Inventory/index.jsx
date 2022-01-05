@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useQueryClient } from "react-query";
-import { useUser } from '../../react-query';
+import { useData, useUser } from '../../react-query';
 import { PartsTable, PartForm, SideNavbar } from "../../components";
 import './style.scss';
 
 const InventoryHome = () => {
     const queryClient = useQueryClient();
     const { user } = useUser();
-    const [showPartForm, setShowPartForm] = useState(false);
+    const showPartForm = useData('showPartForm');
 
     // REDIRECTS
     if (!user) {
@@ -23,15 +23,16 @@ const InventoryHome = () => {
                 <div className={"button-area"}>
                     <p className={"btn"} onClick={() => {
                         queryClient.refetchQueries('parts');
-                        // queryClient.setQueryData('showServiceForm', false);
+                        queryClient.setQueryData('showPartForm', false);
                     }}>View All</p>
 
                     <p className={"btn"} onClick={() => {
-                        // queryClient.setQueryData('showServiceForm', false);
+                        queryClient.setQueryData('showPartForm', false);
                     }}>View Low Stock</p>
 
                     <p className={"btn"} onClick={() => {
-                        // queryClient.setQueryData('showServiceForm', false);
+                        queryClient.setQueryData('submissionType', 'new');
+                        queryClient.setQueryData('showPartForm', true);
                     }}>Create New</p>
                 </div>
             </div>

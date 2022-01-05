@@ -59,17 +59,15 @@ const ServiceForm = ({ viewRequests }) => {
 
     // EVENT HANDLERS
     const removeJob = id => {
-        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
-        if (answer) {
-            deleteJob.mutate(id)
-        }
+        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.");
+        if (answer) deleteJob.mutate(id);
     };
     const removeRequest = id => {
         deleteRequest.mutate(id);
     };
     const submit = async e => {
+        e.preventDefault();
         try {
-            e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
             const jobData = {
                 status: formData.status,

@@ -3,7 +3,6 @@
 /* ==================
    COMPONENTS
    ================== */
-
 [class|=btn] {
   padding: 5px 10px;
   border: none;
@@ -39,9 +38,10 @@
   }
 
   .select {
-    margin: -10px;
+    //margin: -10px;
+    padding: 2px 5px;
     color: $dark;
-    font-size: 1.8rem;
+    font-size: 1.1rem;
     font-weight: 700;
     &:hover {
       cursor: pointer;

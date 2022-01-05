@@ -76,7 +76,7 @@ const Jobs = () => {
 
                     <table>
                         <thead>
-                        <tr>
+                        <tr className={"tr-job"}>
                             <th>Service Date</th>
                             <th>Business Name</th>
                             <th>City</th>
@@ -87,7 +87,7 @@ const Jobs = () => {
 
                         <tbody>
                         {jobList.map(job => (
-                            <tr className={"table-item clickable"} key={job._id} onClick={() => {
+                            <tr className={"table-item tr-job clickable"} key={job._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'edit');
                                 queryClient.setQueryData('selectedJob', job);
                                 queryClient.setQueryData('selectedCustomer', job.customer);

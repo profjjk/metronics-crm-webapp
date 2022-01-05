@@ -23,19 +23,22 @@ const AutoComplete = () => {
 
   const onClick = e => {
     let customer = data.data.filter(customer => customer._id === e.target.dataset.id);
+    queryClient.setQueryData('submissionType', 'add');
+    queryClient.setQueryData('selectedCustomer', customer[0]);
+    setUserInput(customer[0].businessName);
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
-    setUserInput(customer[0].businessName);
-    queryClient.setQueryData('submissionType', 'add');
-    queryClient.setQueryData('selectedCustomer', customer[0]);
   }
 
-  const onKeyDown = e => {
+  /* const onKeyDown = e => {
     if (e.keyCode === 13) {
+      let customer = filteredSuggestions[activeSuggestion];
+      queryClient.setQueryData('submissionType', 'add');
+      queryClient.setQueryData('selectedCustomer', filteredSuggestions[activeSuggestion]);
+      setUserInput(customer.businessName);
       setActiveSuggestion(0);
       setShowSuggestions(false);
-      setUserInput(filteredSuggestions[activeSuggestion]);
     } else if (e.keyCode === 38) {
       if (activeSuggestion === 0) {
         return;
@@ -47,7 +50,7 @@ const AutoComplete = () => {
       }
       setActiveSuggestion(activeSuggestion + 1);
     }
-  }
+  } */
 
   let suggestionsListComponent;
 
@@ -79,7 +82,7 @@ const AutoComplete = () => {
             placeholder="Business Name"
             name={"businessName"}
             onChange={onChange}
-            onKeyDown={onKeyDown}
+            // onKeyDown={onKeyDown}
             value={userInput}
             required
         />
@@ -89,3 +92,5 @@ const AutoComplete = () => {
 }
 
 export default AutoComplete;
+
+// BUG: if AutoComplete suggestion selected using a click event && then user hits the 'enter' key to submit form... crash and burn.

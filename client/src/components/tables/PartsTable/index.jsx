@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParts } from "../../../react-query";
 import { Searchbar } from '../../index';
 import { useMutation, useQueryClient } from 'react-query';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import API from '../../../utils/API';
 
 const PartsTable = () => {
@@ -24,68 +26,23 @@ const PartsTable = () => {
                 })
             );
         }
-    }, [searchTerm, status]);
+    }, [searchTerm, status, data]);
 
 
     // MUTATIONS
-    const createPart = useMutation(part => API.createPart(part), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('parts');
-        }
-    });
     const updatePart = useMutation(part => API.updatePart(part.id, part.data), {
         onSuccess: () => {
             queryClient.invalidateQueries('parts');
         }
     });
-    const deletePart = useMutation(id => API.deletePart(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('parts');
-        }
-    });
-
-    // EVENT HANDLERS
-    const submit = async e => {
-        try {
-            e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target))
-            const partData = {
-                partNumber: formData.partNumber.toUpperCase().trim(),
-                description: formData.description.trim(),
-                purchasePrice: parseFloat(formData.purchasePrice.trim()),
-                salePrice: parseFloat(formData.salePrice.trim()),
-                stock: parseInt(formData.stock.trim()),
-                minimum: parseInt(formData.minimum.trim())
-            }
-            // if (edit) {
-            //     await updatePart.mutate({id: part._id, data: partData});
-            //     // setEdit(false);
-            //     // setShowForm(false);
-            //     return
-            // }
-            // await createPart.mutate(partData);
-            // setShowForm(false);
-        } catch (err) {
-            console.error(err)
-        }
-    };
 
     const changeStock = (e, part) => {
         const operator = e.target.innerHTML;
-        const tdStock = document.getElementById(`${part._id}`);
-        const value = tdStock.children[2];
         if (operator === '+') {
-            value.innerHTML = (parseInt(value.innerHTML) + 1).toString();
+            updatePart.mutate({ id: part._id,  data: {...part, stock: part.stock + 1} });
         } else {
-            value.innerHTML = (parseInt(value.innerHTML) - 1).toString();
+            updatePart.mutate({ id: part._id,  data: {...part, stock: part.stock - 1} });
         }
-        // updatePart.mutate({ id: part._id,  data: part });
-    }
-
-    const removePart = e => {
-        e.preventDefault();
-        let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.")
-        if (answer) deletePart.mutate(e.target.dataset.id);
     }
 
     switch (status) {
@@ -107,18 +64,18 @@ const PartsTable = () => {
 
                     <table>
                         <thead>
-                        <tr>
-                            <th>Part #</th>
-                            <th>Description</th>
-                            <th className={"text-center"}>In Stock</th>
-                            <th className={"text-center"}>Change Quantity</th>
-                            <th className={"text-center"}>Select</th>
-                        </tr>
+                            <tr className={"tr-part"}>
+                                <th>Part #</th>
+                                <th>Description</th>
+                                <th className={"text-center"}>In Stock</th>
+                                <th className={"text-center"}>Change Quantity</th>
+                                <th className={"text-center"}>Edit</th>
+                            </tr>
                         </thead>
 
                         <tbody>
                         {partList.map(part => (
-                            <tr className={"table-item"} key={part._id} id={part._id}>
+                            <tr className={"table-item tr-part"} key={part._id} id={part._id}>
                                 <td>{part.partNumber}</td>
                                 <td>{part.description}</td>
                                 <td className={"text-center"}>{part.stock}</td>
@@ -128,9 +85,10 @@ const PartsTable = () => {
                                 </td>
                                 <td className={"inventory-buttons"}>
                                     <div className={"select"} onClick={() => {
+                                        queryClient.setQueryData('submissionType', 'edit');
                                         queryClient.setQueryData('selectedPart', part);
                                         queryClient.setQueryData('showPartForm', true);
-                                    }}>&#10162;</div>
+                                    }}><FontAwesomeIcon icon={faEdit}/></div>
                                 </td>
                             </tr>
                         ))}

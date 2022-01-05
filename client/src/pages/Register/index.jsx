@@ -1,27 +1,20 @@
 import { Redirect } from "react-router-dom";
-import { useAuth, useUser } from "../../react-query";
+import { useAuth } from "../../react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import './style.scss';
 
-const Login = () => {
-    const { user } = useUser();
-    const { login } = useAuth();
-
-    if (user) {
-        return <Redirect to={'/dashboard'} />;
-    }
+const Register = () => {
+    const { register } = useAuth();
 
     const submitHandler = async e => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
-            const user = {
+            await register({
                 username: formData.username,
                 password: formData.password
-            }
-            await login(user);
-            window.location.reload();
+            });
+            return <Redirect to={'/login'} />;
         } catch(err) { console.error(err) }
     }
 
@@ -36,7 +29,6 @@ const Login = () => {
                         <input
                             type={"text"}
                             name={"username"}
-                            defaultValue={"admin"}
                             required
                         />
                     </label>
@@ -47,7 +39,6 @@ const Login = () => {
                         <input
                             type={"password"}
                             name={"password"}
-                            defaultValue={"metronicsAdmin"}
                             required
                         />
                     </label>
@@ -55,7 +46,7 @@ const Login = () => {
                     <button
                         className={"btn-login"}
                         type={"submit"}
-                    >LOGIN
+                    >REGISTER
                     </button>
                 </form>
             </div>
@@ -63,4 +54,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Register;

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Customers, Dashboard, Inventory, Login, Service } from "../pages";
+import { Customers, Dashboard, Inventory, Login, Register, Service } from "../pages";
 
 const Routes = () => {
     return (
@@ -7,6 +7,7 @@ const Routes = () => {
             <Switch>
                 <Route exact path='/' component={Login}/>
                 <Route exact path='/login' component={Login}/>
+                <Route exact path='/register' component={Register}/>
                 <Route exact path='/dashboard' component={Dashboard}/>
                 {/*<Route exact path='/messages' component={Messages}/>*/}
                 <Route exact path='/customers' component={Customers}/>
