@@ -10,10 +10,9 @@ const SideNavbar = () => {
     const { logout } = useAuth();
     const history = useHistory();
 
-    const logOut = () => {
+    const signOut = () => {
         logout();
         history.push('/login')
-        window.location.reload();
     }
 
     useEffect(() => {
@@ -76,9 +75,7 @@ const SideNavbar = () => {
                 </li>
             </ul>
 
-            <button
-                className={"signOut"}
-                onClick={logOut}>
+            <button className={"signOut"} onClick={signOut}>
                 <FontAwesomeIcon icon={faSignOutAlt} data-for={'sign-out'}/>
                 <ReactTooltip id={"sign-out"} effect={"solid"} place={"top"}>
                     <span>Sign Out</span>

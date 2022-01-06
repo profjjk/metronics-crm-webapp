@@ -67,6 +67,9 @@ const API = {
   getMessages() {
     return axios.get(messageUrl, { headers: authHeader() });
   },
+  updateMessage(id, data) {
+    return axios.put(`${messageUrl}/${id}`, data, { headers: authHeader() });
+  },
   deleteMessage(id) {
     return axios.delete(`${messageUrl}/${id}`, { headers: authHeader() });
   },

@@ -1,8 +1,8 @@
 import { Redirect } from "react-router-dom";
 import { useUser } from "../../react-query";
-import { WaitListTable, RestockTable, MessagesTable } from "../../components";
+import { WaitListTable, RestockTable, Messages } from "../../components";
 import { SideNavbar } from "../../components";
-import './style.scss';
+// import './style.scss';
 
 const DashboardHome = () => {
     const { user } = useUser();
@@ -12,14 +12,33 @@ const DashboardHome = () => {
         return <Redirect to={'/login'} />
     }
 
+    const Header = () => {
+        return (
+            <div className={"main-header"}>
+                <h1 onClick={() => window.location.reload()}>Dashboard</h1>
+
+                <div className={"button-area"}>
+                    <p className={"btn"} onClick={() => {
+                        console.log("Overview");
+                    }}>Overview</p>
+
+                    <p className={"btn"} onClick={() => {
+                        console.log("View Messages");
+                    }}>View Messages</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <>
             <header>
                 <SideNavbar />
             </header>
+
             <main className={"container"} id={"dashboard"}>
-                <h1>Dashboard</h1>
-                <MessagesTable />
+                <Header />
+                <Messages />
                 <WaitListTable />
                 <RestockTable />
             </main>

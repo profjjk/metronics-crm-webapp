@@ -50,11 +50,47 @@
   }
 }
 
-.mark-paid {
+.mark-paid, .mark-read {
   color: $blue;
-
+  width: max-content;
   &:hover {
     cursor: pointer;
     font-weight: 700;
+  }
+}
+
+.mark-read {
+  margin-left: auto;
+}
+
+.read-toggle {
+  margin: 10px auto 20px auto;
+  width: max-content;
+  display: flex;
+  background: white;
+  border: 1px solid $dark;
+  border-radius: 10px;
+}
+
+.toggle-btn {
+  width: 75px;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: 600;
+
+  &:hover {
+    cursor: pointer;
+  }
+  &.active {
+    background: $blue;
+    color: white;
+  }
+  &.left {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &.right {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 }

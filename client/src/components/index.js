@@ -5,7 +5,7 @@ export { default as Searchbar } from './shared/Searchbar';
 // Dashboard
 export { default as WaitListTable } from './tables/WaitListTable';
 export { default as RestockTable } from './tables/RestockTable';
-export { default as MessagesTable } from './tables/MessagesTable';
+export { default as Messages } from './Messages';
 
 // Job
 export { default as ServiceTable } from './tables/ServiceTable';

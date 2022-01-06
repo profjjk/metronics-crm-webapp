@@ -6,6 +6,7 @@ router.route('/')
     .get(authenticate.token, messageController.findAll)
 
 router.route('/:id')
+    .put(authenticate.token, messageController.updateById)
     .delete(authenticate.token, messageController.delete)
 
 module.exports = router;

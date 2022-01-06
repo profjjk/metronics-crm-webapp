@@ -71,3 +71,17 @@ header {
   display: flex;
   gap: 1rem;
 }
+
+.message {
+  background: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
