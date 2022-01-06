@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useJobs } from '../../../react-query';
 import { Searchbar } from '../../index';
-import sortByServiceDate from '../../../utils/sort';
 import API from '../../../utils/API';
 import dayjs from 'dayjs';
 
@@ -14,7 +13,7 @@ const Unpaid = () => {
 
     useEffect(() => {
         if (status === 'success') {
-            setJobList(sortByServiceDate(data.data.filter(job => !job.isPaid && job.status === 'Completed')));
+            setJobList(data.data.filter(job => !job.isPaid && job.status === 'Completed'));
         }
     }, [data])
 
@@ -22,12 +21,12 @@ const Unpaid = () => {
     useEffect(() => {
         if (searchTerm !== "") {
             setJobList(
-                sortByServiceDate(jobList.filter(job => {
+                jobList.filter(job => {
                     return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (job.customer.contactName.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (job.customer.phone.includes(searchTerm));
-                }))
+                })
             );
         }
     }, [searchTerm]);

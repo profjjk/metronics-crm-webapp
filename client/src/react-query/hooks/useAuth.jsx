@@ -15,17 +15,16 @@ const useAuth = () => {
     }
 
     const register = async ({ username, password }) => {
-        console.log(username, password)
         const newUser = {
             username: username,
             password: password
         }
         try {
             const response = await API.register(newUser);
-            console.log("Register response: ", response)
-            if (response.data) {
-                updateUser(response.data);
-            }
+            // if (response.data) {
+            //     updateUser(response.data);
+            // }
+            return response;
         } catch(err) { console.error(err.message) }
     }
 

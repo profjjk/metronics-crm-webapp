@@ -1,20 +1,21 @@
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from "../../react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Register = () => {
     const { register } = useAuth();
+    const history = useHistory();
 
     const submitHandler = async e => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
-            await register({
+            const newUser = await register({
                 username: formData.username,
                 password: formData.password
             });
-            return <Redirect to={'/login'} />;
+            if (newUser.status === 201) history.push('/dashboard');
         } catch(err) { console.error(err) }
     }
 

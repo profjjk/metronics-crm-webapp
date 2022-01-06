@@ -48,6 +48,7 @@ const ServiceHome = () => {
                         queryClient.removeQueries('selectedCustomer');
                         queryClient.removeQueries('selectedJob');
                         queryClient.setQueryData('submissionType', 'new');
+                        queryClient.setQueryData('showCustomerForm', false);
                         if (showServiceForm) {
                             const formFields = document.querySelectorAll('input, textarea');
                             for (let field of formFields) field.value = "";

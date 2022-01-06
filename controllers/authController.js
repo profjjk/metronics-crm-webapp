@@ -13,8 +13,7 @@ module.exports = {
                 username,
                 password: await bcrypt.hash(password, 10)
             });
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5 hours' });
-            res.status(201).json({ _id: user._id, token });
+            res.status(201).json(user);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
     login: async (req, res) => {
@@ -25,3 +24,5 @@ module.exports = {
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }
+
+// mch9y962

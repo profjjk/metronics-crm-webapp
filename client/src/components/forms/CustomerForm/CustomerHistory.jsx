@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { useJobs } from '../../../react-query';
-import sortByServiceDate from '../../../utils/sort';
 import dayjs from 'dayjs';
 
 const CustomerHistory = () => {
@@ -15,7 +14,7 @@ const CustomerHistory = () => {
     useEffect(() => {
         if (jobStatus === 'success' && customerStatus === 'success') {
             const customerJobs = jobs.data.filter(job => job.customer._id === customer._id && job.status === 'Completed');
-            setJobList(sortByServiceDate(customerJobs));
+            setJobList(customerJobs);
         }
     }, [jobStatus, jobs])
 

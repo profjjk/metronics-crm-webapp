@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useJobs } from '../../../react-query';
 import { Searchbar } from '../../index';
+import { sortPendingToTop } from '../../../utils/sort';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
@@ -16,16 +17,17 @@ const Jobs = () => {
     // Filter by status
     useEffect(() => {
         if (status === 'success') {
+            const jobs = sortPendingToTop(data.data);
             if (statusFilter === "Pending") {
-                setJobList(data.data.filter(job => job.status === "Pending"));
+                setJobList(jobs.filter(job => job.status === "Pending"));
             } else if (statusFilter === "Scheduled") {
-                setJobList(data.data.filter(job => job.status === "Scheduled"));
+                setJobList(jobs.filter(job => job.status === "Scheduled"));
             } else if (statusFilter === "Completed") {
-                setJobList(data.data.filter(job => job.status === "Completed"));
+                setJobList(jobs.filter(job => job.status === "Completed"));
             } else if (statusFilter === "Canceled") {
-                setJobList(data.data.filter(job => job.status === "Canceled"));
+                setJobList(jobs.filter(job => job.status === "Canceled"));
             } else {
-                setJobList(data.data);
+                setJobList(jobs);
             }
         }
     }, [statusFilter, data]);
@@ -33,9 +35,10 @@ const Jobs = () => {
     // Filter by search term
     useEffect(() => {
         if (status === 'success') {
+            const jobs = sortPendingToTop(data.data);
             if (searchTerm !== "") {
                 setJobList(
-                    data.data.filter(job => {
+                    jobs.filter(job => {
                         return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
                             (job.serviceDate !== null && job.serviceDate.includes(searchTerm)) ||

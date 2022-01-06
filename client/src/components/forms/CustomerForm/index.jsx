@@ -134,7 +134,7 @@ const CustomerForm = ({ showHistory }) => {
                 </div>
             </form>
 
-            {showHistory ? <CustomerHistory /> : <></>}
+            {showHistory && customer ? <CustomerHistory /> : <></>}
         </section>
     )
 }
