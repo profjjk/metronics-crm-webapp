@@ -29,14 +29,12 @@ const PartForm = () => {
     const submit = async e => {
         try {
             e.preventDefault();
-            const formData = Object.fromEntries(new FormData(e.target))
+            const formData = Object.fromEntries(new FormData(e.target));
             const partData = {
                 partNumber: formData.partNumber.toUpperCase().trim(),
                 description: formData.description.trim(),
-                purchasePrice: parseFloat(formData.purchasePrice.trim()),
-                salePrice: parseFloat(formData.salePrice.trim()),
-                stock: parseInt(formData.stock.trim()),
-                minimum: parseInt(formData.minimum.trim())
+                stock: parseInt(formData.stock),
+                minimum: parseInt(formData.minimum)
             }
             if (submissionType === 'edit') {
                 await updatePart.mutate({id: part._id, data: partData});

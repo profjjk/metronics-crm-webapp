@@ -73,7 +73,7 @@ const Unpaid = () => {
                         <tbody>
                         {jobList.map(job => (
                             <tr className={"table-item tr-job"} key={job._id}>
-                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM DD YYYY") : "--"}</td>
+                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM D, YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
                                 <td className={"text-center"}>$ {job.totalBill}</td>

@@ -70,9 +70,9 @@ const ServiceHome = () => {
             <main className={"container"}>
                 <Header />
                 {showServiceForm ? (
-                    <ServiceForm viewRequests={viewRequests}/>
+                    <ServiceForm viewRequests={viewRequests} />
                 ) : (
-                    <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid}/>
+                    <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid} />
                 )}
             </main>
         </>

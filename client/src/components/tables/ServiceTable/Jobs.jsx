@@ -96,7 +96,7 @@ const Jobs = () => {
                                 queryClient.setQueryData('selectedCustomer', job.customer);
                                 queryClient.setQueryData('showServiceForm', true);
                             }}>
-                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("ddd MMM DD YYYY") : "--"}</td>
+                                <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM D, YYYY") : "--"}</td>
                                 <td>{job.customer.businessName}</td>
                                 <td>{job.customer.address.city}</td>
                                 <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>

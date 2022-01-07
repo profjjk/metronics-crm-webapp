@@ -1,4 +1,4 @@
-import { Redirect } from "react-router-dom";
+import { useHistory, Redirect } from 'react-router-dom';
 import { useAuth, useUser } from "../../react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,7 @@ import './style.scss';
 const Login = () => {
     const { user } = useUser();
     const { login } = useAuth();
+    const history = useHistory();
 
     if (user) {
         return <Redirect to={'/dashboard'} />;
@@ -21,7 +22,7 @@ const Login = () => {
                 password: formData.password
             }
             await login(user);
-            window.location.reload();
+            history.push('/dashboard');
         } catch(err) { console.error(err) }
     }
 

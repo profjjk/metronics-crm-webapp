@@ -17,11 +17,11 @@ const ServiceForm = ({ viewRequests }) => {
 
     useEffect(() => {
         if (status === 'success' && viewRequests) {
-            const found = data.data.filter(customer => {
-                return job.customer.address.street1.toLowerCase() === customer.address.street1.toLowerCase() &&
-                    job.customer.address.city.toLowerCase() === customer.address.city.toLowerCase()
+            const found = data.data.filter(data => {
+                return customer.address.street1.toLowerCase() === data.address.street1.toLowerCase()
+                    && customer.address.city.toLowerCase() === data.address.city.toLowerCase();
             })
-            if (found.length) setExistingCustomer(found[0]);
+            if (found.length > 0) setExistingCustomer(found[0])
         }
     }, []);
 
@@ -123,6 +123,7 @@ const ServiceForm = ({ viewRequests }) => {
             businessName: existingCustomer.businessName,
             address: existingCustomer.address
         });
+        setExistingCustomer(null);
     }
 
     switch (status) {

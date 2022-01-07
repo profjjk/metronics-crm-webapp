@@ -12,7 +12,8 @@ const SideNavbar = () => {
 
     const signOut = () => {
         logout();
-        history.push('/login')
+        history.push('/login');
+        window.location.reload();
     }
 
     useEffect(() => {

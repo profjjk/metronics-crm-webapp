@@ -7,18 +7,18 @@ import dayjs from 'dayjs';
 const Requests = () => {
     const queryClient = useQueryClient();
     const { status, data, error } = useRequests();
-    const [jobList, setJobList] = useState([]);
+    const [requestList, setRequestList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     // Filter by search term
     useEffect(() => {
         if (status === 'success') {
-            setJobList(
-                data.data.filter(job => {
-                    return job.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        (job.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (job.customer.contactName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (job.customer.phone.includes(searchTerm));
+            setRequestList(
+                data.data.filter(request => {
+                    return request.customer.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (request.customer.address.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                        (request.customer.contactName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                        (request.customer.phone.includes(searchTerm));
                 })
             );
         }
@@ -53,23 +53,27 @@ const Requests = () => {
                         </thead>
 
                         <tbody>
-                        {jobList.map(job => (
-                            <tr className={"table-item tr-job clickable"} key={job._id} onClick={() => {
+                        {requestList.map(request => (
+                            <tr className={"table-item tr-job clickable"} key={request._id} onClick={() => {
                                 queryClient.setQueryData('submissionType', 'new');
-                                queryClient.setQueryData('selectedJob', job);
-                                queryClient.setQueryData('selectedCustomer', job.customer);
+                                queryClient.setQueryData('selectedJob', {
+                                    _id: request._id,
+                                    status: "Pending",
+                                    issueNotes: request.issueNotes
+                                });
+                                queryClient.setQueryData('selectedCustomer', request.customer);
                                 queryClient.setQueryData('showServiceForm', true);
                             }}>
-                                <td className={"text-center"}>{dayjs(job.createdAt).format("MMM DD YYYY")}</td>
-                                <td>{job.customer.businessName}</td>
-                                <td>{job.customer.address.city}, {job.customer.address.state}</td>
-                                <td className={"text-center"}>{job.customer.contactName}</td>
-                                <td className={"text-center"}>{job.customer.phone}</td>
+                                <td className={"text-center"}>{dayjs(request.createdAt).format("MMM D, YYYY")}</td>
+                                <td>{request.customer.businessName}</td>
+                                <td>{request.customer.address.city}, {request.customer.address.state}</td>
+                                <td className={"text-center"}>{request.customer.contactName}</td>
+                                <td className={"text-center"}>{request.customer.phone}</td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
-                    {jobList.length < 1 ? <p className={"empty"}>** No online requests to display **</p> : <></>}
+                    {requestList.length < 1 ? <p className={"empty"}>** No online requests to display **</p> : <></>}
                 </section>
             )
     }

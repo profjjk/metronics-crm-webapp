@@ -1,16 +1,17 @@
-import { Redirect } from "react-router-dom";
-import { useUser } from "../../react-query";
-import { WaitListTable, RestockTable, Messages } from "../../components";
-import { SideNavbar } from "../../components";
-// import './style.scss';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useUser } from '../../react-query';
+import { WaitListTable, RestockTable, Messages, SideNavbar } from '../../components';
 
 const DashboardHome = () => {
     const { user } = useUser();
+    const [view, setView] = useState('overview');
 
     // REDIRECTS
     if (!user) {
         return <Redirect to={'/login'} />
     }
+
 
     const Header = () => {
         return (
@@ -18,32 +19,41 @@ const DashboardHome = () => {
                 <h1 onClick={() => window.location.reload()}>Dashboard</h1>
 
                 <div className={"button-area"}>
-                    <p className={"btn"} onClick={() => {
-                        console.log("Overview");
-                    }}>Overview</p>
-
-                    <p className={"btn"} onClick={() => {
-                        console.log("View Messages");
-                    }}>View Messages</p>
+                    <p className={"btn"} onClick={() => setView('overview')}>Overview</p>
+                    <p className={"btn"} onClick={() => setView('messages')}>View Messages</p>
                 </div>
             </div>
         )
     }
 
-    return (
-        <>
-            <header>
-                <SideNavbar />
-            </header>
+    switch(view) {
+        case 'messages':
+            return (
+                <>
+                    <header>
+                        <SideNavbar />
+                    </header>
+                    <main className={"container"} id={"dashboard"}>
+                        <Header />
+                        <Messages />
+                    </main>
+                </>
+            )
+        default:
+            return (
+                <>
+                    <header>
+                        <SideNavbar />
+                    </header>
+                    <main className={"container"} id={"dashboard"}>
+                        <Header />
+                        <WaitListTable />
+                        <RestockTable />
+                    </main>
 
-            <main className={"container"} id={"dashboard"}>
-                <Header />
-                <Messages />
-                <WaitListTable />
-                <RestockTable />
-            </main>
-        </>
-    )
+                </>
+            )
+    }
 }
 
 export default DashboardHome;
