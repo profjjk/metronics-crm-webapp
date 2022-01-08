@@ -61,7 +61,7 @@ const RestockTable = ({ parts }) => {
                         <td className={"text-center"}>{part.stock}</td>
                         <td className={"inventory-buttons"}>
                             <p className={"warning"}>
-                                {part.minimum - part.stock} below desired minimum of {part.minimum}
+                                {part.minimum - part.stock} less than desired minimum of {part.minimum}
                             </p>
                         </td>
                     </tr>

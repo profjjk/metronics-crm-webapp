@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQueryClient } from 'react-query';
-import { useCustomers } from "../../../react-query";
+import { useCustomers } from "../../react-query";
 import './style.scss';
 
 const AutoComplete = () => {

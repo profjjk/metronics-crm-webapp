@@ -2,7 +2,7 @@ import { useData } from '../../../react-query';
 import { useMutation, useQueryClient } from 'react-query';
 import API from '../../../utils/API';
 
-const Form = () => {
+const PartForm = () => {
     const queryClient = useQueryClient();
     const part = useData('selectedPart');
     const submissionType = useData('submissionType');
@@ -117,4 +117,4 @@ const Form = () => {
     )
 }
 
-export default Form;
+export default PartForm;

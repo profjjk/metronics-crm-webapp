@@ -5,7 +5,6 @@ import { AutoComplete } from '../../../components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import API from '../../../utils/API';
-// import './style.scss';
 
 const ServiceForm = () => {
     const qc = useQueryClient();
@@ -255,9 +254,15 @@ const ServiceForm = () => {
                                 </button>
 
                                 <button className={"btn-form"} onClick={() => {
-                                    qc.removeQueries('selectedCustomer');
-                                    qc.removeQueries('selectedJob');
-                                    qc.setQueryData('view', 'default');
+                                    const location = window.location.pathname;
+                                    if (location === '/customers') {
+                                        qc.setQueryData('selectedJob', null);
+                                        qc.setQueryData('view', 'customerForm');
+                                    } else {
+                                        qc.setQueryData('selectedCustomer', null);
+                                        qc.setQueryData('selectedJob', null);
+                                        qc.setQueryData('view', 'default');
+                                    }
                                 }}>
                                     Cancel
                                 </button>
@@ -268,8 +273,8 @@ const ServiceForm = () => {
                                     } else {
                                         removeJob(job._id);
                                     }
-                                    qc.removeQueries('selectedCustomer');
-                                    qc.removeQueries('selectedJob');
+                                    qc.setQueryData('selectedCustomer', null);
+                                    qc.setQueryData('selectedJob', null);
                                     qc.setQueryData('view', 'default');
                                 }}>
                                     Delete
