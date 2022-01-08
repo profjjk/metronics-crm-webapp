@@ -40,10 +40,6 @@ const CustomerHome = () => {
 
     return (
         <>
-            <header>
-                <SideNavbar />
-            </header>
-
             <main className={"container"}>
                 <Header />
                 {showCustomerForm ? (

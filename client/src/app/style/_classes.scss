@@ -20,10 +20,18 @@
 .blue {
   color: $blue;
 }
+.bold {
+  font-weight: 600;
+}
 .empty {
   text-align: center;
   font-style: italic;
   color: grey;
+}
+.warning {
+  font-style: italic;
+  color: $red;
+  text-align: center;
 }
 
 // BUTTONS

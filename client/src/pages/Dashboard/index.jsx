@@ -1,62 +1,43 @@
-import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useUser } from '../../react-query';
-import { WaitListTable, RestockTable, Messages, SideNavbar } from '../../components';
+import { useData, useMessages, useJobs, useUser } from '../../react-query';
+import { Header, MessageTable } from './sections';
 
-const DashboardHome = () => {
+const DashboardPage = () => {
     const { user } = useUser();
-    const [view, setView] = useState('overview');
+    const { status: msgStatus, data: messages, error: msgError } = useMessages();
+    const { status: jobStatus, data: jobs, error: jobError } = useJobs();
+    const view = useData('view');
 
     // REDIRECTS
     if (!user) {
         return <Redirect to={'/login'} />
     }
 
-
-    const Header = () => {
-        return (
-            <div className={"main-header"}>
-                <h1 onClick={() => window.location.reload()}>Dashboard</h1>
-
-                <div className={"button-area"}>
-                    <p className={"btn"} onClick={() => setView('overview')}>Overview</p>
-                    <p className={"btn"} onClick={() => setView('messages')}>View Messages</p>
-                </div>
-            </div>
-        )
-    }
-
-    switch(view) {
-        case 'messages':
-            return (
-                <>
-                    <header>
-                        <SideNavbar />
-                    </header>
-                    <main className={"container"} id={"dashboard"}>
-                        <Header />
-                        <Messages />
-                    </main>
-                </>
-            )
+    switch(jobStatus || msgStatus) {
+        case "loading":
+            return <h1 className="text-center">Loading</h1>;
+        case "error":
+            return <h4 className="text-center">Error: {jobError.message} | {msgError.message}</h4>;
         default:
-            return (
-                <>
-                    <header>
-                        <SideNavbar />
-                    </header>
+            if (view === 'messages') {
+                return (
                     <main className={"container"} id={"dashboard"}>
                         <Header />
-                        <WaitListTable />
-                        <RestockTable />
+                        <MessageTable messages={messages.data} />
                     </main>
+                )
+            } else {
+                return (
+                    <main className={"container"} id={"dashboard"}>
+                        <Header />
 
-                </>
-            )
+                    </main>
+                )
+            }
     }
 }
 
-export default DashboardHome;
+export default DashboardPage;
 
 // TODO: Add some interesting data on the top bar...
 // - Number of jobs completed this year

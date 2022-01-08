@@ -8,9 +8,13 @@ $red: #d3232b;
   transition: all .3s ease-out;
 }
 
+
+
 .navbar {
-  position: relative;
-  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100px;
   height: 100%;
   background: $blue;
   display: flex;
@@ -29,15 +33,15 @@ $red: #d3232b;
 
 .nav-item {
   font-size: 2rem;
-  a {
-    color: white;
-    &:hover {
-      color: $yellow;
-      @include easeOut;
-    }
-    &.active {
-      color: $yellow;
-    }
+  color: white;
+  &:hover {
+    cursor: pointer;
+    color: $yellow;
+    @include easeOut;
+  }
+
+  svg.active {
+    color: $yellow;
   }
 }
 

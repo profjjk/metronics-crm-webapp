@@ -63,10 +63,6 @@ const ServiceHome = () => {
 
     return (
         <>
-            <header>
-                <SideNavbar/>
-            </header>
-
             <main className={"container"}>
                 <Header />
                 {showServiceForm ? (

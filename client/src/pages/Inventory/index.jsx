@@ -1,64 +1,46 @@
-import { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { useQueryClient } from "react-query";
-import { useData, useUser } from '../../react-query';
-import { PartsTable, PartForm, SideNavbar } from "../../components";
-import './style.scss';
+import { useData, useUser, useParts } from '../../react-query';
+import { Header, InventoryTable, RestockTable, PartForm } from './sections';
 
-const InventoryHome = () => {
-    const queryClient = useQueryClient();
+const InventoryPage = () => {
     const { user } = useUser();
-    const showPartForm = useData('showPartForm');
+    const { status, data: parts, error, isFetching } = useParts();
+    const view = useData('view');
 
     // REDIRECTS
     if (!user) {
         return <Redirect to={'/login'} />
     }
 
-    const Header = () => {
-        return (
-            <div className={"main-header"}>
-                <h1 onClick={() => window.location.reload()}>Inventory</h1>
-
-                <div className={"button-area"}>
-                    <p className={"btn"} onClick={() => {
-                        queryClient.refetchQueries('parts');
-                        queryClient.setQueryData('showPartForm', false);
-                    }}>View All</p>
-
-                    <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('showPartForm', false);
-                    }}>View Low Stock</p>
-
-                    <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('submissionType', 'new');
-                        queryClient.setQueryData('showPartForm', true);
-                    }}>Create New</p>
-                </div>
-            </div>
-        )
+    switch(status) {
+        case "loading":
+            return <h1 className="text-center">Loading</h1>;
+        case "error":
+            return <h4 className="text-center">Error: {error.message}</h4>;
+        default:
+            if (view === 'restock') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <RestockTable parts={parts.data} />
+                    </main>
+                )
+            } else if (view === 'newPart') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <PartForm />
+                    </main>
+                )
+            } else {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <InventoryTable parts={parts.data} />
+                    </main>
+                )
+            }
     }
-
-
-    return (
-        <>
-            <header>
-                <SideNavbar/>
-            </header>
-
-            <main className={"container"}>
-                <Header />
-                {showPartForm ? (
-                    <PartForm />
-                ) : (
-                    <PartsTable />
-                )}
-            </main>
-        </>
-    )
-
 }
 
-export default InventoryHome;
-
-// TODO: For some reason, 'parts' stopped refreshing when editing unless I hard reload the page. Something to do with authentication? It worked fine before.
+export default InventoryPage;

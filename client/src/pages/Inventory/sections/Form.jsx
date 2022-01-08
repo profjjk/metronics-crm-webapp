@@ -1,9 +1,8 @@
 import { useData } from '../../../react-query';
 import { useMutation, useQueryClient } from 'react-query';
 import API from '../../../utils/API';
-import './style.scss';
 
-const PartForm = () => {
+const Form = () => {
     const queryClient = useQueryClient();
     const part = useData('selectedPart');
     const submissionType = useData('submissionType');
@@ -57,49 +56,49 @@ const PartForm = () => {
         <section>
             <form id={"form-part"} onSubmit={submit}>
                 <div>
-                    <label className={'text-center'}>
+                    <label className={"text-center"}>
                         Part #
-                        <input className={'text-center'} type={'text'} name={'partNumber'}
-                            placeholder={"Part #"}
-                            defaultValue={part ? part.partNumber : ""}
+                        <input className={"text-center"} type={"text"} name={"partNumber"}
+                               placeholder={"Part #"}
+                               defaultValue={part ? part.partNumber : ""}
                         />
                     </label>
                     <label>
                         Description
-                        <input type={'text'} name={'description'}
-                            placeholder={"Description"}
-                            defaultValue={part ? part.description : ""}
+                        <input type={"text"} name={"description"}
+                               placeholder={"Description"}
+                               defaultValue={part ? part.description : ""}
                         />
                     </label>
-                    <label className={'text-center'}>
+                    <label className={"text-center"}>
                         In Stock
-                        <input className={'text-center'} type={'text'} name={'stock'}
-                            placeholder={"#"}
-                            defaultValue={part ? part.stock : ""}
+                        <input className={"text-center"} type={"text"} name={"stock"}
+                               placeholder={"#"}
+                               defaultValue={part ? part.stock : ""}
                         />
                     </label>
                 </div>
 
                 <div>
-                    <label className={'stock-notification'}>
+                    <label className={"stock-notification"}>
                         Notify me when stock drops below:
-                        <input className={'text-center'} type={'text'} name={'minimum'}
-                            placeholder={"#"}
-                            defaultValue={part ? part.minimum : ""}
+                        <input className={"text-center"} type={"text"} name={"minimum"}
+                               placeholder={"#"}
+                               defaultValue={part ? part.minimum : ""}
                         />
                     </label>
                 </div>
 
                 <div className={"button-area"}>
-                    <button className={"btn-form "} type={'submit'}>
+                    <button className={"btn-form"} type={"submit"}>
                         Save
                     </button>
 
                     <button
-                        className={"btn-form "}
+                        className={"btn-form"}
                         onClick={() => {
                             queryClient.removeQueries('selectedPart');
-                            queryClient.setQueryData('showPartForm', false);
+                            queryClient.setQueryData('view', 'inventory');
                         }}
                     >Cancel
                     </button>
@@ -108,7 +107,7 @@ const PartForm = () => {
                         removePart(part._id);
                         queryClient.removeQueries('selectedCustomer');
                         queryClient.removeQueries('selectedJob');
-                        queryClient.setQueryData('showServiceForm', false);
+                        queryClient.setQueryData('view', 'inventory');
                     }}>
                         Delete
                     </button>) : <></>}
@@ -118,4 +117,4 @@ const PartForm = () => {
     )
 }
 
-export default PartForm;
+export default Form;
