@@ -7,7 +7,6 @@ export { default as ServiceForm } from './forms/ServiceForm';
 export { default as AutoComplete } from './shared/AutoComplete';
 
 // Customer
-export { default as CustomersTable } from './tables/CustomersTable';
 export { default as CustomerForm } from './forms/CustomerForm';
 
 // Login

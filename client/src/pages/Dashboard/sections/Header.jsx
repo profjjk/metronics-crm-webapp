@@ -1,21 +1,21 @@
 import { useQueryClient } from 'react-query';
 
 const Header = () => {
-    const cache = useQueryClient();
+    const qc = useQueryClient();
 
     return (
         <div className={"main-header"}>
             <h1 onClick={() => {
-                cache.setQueryData('view', 'overview');
+                qc.setQueryData('view', 'default');
             }}>Dashboard</h1>
 
             <div className={"button-area"}>
                 <p className={"btn"} onClick={() => {
-                    cache.setQueryData('view', 'overview')
+                    qc.setQueryData('view', 'overview')
                 }}>Overview</p>
 
                 <p className={"btn"} onClick={() => {
-                    cache.setQueryData('view', 'messages')
+                    qc.setQueryData('view', 'messages')
                 }}>View Messages</p>
             </div>
         </div>

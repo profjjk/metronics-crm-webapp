@@ -1,55 +1,51 @@
-import { useState } from 'react';
-import { Redirect } from "react-router-dom";
-import { useQueryClient } from "react-query";
-import { useData, useUser } from '../../react-query';
-import { CustomersTable, CustomerForm, SideNavbar, ServiceForm } from "../../components";
-import './style.scss';
+import { Redirect } from 'react-router-dom';
+import { useData, useCustomers, useUser, useJobs } from '../../react-query';
+// import { CustomerForm } from '../../components';
+import { Header, CustomersTable, CustomerHistory, CustomerForm } from './sections';
+import { ServiceForm } from '../../components';
 
-const CustomerHome = () => {
-    const queryClient = useQueryClient();
+const CustomerPage = () => {
     const { user } = useUser();
-    const [showHistory, setShowHistory] = useState(true);
-    const showCustomerForm = useData('showCustomerForm');
+    const { status: customerStatus, data: customers, error: customerError } = useCustomers();
+    const { status: jobStatus, data: jobs, error: jobError } = useJobs();
+    const customer = useData('selectedCustomer');
+    const view = useData('view');
 
     // REDIRECT
     if (!user) {
         return <Redirect to={'/login'} />
     }
 
-    const Header = () => {
-        return (
-            <div className={"main-header"}>
-                <h1 onClick={() => window.location.reload()}>Customers</h1>
-
-                <div className={"button-area"}>
-                    <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('submissionType', 'new')
-                        queryClient.removeQueries('selectedCustomer');
-                        setShowHistory(false);
-                        if (showCustomerForm) {
-                            const formFields = document.querySelectorAll('input, textarea');
-                            for (let field of formFields) field.value = "";
-                        } else {
-                            queryClient.setQueryData('showCustomerForm', true);
-                        }
-                    }}>Create New</p>
-                </div>
-            </div>
-        )
+    switch(customerStatus || jobStatus) {
+        case "loading":
+            return <h1 className="text-center">Loading</h1>;
+        case "error":
+            return <h4 className="text-center">Error: {customerError.message} {jobError.message}</h4>;
+        default:
+            if (view === 'customerForm') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <CustomerForm />
+                        {customer ? <CustomerHistory jobs={jobs.data} customerId={customer._id} /> : <></>}
+                    </main>
+                )
+            } else if (view === 'serviceForm') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <ServiceForm />
+                    </main>
+                )
+            } else {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <CustomersTable customers={customers.data} />
+                    </main>
+                )
+            }
     }
-
-    return (
-        <>
-            <main className={"container"}>
-                <Header />
-                {showCustomerForm ? (
-                    <CustomerForm showHistory={showHistory} />
-                ) : (
-                    <CustomersTable setShowHistory={setShowHistory} />
-                )}
-            </main>
-        </>
-    )
 }
 
-export default CustomerHome;
+export default CustomerPage;

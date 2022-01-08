@@ -7,12 +7,12 @@ import API from '../../../utils/API';
 
 const InventoryTable = ({ parts }) => {
     const qc = useQueryClient();
-    const [partList, setPartList] = useState(parts);
+    const [partList, setPartList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     // Search for parts
     useEffect(() => {
-            if (searchTerm === '') {
+            if (searchTerm === "") {
                 setPartList(parts);
                 return;
             }
@@ -84,6 +84,7 @@ const InventoryTable = ({ parts }) => {
                 ))}
                 </tbody>
             </table>
+            {partList.length < 1 ? <p className={"empty"}>** No parts to display **</p> : <></>}
         </section>
     );
 }
