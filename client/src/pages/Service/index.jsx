@@ -1,78 +1,54 @@
-import { useState } from 'react';
-import { Redirect } from "react-router-dom";
-import { useQueryClient } from "react-query";
-import { useUser, useData } from "../../react-query";
-import { ServiceTable, ServiceForm, SideNavbar } from "../../components";
-import './style.scss';
+import { Redirect } from 'react-router-dom';
+import { useUser, useData, useJobs, useRequests } from '../../react-query';
+import { Header, ServiceTable, RequestTable, UnpaidTable, ServiceForm } from './sections';
 
-const ServiceHome = () => {
-    const queryClient = useQueryClient();
+const ServicePage = () => {
     const { user } = useUser();
-    const showServiceForm = useData('showServiceForm');
-    const [viewRequests, setViewRequests] = useState(false);
-    const [viewUnpaid, setViewUnpaid] = useState(false);
+    const { status: jobStatus, data: jobs, error: jobError } = useJobs();
+    const { status: reqStatus, data: requests, error: reqError } = useRequests();
+    const view = useData('view');
 
     // REDIRECTS
     if (!user) {
         return <Redirect to={'/login'} />
     }
 
-    const Header = () => {
-        return (
-            <div className={"main-header"}>
-                <h1 onClick={() => window.location.reload()}>Service Jobs</h1>
-
-                <div className={"button-area"}>
-                    <p className={"btn"} onClick={() => {
-                        setViewRequests(false);
-                        setViewUnpaid(false);
-                        queryClient.refetchQueries('jobs');
-                        queryClient.setQueryData('showServiceForm', false);
-                    }}>View All</p>
-
-                    <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('showServiceForm', false);
-                        setViewUnpaid(false);
-                        setViewRequests(true);
-                    }}>View Online Requests</p>
-
-                    <p className={"btn"} onClick={() => {
-                        queryClient.setQueryData('showServiceForm', false);
-                        setViewRequests(false);
-                        setViewUnpaid(true);
-                    }}>View Unpaid</p>
-
-                    <p className={"btn"} onClick={() => {
-                        setViewRequests(false);
-                        setViewUnpaid(false);
-                        queryClient.removeQueries('selectedCustomer');
-                        queryClient.removeQueries('selectedJob');
-                        queryClient.setQueryData('submissionType', 'new');
-                        queryClient.setQueryData('showCustomerForm', false);
-                        if (showServiceForm) {
-                            const formFields = document.querySelectorAll('input, textarea');
-                            for (let field of formFields) field.value = "";
-                        } else {
-                            queryClient.setQueryData('showServiceForm', true);
-                        }
-                    }}>Create New</p>
-                </div>
-            </div>
-        )
+    switch(jobStatus || reqStatus) {
+        case "loading":
+            return <h1 className="text-center">Loading</h1>;
+        case "error":
+            return <h4 className="text-center">Error: {jobError.message} {reqError.message}</h4>;
+        default:
+            if (view === 'serviceForm') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <ServiceForm />
+                    </main>
+                )
+            } else if (view === 'requests') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <RequestTable requests={requests.data} />
+                    </main>
+                )
+            } else if (view === 'unpaid') {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <UnpaidTable jobs={jobs.data} />
+                    </main>
+                )
+            } else {
+                return (
+                    <main className={"container"}>
+                        <Header />
+                        <ServiceTable jobs={jobs.data} />
+                    </main>
+                )
+            }
     }
-
-    return (
-        <>
-            <main className={"container"}>
-                <Header />
-                {showServiceForm ? (
-                    <ServiceForm viewRequests={viewRequests} />
-                ) : (
-                    <ServiceTable viewRequests={viewRequests} viewUnpaid={viewUnpaid} />
-                )}
-            </main>
-        </>
-    )
 }
 
-export default ServiceHome;
+export default ServicePage;

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { useData } from '../../../react-query';
 import dayjs from 'dayjs';
 
 const CustomerHistory = ({ jobs, customerId }) => {

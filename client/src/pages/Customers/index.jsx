@@ -1,8 +1,7 @@
 import { Redirect } from 'react-router-dom';
 import { useData, useCustomers, useUser, useJobs } from '../../react-query';
-// import { CustomerForm } from '../../components';
 import { Header, CustomersTable, CustomerHistory, CustomerForm } from './sections';
-import { ServiceForm } from '../../components';
+import { ServiceForm } from '../Service/sections';
 
 const CustomerPage = () => {
     const { user } = useUser();
