@@ -23,6 +23,7 @@ $red: #d3232b;
   position: relative;
   border: 1px solid $dark;
   min-height: 15rem;
+  background: white;
 
   div {
     padding-top: 30px;
@@ -52,6 +53,7 @@ $red: #d3232b;
   p {
     margin: 15px 10px;
     font-weight: 600;
+    font-size: 1.1rem;
     &:hover {
       cursor: pointer;
       color: $blue;
@@ -59,6 +61,7 @@ $red: #d3232b;
     }
     span {
       font-size: 0.9rem;
+      color: $blue;
     }
   }
 }

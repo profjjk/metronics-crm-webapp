@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 import { useAuth } from "../../react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserFriends, faTools, faWarehouse, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 
 const SideNavbar = () => {
+    const qc = useQueryClient()
     const { logout } = useAuth();
     const history = useHistory();
     const [page, setPage] = useState("");
@@ -49,6 +51,7 @@ const SideNavbar = () => {
             <nav className={"navbar"}>
                 <ul>
                     <li className={"nav-item"} onClick={() => {
+                        qc.setQueryData('view', 'default');
                         setPage('/dashboard');
                         history.push('/dashboard');
                     }}>
@@ -56,6 +59,7 @@ const SideNavbar = () => {
                     </li>
 
                     <li className={"nav-item"} onClick={() => {
+                        qc.setQueryData('view', 'default');
                         setPage('/customers');
                         history.push('/customers');
                     }}>
@@ -63,6 +67,7 @@ const SideNavbar = () => {
                     </li>
 
                     <li className={"nav-item"} onClick={() => {
+                        qc.setQueryData('view', 'default');
                         setPage('/service');
                         history.push('/service');
                     }}>
@@ -70,6 +75,7 @@ const SideNavbar = () => {
                     </li>
 
                     <li className={"nav-item"} onClick={() => {
+                        qc.setQueryData('view', 'default');
                         setPage('/inventory');
                         history.push('/inventory');
                     }}>

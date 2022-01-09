@@ -53,6 +53,7 @@ const RequestTable = ({ requests }) => {
                         });
                         qc.setQueryData('selectedCustomer', request.customer);
                         qc.setQueryData('view', 'serviceForm');
+                        qc.setQueryData('deleteRequest', true);
                     }}>
                         <td className={"text-center"}>{dayjs(request.createdAt).format("MMM D, YYYY")}</td>
                         <td>{request.customer.businessName}</td>

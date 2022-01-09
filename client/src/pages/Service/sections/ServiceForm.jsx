@@ -9,7 +9,8 @@ import API from '../../../utils/API';
 const ServiceForm = () => {
     const qc = useQueryClient();
     const { status, data, error } = useCustomers();
-    const [existingCustomer, setExistingCustomer] = useState(null);
+    const existingCustomer = useData('existingCustomer');
+    const deleteReq = useData('deleteRequest');
     const submissionType = useData('submissionType');
     const customer = useData('selectedCustomer');
     const job = useData('selectedJob');
@@ -21,7 +22,7 @@ const ServiceForm = () => {
                 return customer.address.street1.toLowerCase() === data.address.street1.toLowerCase()
                     && customer.address.city.toLowerCase() === data.address.city.toLowerCase();
             })
-            if (found.length > 0) setExistingCustomer(found[0])
+            if (found.length > 0) qc.setQueryData('existingCustomer', found[0])
         }
     }, []);
 
@@ -93,8 +94,11 @@ const ServiceForm = () => {
             if (submissionType === 'add') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 createJob.mutate({ customer: customer._id, ...jobData });
-                if(view === 'requests') {
+                if(deleteReq) {
                     removeRequest(job._id)
+                    qc.setQueryData('deleteRequest', null);
+                    qc.setQueryData('view', 'requests');
+                    return;
                 }
                 qc.setQueryData('view', 'default');
                 return
@@ -108,8 +112,11 @@ const ServiceForm = () => {
             if (submissionType === 'new') {
                 const newCustomer = await createCustomer.mutateAsync(customerData);
                 createJob.mutate({ customer: newCustomer.data._id, ...jobData });
-                if(view === 'requests') {
+                if(deleteReq) {
                     removeRequest(job._id)
+                    qc.setQueryData('deleteRequest', null);
+                    qc.setQueryData('view', 'requests');
+                    return;
                 }
                 qc.setQueryData('view', 'default');
             }
@@ -123,7 +130,7 @@ const ServiceForm = () => {
             businessName: existingCustomer.businessName,
             address: existingCustomer.address
         });
-        setExistingCustomer(null);
+        qc.setQueryData('existingCustomer', null)
     }
 
     switch (status) {
@@ -145,7 +152,7 @@ const ServiceForm = () => {
                             <div>
                                 <p>Add this job to <strong>{existingCustomer.businessName}</strong>?</p>
                                 <button onClick={useExisting}>Yes</button>
-                                <button onClick={() => setExistingCustomer(null)}>No</button>
+                                <button onClick={() => qc.setQueryData('existingCustomer', null)}>No</button>
                             </div>
                         </div>
                     </section>
@@ -205,7 +212,7 @@ const ServiceForm = () => {
                                 <div>
                                     <label>
                                         Contact Information
-                                        {view !== 'requests' && submissionType !== "edit" ? (
+                                        {view !== 'requests' && existingCustomer ? (
                                             <AutoComplete />
                                         ) : (
                                             <input type={"text"} name={"businessName"} placeholder={"Business Name"} required

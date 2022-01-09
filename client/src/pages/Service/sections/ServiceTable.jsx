@@ -40,6 +40,8 @@ const ServiceTable = ({ jobs }) => {
                         (job.invoiceNumber !== null && job.invoiceNumber.includes(searchTerm));
                 })
             );
+        } else {
+            setJobList(sortedJobs);
         }
     }, [searchTerm, jobs]);
 

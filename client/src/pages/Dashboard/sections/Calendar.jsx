@@ -35,7 +35,7 @@ const Calendar = ({ jobs }) => {
             <h2>Schedule</h2>
             <div className={"upcoming"}>
                 {days.map(day => (
-                    <div className={"card-day"} key={day.name}>
+                    <div className={"card-day"} key={day.number}>
                         <h3>
                             <span>{day.name}</span>
                             <span>{day.number}</span>
@@ -49,7 +49,7 @@ const Calendar = ({ jobs }) => {
                                 )).map(job => (
                                     <p key={job._id} onClick={() => selectJob(job)}>
                                         {job.customer.businessName}<br/>
-                                        <span className={"blue"}>{job.customer.address.city}</span>
+                                        <span>{job.customer.address.city}</span>
                                     </p>
                                 ))}
                             </div>

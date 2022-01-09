@@ -31,6 +31,18 @@ thead, tbody {
   width: 100%;
 }
 
+tbody {
+  max-height: 32rem;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &.tbody-history {
+    max-height: 12rem;
+  }
+}
+
 .table-item {
   background: white;
   border-radius: 5px;

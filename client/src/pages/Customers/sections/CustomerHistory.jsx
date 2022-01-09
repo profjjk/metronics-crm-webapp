@@ -22,7 +22,7 @@ const CustomerHistory = ({ jobs, customerId }) => {
                 </tr>
                 </thead>
 
-                <tbody>
+                <tbody className={"tbody-history"}>
                 {jobList.map(job => (
                     <tr className={"table-item clickable tr-history"} key={job._id} onClick={() => {
                         qc.setQueryData('submissionType', 'edit');
