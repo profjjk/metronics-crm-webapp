@@ -5,7 +5,7 @@ import API from '../../../utils/API';
 const CustomerForm = () => {
     const qc = useQueryClient();
     const customer = useData('selectedCustomer');
-    const submissionType = qc.getQueryData('submissionType');
+    const submissionType = useData('submissionType');
 
     // DATA MUTATIONS
     const createCustomer = useMutation(customer => API.createCustomer(customer), {
@@ -22,7 +22,6 @@ const CustomerForm = () => {
     const deleteCustomer = useMutation(id => API.deleteCustomer(id), {
         onSuccess: () => {
             qc.invalidateQueries("customers");
-            console.log("Customer deleted!");
         },
     });
     const deleteJobs = useMutation(id => API.deleteJobsByCustomerId(id), {
@@ -40,8 +39,8 @@ const CustomerForm = () => {
         if (answer) {
             await deleteCustomer.mutate(customer._id);
             deleteJobs.mutate(customer._id);
-            qc.removeQueries('selectedCustomer');
-            qc.setQueryData('showCustomerForm', false);
+            qc.setQueryData('selectedCustomer', null);
+            qc.setQueryData('view', 'default');
         }
     }
     const submitForm = async e => {
@@ -63,12 +62,12 @@ const CustomerForm = () => {
             }
             if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
-                qc.setQueryData('showCustomerForm', false);
+                qc.setQueryData('view', 'default');
                 return
             }
             if (submissionType === 'new') {
                 await createCustomer.mutateAsync(customerData);
-                qc.setQueryData('showCustomerForm', false);
+                qc.setQueryData('view', 'default');
             }
         } catch(err) { console.error(err) }
     };

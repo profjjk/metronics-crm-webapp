@@ -4,7 +4,7 @@ import API from '../../../utils/API';
 import dayjs from 'dayjs';
 
 const Messages = ({ messages }) => {
-    const queryClient = useQueryClient();
+    const qc = useQueryClient();
     const [msgList, setMsgList] = useState(messages);
     const [read, setRead] = useState(false);
 
@@ -19,7 +19,7 @@ const Messages = ({ messages }) => {
     // DATA MUTATIONS
     const editMessage = useMutation(msg => API.updateMessage(msg.id, msg.data), {
         onSuccess: () => {
-            queryClient.invalidateQueries('messages');
+            qc.invalidateQueries('messages');
         }
     });
 

@@ -1,6 +1,8 @@
 import { Redirect } from 'react-router-dom';
 import { useData, useMessages, useJobs, useUser } from '../../react-query';
-import { Header, MessageTable } from './sections';
+import { Calendar, Header, MessageTable } from './sections';
+import { ServiceForm } from '../Service/sections';
+import './style.scss';
 
 const DashboardPage = () => {
     const { user } = useUser();
@@ -26,11 +28,18 @@ const DashboardPage = () => {
                         <MessageTable messages={messages.data} />
                     </main>
                 )
+            } else if (view === 'serviceForm') {
+                return (
+                    <main className={"container"} id={"dashboard"}>
+                        <Header />
+                        <ServiceForm />
+                    </main>
+                )
             } else {
                 return (
                     <main className={"container"} id={"dashboard"}>
                         <Header />
-
+                        <Calendar jobs={jobs.data}/>
                     </main>
                 )
             }
