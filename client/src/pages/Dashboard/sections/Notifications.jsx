@@ -10,7 +10,7 @@ const Notifications = ({ jobs, requests, messages, parts }) => {
             <h2>NOTIFICATIONS</h2>
             <div>
                 {jobs.length ? <p className={"notice"} onClick={() => {
-                    qc.setQueryData('view', 'default');
+                    qc.setQueryData('view', 'all');
                     history.push('/service');
                 }}>
                     There are new jobs that need to be scheduled.
@@ -35,6 +35,11 @@ const Notifications = ({ jobs, requests, messages, parts }) => {
                 }}>
                     Some parts need to be re-ordered.
                 </p> : <></>}
+
+                {!parts.length && !jobs.length && !requests.length && !messages.length ?
+                    <p className={"empty-notifications"}>
+                        ** You're all caught up. **
+                    </p> : <></>}
             </div>
         </section>
     )

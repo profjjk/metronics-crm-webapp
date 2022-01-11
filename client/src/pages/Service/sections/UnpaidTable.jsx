@@ -8,6 +8,7 @@ const UnpaidTable = ({ jobs }) => {
     const qc = useQueryClient();
     const [jobList, setJobList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const dollarUSLocale = Intl.NumberFormat('en-US');
 
     // useEffect(() => {
     //     setJobList(jobs.filter(job => !job.isPaid && job.status === 'Completed'));
@@ -68,7 +69,7 @@ const UnpaidTable = ({ jobs }) => {
                         <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM D, YYYY") : "--"}</td>
                         <td>{job.customer.businessName}</td>
                         <td className={"text-center"}>{job.invoiceNumber ? job.invoiceNumber : "--"}</td>
-                        <td className={"text-center"}>$ {job.totalBill}</td>
+                        <td className={"text-center"}>$ {dollarUSLocale.format(job.totalBill)}</td>
                         <td className={"mark-paid text-center"} onClick={() => markPaid(job)}>Mark as paid</td>
                     </tr>
                 ))}

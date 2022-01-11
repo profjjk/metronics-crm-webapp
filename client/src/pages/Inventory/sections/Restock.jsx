@@ -61,13 +61,14 @@ const RestockTable = ({ parts }) => {
                         <td className={"text-center"}>{part.stock}</td>
                         <td className={"inventory-buttons"}>
                             <p className={"warning"}>
-                                {part.minimum - part.stock} less than desired minimum of {part.minimum}
+                                desired minimum: {part.minimum}
                             </p>
                         </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
+            {partList.length < 1 ? <p className={"empty"}>** No parts to display **</p> : <></>}
         </section>
     );
 }

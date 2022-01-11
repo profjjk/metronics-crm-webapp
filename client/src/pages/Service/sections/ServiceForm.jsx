@@ -15,6 +15,7 @@ const ServiceForm = () => {
     const customer = useData('selectedCustomer');
     const job = useData('selectedJob');
     const view = useData('view');
+    const dollarUSLocale = Intl.NumberFormat('en-US');
 
     useEffect(() => {
         if (status === 'success' && view === 'requests') {
@@ -197,7 +198,7 @@ const ServiceForm = () => {
                                     <div className={"dollarInput"}>
                                         <FontAwesomeIcon className={"faDollarSign"} icon={faDollarSign}/>
                                         <input type={"text"} name={"totalBill"}
-                                               defaultValue={job ? job.totalBill : "0"}/>
+                                               defaultValue={job ? dollarUSLocale.format(job.totalBill) : "0"}/>
                                     </div>
                                 </label>
 

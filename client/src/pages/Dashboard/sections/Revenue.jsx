@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
+import dayjs from 'dayjs';
 
 const Revenue = ({ jobs }) => {
     const qc = useQueryClient();
@@ -9,6 +9,7 @@ const Revenue = ({ jobs }) => {
     const [revenue, setRevenue] = useState(0);
     const [outstanding, setOutstanding] = useState(0);
     const year = dayjs(new Date()).format('YYYY');
+    const dollarUSLocale = Intl.NumberFormat('en-US');
 
     useEffect(() => {
         let totalRevenue = 0;
@@ -21,8 +22,8 @@ const Revenue = ({ jobs }) => {
                 unpaid += job.totalBill;
             }
         }
-        setRevenue(totalRevenue);
-        setOutstanding(unpaid);
+        setRevenue(dollarUSLocale.format(totalRevenue));
+        setOutstanding(dollarUSLocale.format(unpaid));
     }, [jobs])
 
     return (

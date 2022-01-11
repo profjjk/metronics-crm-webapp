@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
-import { useAuth } from "../../react-query";
+import { useAuth, useData } from '../../react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUserFriends, faTools, faWarehouse, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
@@ -11,11 +11,12 @@ const SideNavbar = () => {
     const { logout } = useAuth();
     const history = useHistory();
     const [page, setPage] = useState("");
+    const view = useData('view');
 
     useEffect(() => {
         const path = window.location.pathname;
         setPage(path)
-    }, []);
+    }, [view]);
 
     useEffect(() => {
         const links = document.querySelectorAll('svg')

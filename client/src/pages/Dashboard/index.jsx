@@ -43,14 +43,10 @@ const DashboardPage = () => {
                         <Header />
                         <div className={"dashboard-top"}>
                             <Notifications
-                                // jobs={jobs.data.length > 0 ? jobs.data.filter(job => job.status === 'Pending') : []}
-                                // requests={requests.data.length > 0 ? requests.data : []}
-                                // messages={messages.data.length > 0 ? messages.data.filter(msg => !msg.read) : []}
-                                // parts={parts.data.length > 0 ? parts.data.filter(part => part.stock < part.minimum) : []}
-                                jobs={jobs.data.filter(job => job.status === 'Pending')}
-                                requests={requests.data}
-                                messages={messages.data.filter(msg => !msg.read)}
-                                parts={parts.data.filter(part => part.stock < part.minimum)}
+                                jobs={jobStatus === 'success' ? jobs.data.filter(job => job.status === 'Pending') : []}
+                                requests={reqStatus === 'success' ? requests.data : []}
+                                messages={msgStatus === 'success' ? messages.data.filter(msg => !msg.read) : []}
+                                parts={partStatus === 'success' ? parts.data.filter(part => part.stock < part.minimum) : []}
                             />
 
                             <Revenue jobs={jobs.data.filter(job => job.status === 'Completed')} />

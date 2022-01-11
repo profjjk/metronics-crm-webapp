@@ -62,6 +62,7 @@ const CustomersTable = ({ customers }) => {
                 ))}
                 </tbody>
             </table>
+            {customerList.length < 1 ? <p className={"empty"}>** No customers to display **</p> : <></>}
         </section>
     )
 }
