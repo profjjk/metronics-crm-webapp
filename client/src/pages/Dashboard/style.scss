@@ -4,11 +4,40 @@ $light: #efefef;
 $dark: #0a1931;
 $red: #d3232b;
 
-.section-calendar {
+.section-notifications {
+  margin-bottom: 4rem;
+  min-height: 8rem;
+}
+
+.section-revenue {
+  margin: 0 auto 4rem auto;
+  padding: 2rem;
+  min-height: 8rem;
+  width: max-content;
+  border: 1px solid darkgray;
+  border-radius: 20px;
+  background: white;
+
   h2 {
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 10px;
+    font-size: 0.8rem !important;
+    margin-bottom: 0 !important;
+    color: $blue !important;
+  }
+}
+
+.revenue {
+  font-size: 3rem;
+  margin-bottom: 5px;
+}
+.outstanding {
+  font-size: 0.9rem;
+  color: darkgray;
+  font-style: italic;
+  width: max-content;
+  &:hover {
+    cursor: pointer;
+    color: $blue;
+    font-weight: bolder;
   }
 }
 
@@ -22,6 +51,7 @@ $red: #d3232b;
 .card-day {
   position: relative;
   border: 1px solid $dark;
+  border-radius: 5px;
   min-height: 15rem;
   background: white;
 
@@ -33,6 +63,10 @@ $red: #d3232b;
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  h2 {
+    font-size: 1.2rem;
   }
 
   h3 {

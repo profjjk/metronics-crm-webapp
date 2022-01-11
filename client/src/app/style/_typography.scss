@@ -1,0 +1,24 @@
+$red: #d3232b;
+$blue: #185adb;
+
+[class|=section] {
+  //margin-bottom: 5rem;
+  //min-height: 10rem;
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}
+
+.notice {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  width: max-content;
+
+  &:hover {
+    cursor: pointer;
+    color: $blue;
+  }
+}

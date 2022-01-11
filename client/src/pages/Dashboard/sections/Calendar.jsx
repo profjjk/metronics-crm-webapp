@@ -9,7 +9,7 @@ const Calendar = ({ jobs }) => {
     const today = dayjs(new Date());
 
     useEffect(() => {
-        setJobList(jobs);
+        setJobList(jobs.filter(job => job.status !== 'Canceled'));
         setDays(() => {
             const days = [];
             for (let i = 0; i < 5; i++) {
@@ -32,7 +32,7 @@ const Calendar = ({ jobs }) => {
 
     return (
         <section className={"section-calendar"}>
-            <h2>Schedule</h2>
+            <h2>SCHEDULE</h2>
             <div className={"upcoming"}>
                 {days.map(day => (
                     <div className={"card-day"} key={day.number}>
@@ -43,7 +43,8 @@ const Calendar = ({ jobs }) => {
                             <div>
                                 {jobList.filter(job => (
                                     dayjs(job.serviceDate).format('dddd') === day.name &&
-                                        dayjs(job.serviceDate) >= today
+                                    dayjs(job.serviceDate) > today.subtract(1, 'day') &&
+                                    dayjs(job.serviceDate) < today.add(5, 'day')
                                 )).sort((job1, job2) => (
                                     job1.customer.address.city.charCodeAt(0) - job2.customer.address.city.charCodeAt(0)
                                 )).map(job => (
