@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { useCustomers, useData } from '../../../react-query';
+import { useCustomers, useData, useToast } from '../../../react-query';
 import { AutoComplete } from '../../../components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import API from '../../../utils/API';
 const ServiceForm = () => {
     const qc = useQueryClient();
     const { status, data, error } = useCustomers();
+    const { addToast } = useToast();
     const existingCustomer = useData('existingCustomer');
     const deleteReq = useData('deleteRequest');
     const submissionType = useData('submissionType');
@@ -63,6 +64,7 @@ const ServiceForm = () => {
     const removeJob = id => {
         let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.");
         if (answer) deleteJob.mutate(id);
+        addToast("Job Deleted");
     };
     const removeRequest = id => {
         deleteRequest.mutate(id);

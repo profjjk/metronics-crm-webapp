@@ -32,7 +32,7 @@ const Calendar = ({ jobs }) => {
 
     return (
         <section className={"section-calendar"}>
-            <h2>SCHEDULE</h2>
+            <h2>5 DAY SCHEDULE</h2>
             <div className={"upcoming"}>
                 {days.map(day => (
                     <div className={"card-day"} key={day.number}>

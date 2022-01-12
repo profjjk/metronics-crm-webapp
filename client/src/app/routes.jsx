@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Customers, Dashboard, Inventory, Login, Register, Service } from "../pages";
-import { SideNavbar } from '../components';
+import { SideNavbar, Toast } from '../components';
 
 const Routes = () => {
     return (

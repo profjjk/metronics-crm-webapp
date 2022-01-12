@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { useData } from '../../../react-query';
+import { useData, useToast } from '../../../react-query';
 import API from '../../../utils/API';
 
 const CustomerForm = () => {
     const qc = useQueryClient();
+    const { addToast } = useToast();
     const customer = useData('selectedCustomer');
     const submissionType = useData('submissionType');
 
@@ -42,6 +43,7 @@ const CustomerForm = () => {
             qc.setQueryData('selectedCustomer', null);
             qc.setQueryData('view', 'default');
         }
+        addToast("Customer Deleted");
     }
     const submitForm = async e => {
         try {

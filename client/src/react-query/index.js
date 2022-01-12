@@ -7,3 +7,4 @@ export { default as useMessages } from './hooks/useMessages';
 export { default as useRequests } from './hooks/useRequests';
 export { default as queryClient } from './queryClient';
 export { default as useData } from './hooks/useData';
+export { default as useToast } from './hooks/useToast';

@@ -3,6 +3,7 @@ import { useData, useMessages, useJobs, useUser, useRequests, useParts } from '.
 import { Calendar, Header, MessageTable, Notifications, Revenue } from './sections';
 import { ServiceForm } from '../Service/sections';
 import './style.scss';
+import { Toast } from '../../components';
 
 const DashboardPage = () => {
     const { user } = useUser();

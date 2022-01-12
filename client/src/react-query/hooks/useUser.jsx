@@ -13,16 +13,15 @@ const fetchUser = async (id) => {
 }
 
 const useUser = () => {
+    const qc = useQueryClient();
     const [user, setUser] = useState(getStoredToken());
-    const queryClient = useQueryClient();
 
     useQuery('user', () => fetchUser(user._id), {
         enabled: !!user,
         onSuccess: res => {
             setUser({
                 _id: res.data._id,
-                username: res.data.username,
-                auth: res.data.authorization === 'administrator' ? 'private' : 'public',
+                username: res.data.username
             })
         }
     })
@@ -30,16 +29,15 @@ const useUser = () => {
     const updateUser = newUser => {
         setUser({
             _id: newUser._id,
-            username: newUser.username,
-            auth: newUser.authorization === 'administrator' ? 'private' : 'public',
+            username: newUser.username
         });
-        queryClient.setQueryData('user', user);
+        qc.setQueryData('user', user);
     }
 
     const clearUser = () => {
         setUser(null);
-        queryClient.setQueryData('user', null);
-        queryClient.removeQueries(['user', 'jobs', 'customers', 'parts']);
+        qc.setQueryData('user', null);
+        qc.removeQueries(['user', 'jobs', 'customers', 'parts']);
     }
 
     return { user, updateUser, clearUser }

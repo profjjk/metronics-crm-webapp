@@ -1,9 +1,10 @@
-import { useData } from '../../../react-query';
+import { useData, useToast } from '../../../react-query';
 import { useMutation, useQueryClient } from 'react-query';
 import API from '../../../utils/API';
 
 const PartForm = () => {
     const queryClient = useQueryClient();
+    const { addToast } = useToast();
     const part = useData('selectedPart');
     const submissionType = useData('submissionType');
 
@@ -50,6 +51,7 @@ const PartForm = () => {
     const removePart = (id) => {
         let answer = window.confirm("Are you sure you want to delete?\nThis cannot be undone.");
         if (answer) deletePart.mutate(id);
+        addToast("Part Deleted");
     }
 
     return (
