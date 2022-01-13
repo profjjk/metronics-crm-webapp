@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { Searchbar } from '../../../components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import API from '../../../utils/API';
 
 const RestockTable = ({ parts }) => {
@@ -59,7 +57,7 @@ const RestockTable = ({ parts }) => {
                         <td>{part.partNumber}</td>
                         <td>{part.description}</td>
                         <td className={"text-center"}>{part.stock}</td>
-                        <td className={"inventory-buttons"}>
+                        <td>
                             <p className={"warning"}>
                                 desired minimum: {part.minimum}
                             </p>

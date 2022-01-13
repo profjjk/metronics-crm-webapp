@@ -4,6 +4,111 @@ $light: #efefef;
 $dark: #0a1931;
 $red: #d3232b;
 
+// COMPONENTS
+[class|=btn] {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background: $blue;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+
+.mark-paid, .mark-read {
+  color: $blue;
+  width: max-content;
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+
+.mark-read {
+  margin-top: 5px;
+  margin-left: auto;
+}
+
+.read-toggle {
+  margin: 10px auto 20px auto;
+  width: max-content;
+  display: flex;
+  background: white;
+  border: 1px solid $dark;
+  border-radius: 10px;
+}
+
+.toggle-btn {
+  width: 75px;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: 600;
+
+  &:hover {
+    cursor: pointer;
+  }
+  &.active {
+    background: $blue;
+    color: white;
+  }
+  &.left {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &.right {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+// LAYOUT
+#dashboard {
+  [class|=section] {
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.message {
+  background: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.dashboard-top {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.notice {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  width: max-content;
+
+  &:hover {
+    cursor: pointer;
+    color: $blue;
+  }
+}
+
 .section-notifications {
   margin-bottom: 4rem;
   min-height: 8rem;
@@ -23,6 +128,12 @@ $red: #d3232b;
     margin-bottom: 0 !important;
     color: $blue !important;
   }
+}
+
+.empty-notifications {
+  text-align: left;
+  font-style: italic;
+  color: grey;
 }
 
 .revenue {
@@ -63,10 +174,6 @@ $red: #d3232b;
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-
-  h2 {
-    font-size: 1.2rem;
   }
 
   h3 {

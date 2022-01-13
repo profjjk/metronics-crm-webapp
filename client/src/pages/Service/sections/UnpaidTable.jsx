@@ -10,10 +10,6 @@ const UnpaidTable = ({ jobs }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const dollarUSLocale = Intl.NumberFormat('en-US');
 
-    // useEffect(() => {
-    //     setJobList(jobs.filter(job => !job.isPaid && job.status === 'Completed'));
-    // }, [jobs]);
-
     // Filter by search term
     useEffect(() => {
         if (searchTerm === "") {
