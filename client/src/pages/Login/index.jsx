@@ -37,7 +37,6 @@ const Login = () => {
                         <input
                             type={"text"}
                             name={"username"}
-                            defaultValue={"admin"}
                             required
                         />
                     </label>
@@ -48,7 +47,6 @@ const Login = () => {
                         <input
                             type={"password"}
                             name={"password"}
-                            defaultValue={"metronicsAdmin"}
                             required
                         />
                     </label>
