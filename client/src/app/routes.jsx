@@ -7,7 +7,7 @@ const Routes = () => {
         <Router>
             <Switch>
                 <Route exact path='/' component={Login}/>
-                <Route exact path='/login' component={Login}/>
+                {/*<Route exact path='/login' component={Login}/>*/}
                 <>
                     <SideNavbar />
                     <Route exact path='/register' component={Register}/>

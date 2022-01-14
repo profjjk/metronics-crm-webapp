@@ -13,7 +13,7 @@ const CustomerPage = () => {
 
     // REDIRECT
     if (!user) {
-        return <Redirect to={'/login'} />
+        return <Redirect to={'/'} />
     }
 
     switch(customerStatus || jobStatus) {

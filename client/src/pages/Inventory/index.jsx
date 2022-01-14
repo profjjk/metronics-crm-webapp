@@ -10,7 +10,7 @@ const InventoryPage = () => {
 
     // REDIRECTS
     if (!user) {
-        return <Redirect to={'/login'} />
+        return <Redirect to={'/'} />
     }
 
     switch(status) {
