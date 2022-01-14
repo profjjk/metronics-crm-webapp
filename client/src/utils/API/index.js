@@ -1,13 +1,21 @@
 import axios from 'axios';
 import { getStoredToken } from '../storage'
 
-const customerUrl = 'https://metronics-webapp-server.herokuapp.com/api/customers';
-const jobUrl = 'https://metronics-webapp-server.herokuapp.com/api/jobs';
-const partUrl = 'https://metronics-webapp-server.herokuapp.com/api/parts';
-const messageUrl = 'https://metronics-webapp-server.herokuapp.com/api/messages';
-const requestUrl = 'https://metronics-webapp-server.herokuapp.com/api/requests';
-const userUrl = 'https://metronics-webapp-server.herokuapp.com/api/users';
-const authUrl = 'https://metronics-webapp-server.herokuapp.com/api/auth';
+let baseUrl;
+
+if (process.env.NODE_ENV === "production") {
+  baseUrl = "https://metronics-webapp-server.herokuapp.com/api"
+} else {
+  baseUrl = "http://localhost:8000/api"
+}
+
+const customerUrl = `${baseUrl}/customers`;
+const jobUrl = `${baseUrl}/jobs`;
+const partUrl = `${baseUrl}/parts`;
+const messageUrl = `${baseUrl}/messages`;
+const requestUrl = `${baseUrl}/requests`;
+const userUrl = `${baseUrl}/users`;
+const authUrl = `${baseUrl}/auth`;
 
 const authHeader = () => {
   const token = getStoredToken().token;
