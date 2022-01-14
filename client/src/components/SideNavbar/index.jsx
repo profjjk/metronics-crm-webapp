@@ -43,7 +43,7 @@ const SideNavbar = () => {
     // EVENT LISTENERS
     const signOut = () => {
         logout();
-        history.push('/login');
+        history.push('/');
         window.location.reload();
     }
 
