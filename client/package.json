@@ -1,7 +1,7 @@
 {
   "name": "metronics",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "proxy": "https://metronics-webapp-server.herokuapp.com",
   "homepage": "https://metronics-webapp.netlify.app",
   "dependencies": {
