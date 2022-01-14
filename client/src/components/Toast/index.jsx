@@ -4,10 +4,17 @@ import './style.scss';
 
 const Toast = () => {
     const { toasts, deleteToast } = useToast();
+    const [toastList, setToastList] = useState([]);
+
+    useEffect(() => {
+        if (toasts) {
+            setToastList(toasts)
+        }
+    }, [toasts]);
 
     return (
         <footer className={"toast-container"}>
-            {toasts.map(toast => (
+            {toastList.map(toast => (
                 <div className={"toast-card"} key={toast.id}>
                     <button onClick={() => deleteToast(toast.id)}>
                         X
