@@ -4,7 +4,7 @@ import { Header, InventoryTable, RestockTable, PartForm } from './sections';
 
 const InventoryPage = () => {
     const { user } = useUser();
-    const { status, data: parts, error, isFetching } = useParts();
+    const { status, data: parts, error } = useParts();
     const view = useData('view');
 
     // REDIRECTS

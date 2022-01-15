@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useCustomers, useData, useToast } from '../../../react-query';
 import { AutoComplete } from '../../../components';

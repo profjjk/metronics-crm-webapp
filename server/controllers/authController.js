@@ -6,6 +6,7 @@ require('dotenv').config()
 module.exports = {
     register: async (req, res) => {
         const { username, password } = req.body;
+        console.log(username, password)
         try {
             const userExists = await db.User.findOne({ username });
             if (userExists) res.status(400).send(`Username "${username}" already exists.`);

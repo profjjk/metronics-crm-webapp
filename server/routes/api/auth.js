@@ -6,6 +6,6 @@ router.route('/login')
     .post(authenticate.user, authController.login)
 
 router.route('/register')
-    .post(authenticate.token, authController.register)
+    .post(authController.register)
 
 module.exports = router;

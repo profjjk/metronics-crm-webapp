@@ -1,13 +1,7 @@
 import axios from 'axios';
 import { getStoredToken } from '../storage'
 
-let baseUrl;
-
-if (process.env.NODE_ENV === "production") {
-  baseUrl = "https://metronics-webapp-server.herokuapp.com/api"
-} else {
-  baseUrl = "http://localhost:8000/api"
-}
+let baseUrl = "https://metronics-webapp-server.herokuapp.com/api"
 
 const customerUrl = `${baseUrl}/customers`;
 const jobUrl = `${baseUrl}/jobs`;

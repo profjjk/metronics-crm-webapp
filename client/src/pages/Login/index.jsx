@@ -37,6 +37,7 @@ const Login = () => {
                         <input
                             type={"text"}
                             name={"username"}
+                            defaultValue={"test"}
                             required
                         />
                     </label>
@@ -47,6 +48,7 @@ const Login = () => {
                         <input
                             type={"password"}
                             name={"password"}
+                            defaultValue={"password"}
                             required
                         />
                     </label>

@@ -4,6 +4,7 @@ const authenticate = require('../../middleware/authenticate');
 
 router.route('/')
     .get(authenticate.token, userController.findAll)
+    .post(userController.create)
 
 router.route('/:id')
     .get(authenticate.token, userController.findById)

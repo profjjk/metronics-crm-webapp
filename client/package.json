@@ -2,7 +2,6 @@
   "name": "metronics",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://metronics-webapp-server.herokuapp.com/",
   "homepage": "https://metronics-webapp.netlify.app/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",

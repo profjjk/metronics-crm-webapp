@@ -37,9 +37,3 @@ module.exports = {
     token: authenticateToken,
     user: authenticateUser
 }
-
-// TODO: make use of the req.user property to restrict data access to administrators only. No public access allowed.
-//  - I probably need to do this in the controllers, or make different versions of the authenticateToken middleware.
-
-// TODO: maybe I should move the authenticateUser logic to the messageController.
-//  - It looks nice as middleware, but is only used once at login.

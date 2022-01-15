@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
 import API from '../../utils/API';
-import { useState } from 'react';
 
 const fetchJobs = async () => {
     try {

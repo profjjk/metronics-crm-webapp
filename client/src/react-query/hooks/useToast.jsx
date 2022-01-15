@@ -1,35 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import useData from './useData';
 
 const useToasts = () => {
     const qc = useQueryClient();
-    const toasts = useData('toasts');
+    const [toasts, setToasts] = useState([]);
 
     useEffect(() => {
-        if (toasts) {
-            if (toasts.length > 5) {
-                qc.setQueryData('toasts', toasts.slice(1));
-            }
-
+        if (toasts.length) {
             const interval = setInterval(() => {
+                setToasts(toasts.slice(1));
                 qc.setQueryData('toasts', toasts.slice(1));
-            }, 3000);
+            }, 5000);
+
             return () => clearInterval(interval);
         }
     }, [toasts]);
 
-    const addToast = message => {
-        const newToast = { id: (Math.floor(Math.random() * 1000)), msg: message }
-        if (toasts) {
-            qc.setQueryData('toasts', [...toasts, newToast]);
-        } else {
-            qc.setQueryData('toasts', [newToast]);
+    useQuery('toasts', () => {}, {
+        onSuccess: data => {
+            data === undefined ? setToasts([]) : setToasts(data)
         }
+    });
 
+    const addToast = message => {
+        const newToast = { id: toasts.length, msg: message }
+        setToasts([...toasts, newToast])
+        qc.setQueryData('toasts', [...toasts, newToast]);
     }
 
     const deleteToast = id => {
+        setToasts(toasts.filter(toast => toast.id !== id));
         qc.setQueryData('toasts', toasts.filter(toast => toast.id !== id));
     }
 
