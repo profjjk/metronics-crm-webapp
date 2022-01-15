@@ -2,6 +2,7 @@ import { Redirect } from 'react-router-dom';
 import { useData, useCustomers, useUser, useJobs } from '../../react-query';
 import { Header, CustomersTable, CustomerHistory, CustomerForm } from './sections';
 import { ServiceForm } from '../Service/sections';
+import './style.scss';
 
 const CustomerPage = () => {
     const { user } = useUser();
