@@ -1,22 +1,22 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Customers, Dashboard, Inventory, Login, Register, Service, NotFoundPage } from "../pages";
-import { SideNavbar, Toast } from '../components';
+import { SideNavbar } from '../components';
 
 const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route path='/' component={Login}/>
-                <Route path='/login' component={Login}/>
+                <Route exact path='/' component={Login}/>
+                <Route exact path='/login' component={Login}/>
                 <>
                     <SideNavbar />
-                    <Route path='/register' component={Register}/>
-                    <Route path='/dashboard' component={Dashboard}/>
-                    <Route path='/customers' component={Customers}/>
-                    <Route path='/service' component={Service}/>
-                    <Route path='/inventory' component={Inventory}/>
+                    <Route exact path='/register' component={Register}/>
+                    <Route exact path='/dashboard' component={Dashboard}/>
+                    <Route exact path='/customers' component={Customers}/>
+                    <Route exact path='/service' component={Service}/>
+                    <Route exact path='/inventory' component={Inventory}/>
                 </>
-                <Route path='' component={NotFoundPage}/>
+                <Route component={NotFoundPage}/>
             </Switch>
         </Router>
     );
