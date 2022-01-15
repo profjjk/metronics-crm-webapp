@@ -1,6 +1,7 @@
 import { Redirect } from "react-router-dom";
 import { useData, useUser, useParts } from '../../react-query';
 import { Header, InventoryTable, RestockTable, PartForm } from './sections';
+import './style.scss';
 
 const InventoryPage = () => {
     const { user } = useUser();
