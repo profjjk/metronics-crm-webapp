@@ -5,7 +5,7 @@ const NotFoundPage = () => {
     const history = useHistory();
 
     return (
-        <main className={"container"} id={"notFound"}>
+        <main id={"notFound"}>
             <h1>Page Not Found</h1>
             <h4 onClick={() => {
                 history.push("/dashboard")

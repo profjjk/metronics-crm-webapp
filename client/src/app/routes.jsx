@@ -6,17 +6,17 @@ const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route exact path='/' component={Login}/>
-                <Route exact path='/login' component={Login}/>
+                <Route path='/' component={Login}/>
+                <Route path='/login' component={Login}/>
                 <>
                     <SideNavbar />
-                    <Route exact path='/register' component={Register}/>
-                    <Route exact path='/dashboard' component={Dashboard}/>
-                    <Route exact path='/customers' component={Customers}/>
-                    <Route exact path='/service' component={Service}/>
-                    <Route exact path='/inventory' component={Inventory}/>
-                    <Route component={NotFoundPage}/>
+                    <Route path='/register' component={Register}/>
+                    <Route path='/dashboard' component={Dashboard}/>
+                    <Route path='/customers' component={Customers}/>
+                    <Route path='/service' component={Service}/>
+                    <Route path='/inventory' component={Inventory}/>
                 </>
+                <Route path='' component={NotFoundPage}/>
             </Switch>
         </Router>
     );
