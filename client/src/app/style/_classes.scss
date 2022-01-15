@@ -1,0 +1,49 @@
+@import "config";
+
+/* ==================
+   CLASS STYLES
+   ================== */
+
+// TEXT
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.red {
+  color: $red;
+}
+.blue {
+  color: $blue;
+}
+.bold {
+  font-weight: 600;
+}
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: grey;
+}
+.empty-notifications {
+  text-align: left;
+  font-style: italic;
+  color: grey;
+}
+.warning {
+  font-style: italic;
+  color: $red;
+  text-align: center;
+}
+
+// BUTTONS
+
+.delete {
+  margin-left: auto;
+  &:hover {
+    background: $red;
+  }
+}

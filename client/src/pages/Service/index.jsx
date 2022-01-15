@@ -1,7 +1,6 @@
 import { Redirect } from 'react-router-dom';
 import { useUser, useData, useJobs, useRequests } from '../../react-query';
 import { Header, ServiceTable, RequestTable, UnpaidTable, ServiceForm } from './sections';
-import './style.scss';
 
 const ServicePage = () => {
     const { user } = useUser();

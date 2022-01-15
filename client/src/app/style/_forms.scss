@@ -1,0 +1,250 @@
+@import "config";
+
+/* ==================
+   FORMS
+   ================== */
+
+input, select {
+  padding: 0.6rem;
+  border: 0.5px solid lightgrey;
+  border-radius: 5px;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+label {
+  display: flex;
+  flex-flow: column;
+  gap: 0.2rem;
+  font-weight: 600;
+}
+
+textarea {
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.6rem;
+  font-size: 1rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-sm, .dropdown {
+  width: 100%;
+  max-width: 12rem;
+
+}
+
+.dropdown {
+  position: relative;
+  .faChevronDown {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+  }
+  select {
+    appearance: none;
+    cursor: pointer;
+    width: 100%;
+    padding-right: 1.8rem;
+  }
+}
+
+.invoiceInput {
+  position: relative;
+  .faHashtag {
+    position: absolute;
+    top: 11px;
+    left: 9px;
+  }
+  input {
+    appearance: none;
+    padding-left: 30px;
+  }
+}
+
+.dollarInput {
+  position: relative;
+  .faDollarSign {
+    position: absolute;
+    top: 11px;
+    left: 11px;
+  }
+  input {
+    padding-left: 25px;
+  }
+}
+
+.btn-form {
+  width: 6rem;
+  height: 2.5rem;
+}
+
+#form-customer {
+  .customer-area {
+    display: grid;
+    grid-template-columns: 40% 55%;
+    gap: 2rem;
+    justify-content: space-between;
+    label {
+      display: flex;
+      flex-flow: column;
+      gap: 0.2rem;
+    }
+    input {
+      width: 100%;
+    }
+
+    .address {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      & > div {
+        display: grid;
+        grid-template-columns: 60% 10% 28%;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .notes-area {
+    label {
+      display: flex;
+      flex-flow: column;
+      gap: 0.2rem;
+    }
+    textarea {
+      border: 1px solid lightgrey;
+      border-radius: 5px;
+      height: 5rem;
+    }
+  }
+}
+
+#form-part {
+  div:nth-child(1) {
+    display: grid;
+    grid-template-columns: 15% 65% 8%;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+
+  .stock-notification {
+    flex-flow: row;
+    align-items: center;
+    gap: 1rem;
+
+    input {
+      width: 8%;
+    }
+  }
+}
+
+#form-service {
+  .btn-area {
+    display: flex;
+    gap: 1.5rem;
+    .btn-form {
+      width: 6rem;
+      height: 2.5rem;
+      background: $blue;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+  }
+
+  .job-area{
+    display: flex;
+    justify-content: space-between;
+  }
+  label {
+    display: flex;
+    flex-flow: column;
+    gap: 0.2rem;
+    .checkbox {
+      align-self: center;
+      margin-top: 8px;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    & > .dropdown, input {
+      width: 11rem;
+    }
+  }
+
+  .customer-area {
+    display: grid;
+    grid-template-columns: 40% 55%;
+    gap: 2rem;
+    justify-content: space-between;
+    label {
+      display: flex;
+      flex-flow: column;
+      gap: 0.2rem;
+    }
+    input {
+      width: 100%;
+    }
+
+    .address {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      & > div {
+        display: grid;
+        grid-template-columns: 60% 10% 28%;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .notes-area {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    textarea {
+      border: 1px solid lightgrey;
+      border-radius: 5px;
+      height: 5rem;
+    }
+  }
+}
+
+.use-existing-customer {
+  background: white;
+  border: 1px solid $blue;
+  border-radius: 10px;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto 40px auto;
+  padding: 10px;
+  h4 {
+    font-size: 1.3rem;
+    font-weight: 400;
+  }
+  .match {
+    width: 50%;
+    margin: 25px auto;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 50px;
+  }
+  button {
+    background: none;
+    border: none;
+    color: $blue;
+    font-size: 1rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
