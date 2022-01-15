@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Customers, Dashboard, Inventory, Login, Register, Service } from "../pages";
+import { Customers, Dashboard, Inventory, Login, Register, Service, NotFoundPage } from "../pages";
 import { SideNavbar, Toast } from '../components';
 
 const Routes = () => {
@@ -15,6 +15,7 @@ const Routes = () => {
                     <Route exact path='/customers' component={Customers}/>
                     <Route exact path='/service' component={Service}/>
                     <Route exact path='/inventory' component={Inventory}/>
+                    <Route component={NotFoundPage}/>
                 </>
             </Switch>
         </Router>
