@@ -63,14 +63,12 @@ const CustomerForm = () => {
                 notes: formData.notes.trim()
             }
             if (submissionType === 'edit') {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                qc.setQueryData('view', 'default');
-                return
+                await editCustomer.mutate({ id: customer._id, data: customerData});
             }
             if (submissionType === 'new') {
                 await createCustomer.mutateAsync(customerData);
-                qc.setQueryData('view', 'default');
             }
+            qc.setQueryData('view', 'default');
         } catch(err) { console.error(err) }
     };
 

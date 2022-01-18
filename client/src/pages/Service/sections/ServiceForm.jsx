@@ -26,7 +26,7 @@ const ServiceForm = () => {
             })
             if (found.length > 0) qc.setQueryData('existingCustomer', found[0])
         }
-    }, []);
+    }, [status, data, submissionType, customer]);
 
     // DATA MUTATIONS
     const createJob = useMutation(job => API.createJob(job), {
@@ -103,14 +103,10 @@ const ServiceForm = () => {
                     qc.setQueryData('view', 'requests');
                     return;
                 }
-                qc.setQueryData('view', 'default');
-                return
             }
             if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 editJob.mutate({ id: job._id, data: jobData });
-                qc.setQueryData('view', 'default');
-                return
             }
             if (submissionType === 'new') {
                 const newCustomer = await createCustomer.mutateAsync(customerData);
@@ -121,8 +117,8 @@ const ServiceForm = () => {
                     qc.setQueryData('view', 'requests');
                     return;
                 }
-                qc.setQueryData('view', 'default');
             }
+            qc.setQueryData('view', 'default');
         } catch(err) { console.error(err) }
     };
     const useExisting = () => {

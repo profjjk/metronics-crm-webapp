@@ -38,13 +38,11 @@ const PartForm = () => {
             }
             if (submissionType === 'edit') {
                 await updatePart.mutate({id: part._id, data: partData});
-                queryClient.setQueryData('showPartForm', false);
-                return
             }
             if (submissionType === 'new') {
                 await createPart.mutate(partData);
-                queryClient.setQueryData('showPartForm', false);
             }
+            queryClient.setQueryData('view', 'default');
         } catch (err) { console.error(err) }
     };
 
