@@ -7,6 +7,7 @@ const RequestTable = ({ requests }) => {
     const qc = useQueryClient();
     const [requestList, setRequestList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const dollarUSLocale = Intl.NumberFormat('en-US');
 
     // Filter by search term
     useEffect(() => {
@@ -49,7 +50,8 @@ const RequestTable = ({ requests }) => {
                         qc.setQueryData('selectedJob', {
                             _id: request._id,
                             status: "Pending",
-                            issueNotes: request.issueNotes
+                            issueNotes: request.issueNotes,
+                            totalBill: dollarUSLocale.format(0)
                         });
                         qc.setQueryData('selectedCustomer', request.customer);
                         qc.setQueryData('view', 'serviceForm');

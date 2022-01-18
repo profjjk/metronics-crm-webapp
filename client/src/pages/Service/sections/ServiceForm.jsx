@@ -19,7 +19,7 @@ const ServiceForm = () => {
     const dollarUSLocale = Intl.NumberFormat('en-US');
 
     useEffect(() => {
-        if (status === 'success' && view === 'requests') {
+        if (status === 'success' && submissionType === 'new' && customer) {
             const found = data.data.filter(data => {
                 return customer.address.street1.toLowerCase() === data.address.street1.toLowerCase()
                     && customer.address.city.toLowerCase() === data.address.city.toLowerCase();
@@ -200,7 +200,7 @@ const ServiceForm = () => {
                                     <div className={"dollarInput"}>
                                         <FontAwesomeIcon className={"faDollarSign"} icon={faDollarSign}/>
                                         <input type={"text"} name={"totalBill"}
-                                               defaultValue={job ? dollarUSLocale.format(job.totalBill) : "0"}/>
+                                               defaultValue={job ? dollarUSLocale.format(job.totalBill) : dollarUSLocale.format(0)}/>
                                     </div>
                                 </label>
 
@@ -215,7 +215,7 @@ const ServiceForm = () => {
                                 <div>
                                     <label>
                                         Contact Information
-                                        {view !== 'requests' && existingCustomer ? (
+                                        {submissionType === 'new' && !customer ? (
                                             <AutoComplete />
                                         ) : (
                                             <input type={"text"} name={"businessName"} placeholder={"Business Name"} required
