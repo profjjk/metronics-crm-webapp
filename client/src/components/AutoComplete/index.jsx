@@ -92,5 +92,3 @@ const AutoComplete = () => {
 }
 
 export default AutoComplete;
-
-// BUG: if AutoComplete suggestion selected using a click event && then user hits the 'enter' key to submit form... crash and burn.

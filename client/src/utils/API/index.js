@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getStoredToken } from '../storage'
 
-let baseUrl = "https://metronics-webapp-server.herokuapp.com/api"
+const baseUrl = "https://metronics-webapp-server.herokuapp.com/api"
 
 const customerUrl = `${baseUrl}/customers`;
 const jobUrl = `${baseUrl}/jobs`;

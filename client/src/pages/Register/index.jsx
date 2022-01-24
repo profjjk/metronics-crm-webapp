@@ -20,7 +20,7 @@ const Register = () => {
     }
 
     return (
-        <main>
+        <main className={"container"}>
             <div id={"card-login"}>
                 <h1>Metronics</h1>
                 <form id={"form-login"} onSubmit={submitHandler}>

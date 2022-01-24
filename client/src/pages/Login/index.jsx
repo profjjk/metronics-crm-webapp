@@ -37,7 +37,7 @@ const Login = () => {
                         <input
                             type={"text"}
                             name={"username"}
-                            defaultValue={"test"}
+                            defaultValue={"Demo"}
                             required
                         />
                     </label>
