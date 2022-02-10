@@ -14,11 +14,13 @@ const PartForm = () => {
             queryClient.invalidateQueries('parts');
         }
     });
+
     const updatePart = useMutation(part => API.updatePart(part.id, part.data), {
         onSuccess: () => {
             queryClient.invalidateQueries('parts');
         }
     });
+
     const deletePart = useMutation(id => API.deletePart(id), {
         onSuccess: () => {
             queryClient.invalidateQueries('parts');
@@ -36,12 +38,15 @@ const PartForm = () => {
                 stock: parseInt(formData.stock),
                 minimum: parseInt(formData.minimum)
             }
+
             if (submissionType === 'edit') {
                 await updatePart.mutate({id: part._id, data: partData});
             }
+
             if (submissionType === 'new') {
                 await createPart.mutate(partData);
             }
+
             queryClient.setQueryData('view', 'default');
         } catch (err) { console.error(err) }
     };
@@ -63,6 +68,7 @@ const PartForm = () => {
                                defaultValue={part ? part.partNumber : ""}
                         />
                     </label>
+
                     <label>
                         Description
                         <input type={"text"} name={"description"}
@@ -70,6 +76,7 @@ const PartForm = () => {
                                defaultValue={part ? part.description : ""}
                         />
                     </label>
+
                     <label className={"text-center"}>
                         In Stock
                         <input className={"text-center"} type={"text"} name={"stock"}

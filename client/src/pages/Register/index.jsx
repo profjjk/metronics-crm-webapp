@@ -11,10 +11,12 @@ const Register = () => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
+
             const newUser = await register({
                 username: formData.username,
                 password: formData.password
             });
+
             if (newUser.status === 201) history.push('/dashboard');
         } catch(err) { console.error(err) }
     }
@@ -23,8 +25,10 @@ const Register = () => {
         <main className={"container"}>
             <div id={"card-login"}>
                 <h1>Metronics</h1>
+
                 <form id={"form-login"} onSubmit={submitHandler}>
                     <FontAwesomeIcon className={"icon-faUser"} icon={faUser}/>
+
                     <label>
                         Username
                         <input
@@ -35,6 +39,7 @@ const Register = () => {
                     </label>
 
                     <FontAwesomeIcon className={"icon-faLock"} icon={faLock}/>
+
                     <label>
                         Password
                         <input

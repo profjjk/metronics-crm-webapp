@@ -7,6 +7,7 @@ module.exports = {
             res.json(data);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
+
     delete: async (req, res) => {
         try {
             await db.Request.deleteOne({ _id: req.params.id });

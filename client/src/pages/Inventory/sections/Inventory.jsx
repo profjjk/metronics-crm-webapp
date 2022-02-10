@@ -34,6 +34,7 @@ const InventoryTable = ({ parts }) => {
     // EVENT LISTENERS
     const changeQuantity = (e, part) => {
         const operator = e.target.innerHTML;
+
         if (operator === '+') {
             update.mutate({ id: part._id,  data: {...part, stock: part.stock + 1} });
         } else {
@@ -54,13 +55,13 @@ const InventoryTable = ({ parts }) => {
 
             <table>
                 <thead>
-                <tr className={"tr-part"}>
-                    <th>Part #</th>
-                    <th>Description</th>
-                    <th className={"text-center"}>In Stock</th>
-                    <th className={"text-center"}>Change Quantity</th>
-                    <th className={"text-center"}>Edit</th>
-                </tr>
+                    <tr className={"tr-part"}>
+                        <th>Part #</th>
+                        <th>Description</th>
+                        <th className={"text-center"}>In Stock</th>
+                        <th className={"text-center"}>Change Quantity</th>
+                        <th className={"text-center"}>Edit</th>
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -69,10 +70,12 @@ const InventoryTable = ({ parts }) => {
                         <td>{part.partNumber}</td>
                         <td>{part.description}</td>
                         <td className={`text-center ${part.stock < part.minimum ? "red bold" : ""}`}>{part.stock}</td>
+
                         <td className={"inventory-buttons"}>
                             <div className={"quantity"} onClick={e => changeQuantity(e, part)}>&#43;</div>
                             <div className={"quantity"} onClick={e => changeQuantity(e, part)}>&#8722;</div>
                         </td>
+
                         <td className={"inventory-buttons"}>
                             <div className={"select"} onClick={() => {
                                 qc.setQueryData('submissionType', 'edit');

@@ -32,9 +32,11 @@ const Messages = ({ messages }) => {
     const toggleReadUnread = async e => {
         e.preventDefault();
         const toggleBtns = document.getElementsByClassName('toggle-btn');
+
         for (let btn of toggleBtns) {
             btn.classList.remove('active');
         }
+
         e.currentTarget.classList.add('active');
         e.currentTarget.innerHTML === 'Read' ? setRead(true) : setRead(false);
     }
@@ -57,12 +59,15 @@ const Messages = ({ messages }) => {
                         <p>{msg.email}</p>
                         <p>{dayjs(msg.createdAt).format("MMM D, YYYY")}</p>
                     </div>
+
                     <p>{msg.message}</p>
+
                     <p className={"mark-read text-right"} onClick={() => markRead(msg)}>
                         {msg.read === false ? "Mark as read" : "Mark as unread"}
                     </p>
                 </div>
             ))}
+
             {msgList.length < 1 ? <p className={"empty"}>** No messages to display **</p> : <></>}
         </section>
     )

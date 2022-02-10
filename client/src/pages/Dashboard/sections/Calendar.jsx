@@ -40,20 +40,21 @@ const Calendar = ({ jobs }) => {
                             <span>{day.name}</span>
                             <span>{day.number}</span>
                         </h3>
-                            <div>
-                                {jobList.filter(job => (
-                                    dayjs(job.serviceDate).format('dddd') === day.name &&
-                                    dayjs(job.serviceDate) > today.subtract(1, 'day') &&
-                                    dayjs(job.serviceDate) < today.add(5, 'day')
-                                )).sort((job1, job2) => (
-                                    job1.customer.address.city.charCodeAt(0) - job2.customer.address.city.charCodeAt(0)
-                                )).map(job => (
-                                    <p key={job._id} onClick={() => selectJob(job)}>
-                                        {job.customer.businessName}<br/>
-                                        <span>{job.customer.address.city}</span>
-                                    </p>
-                                ))}
-                            </div>
+
+                        <div>
+                            {jobList.filter(job => (
+                                dayjs(job.serviceDate).format('dddd') === day.name &&
+                                dayjs(job.serviceDate) > today.subtract(1, 'day') &&
+                                dayjs(job.serviceDate) < today.add(5, 'day')
+                            )).sort((job1, job2) => (
+                                job1.customer.address.city.charCodeAt(0) - job2.customer.address.city.charCodeAt(0)
+                            )).map(job => (
+                                <p key={job._id} onClick={() => selectJob(job)}>
+                                    {job.customer.businessName}<br/>
+                                    <span>{job.customer.address.city}</span>
+                                </p>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>

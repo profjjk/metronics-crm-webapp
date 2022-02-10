@@ -17,10 +17,12 @@ const Login = () => {
         try {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(e.target));
+
             const user = {
                 username: formData.username,
                 password: formData.password
             }
+
             await login(user);
             history.push('/dashboard');
         } catch(err) { console.error(err) }
@@ -30,8 +32,10 @@ const Login = () => {
         <main>
             <div id={"card-login"}>
                 <h1>Metronics</h1>
+
                 <form id={"form-login"} onSubmit={submitHandler}>
                     <FontAwesomeIcon className={"icon-faUser"} icon={faUser}/>
+
                     <label>
                         Username
                         <input
@@ -43,6 +47,7 @@ const Login = () => {
                     </label>
 
                     <FontAwesomeIcon className={"icon-faLock"} icon={faLock}/>
+
                     <label>
                         Password
                         <input

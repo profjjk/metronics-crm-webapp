@@ -12,12 +12,12 @@ const RestockTable = ({ parts }) => {
         <section>
             <table>
                 <thead>
-                <tr className={"tr-restock"}>
-                    <th>Part #</th>
-                    <th>Description</th>
-                    <th className={"text-center"}>In Stock</th>
-                    <th />
-                </tr>
+                    <tr className={"tr-restock"}>
+                        <th>Part #</th>
+                        <th>Description</th>
+                        <th className={"text-center"}>In Stock</th>
+                        <th />
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -26,6 +26,7 @@ const RestockTable = ({ parts }) => {
                         <td>{part.partNumber}</td>
                         <td>{part.description}</td>
                         <td className={"text-center"}>{part.stock}</td>
+
                         <td className={"inventory-buttons"}>
                             <p className={"warning"}>
                                 desired minimum: {part.minimum}
@@ -35,6 +36,7 @@ const RestockTable = ({ parts }) => {
                 ))}
                 </tbody>
             </table>
+
             {partList.length < 1 ? <p className={"empty"}>** No parts to display **</p> : <></>}
         </section>
     );

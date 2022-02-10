@@ -66,6 +66,7 @@ const RequestTable = ({ requests }) => {
                 ))}
                 </tbody>
             </table>
+
             {requestList.length < 1 ? <p className={"empty"}>** No online requests to display **</p> : <></>}
         </section>
     )

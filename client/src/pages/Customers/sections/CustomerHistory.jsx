@@ -16,10 +16,10 @@ const CustomerHistory = ({ jobs, customerId }) => {
             <h2>Service History</h2>
             <table>
                 <thead>
-                <tr className={"tr-history"}>
-                    <th className={"text-center"}>Date Completed</th>
-                    <th>Service Notes</th>
-                </tr>
+                    <tr className={"tr-history"}>
+                        <th className={"text-center"}>Date Completed</th>
+                        <th>Service Notes</th>
+                    </tr>
                 </thead>
 
                 <tbody className={"tbody-history"}>

@@ -15,6 +15,7 @@ const ServiceTable = ({ jobs }) => {
     // Filter by status
     useEffect(() => {
         const sortedJobs = sortPendingToTop(jobs);
+
         if (statusFilter === "Pending") {
             setJobList(sortedJobs.filter(job => job.status === "Pending"));
         } else if (statusFilter === "Scheduled") {
@@ -31,6 +32,7 @@ const ServiceTable = ({ jobs }) => {
     // Filter by search term
     useEffect(() => {
         const sortedJobs = sortPendingToTop(jobs);
+
         if (searchTerm !== "") {
             setJobList(
                 sortedJobs.filter(job => {

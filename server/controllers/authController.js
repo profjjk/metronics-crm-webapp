@@ -6,7 +6,6 @@ require('dotenv').config()
 module.exports = {
     register: async (req, res) => {
         const { username, password } = req.body;
-        console.log(username, password)
         try {
             const userExists = await db.User.findOne({ username });
             if (userExists) res.status(400).send(`Username "${username}" already exists.`);
@@ -17,6 +16,7 @@ module.exports = {
             res.status(201).json(user);
         } catch(err) { res.status(422).json({ msg: err}) }
     },
+
     login: async (req, res) => {
         const user = { _id: req.user };
         try {
@@ -25,5 +25,3 @@ module.exports = {
         } catch(err) { res.status(422).json({ msg: err}) }
     },
 }
-
-// mch9y962

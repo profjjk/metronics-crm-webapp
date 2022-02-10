@@ -14,14 +14,17 @@ const Revenue = ({ jobs }) => {
     useEffect(() => {
         let totalRevenue = 0;
         let unpaid = 0;
+
         for (let job of jobs) {
             if (dayjs(job.serviceDate).format('YYYY') === year && job.isPaid) {
                 totalRevenue += job.totalBill;
             }
+
             if (dayjs(job.serviceDate).format('YYYY') <= year  && !job.isPaid) {
                 unpaid += job.totalBill;
             }
         }
+
         setRevenue(dollarUSLocale.format(totalRevenue));
         setOutstanding(dollarUSLocale.format(unpaid));
     }, [jobs])
@@ -29,9 +32,11 @@ const Revenue = ({ jobs }) => {
     return (
         <section className={"section-revenue"}>
             <h2>YTD SERVICE REVENUE</h2>
+
             <p className={"revenue"}>
                 ${revenue}
             </p>
+
             <p className={"outstanding"} onClick={() => {
                 qc.setQueryData('view', 'unpaid');
                 history.push('/service');

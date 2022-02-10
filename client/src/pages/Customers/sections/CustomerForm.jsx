@@ -14,17 +14,20 @@ const CustomerForm = () => {
             qc.invalidateQueries("customers");
         }
     });
+
     const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
         onSuccess: () => {
             qc.invalidateQueries("customers");
             qc.invalidateQueries("jobs");
         }
     });
+
     const deleteCustomer = useMutation(id => API.deleteCustomer(id), {
         onSuccess: () => {
             qc.invalidateQueries("customers");
         },
     });
+
     const deleteJobs = useMutation(id => API.deleteJobsByCustomerId(id), {
         onSuccess: () => {
             qc.invalidateQueries("jobs");
@@ -37,12 +40,14 @@ const CustomerForm = () => {
         let answer = window.confirm("Are you sure you want to delete?\n" +
             "This will delete the customer and their service history from the database.\n" +
             "This cannot be undone.");
+
         if (answer) {
             await deleteCustomer.mutate(customer._id);
             deleteJobs.mutate(customer._id);
             qc.setQueryData('selectedCustomer', null);
             qc.setQueryData('view', 'default');
         }
+
         addToast("Customer Deleted");
     }
     const submitForm = async e => {
@@ -62,12 +67,15 @@ const CustomerForm = () => {
                 },
                 notes: formData.notes.trim()
             }
+
             if (submissionType === 'edit') {
                 await editCustomer.mutate({ id: customer._id, data: customerData});
             }
+
             if (submissionType === 'new') {
                 await createCustomer.mutateAsync(customerData);
             }
+
             qc.setQueryData('view', 'default');
         } catch(err) { console.error(err) }
     };
@@ -95,6 +103,7 @@ const CustomerForm = () => {
                                    defaultValue={customer ? customer.address.street1 : ""}/>
                             <input type={"text"} name={"street2"} placeholder={"Unit or Building #"}
                                    defaultValue={customer ? customer.address.street2 : ""}/>
+
                             <div>
                                 <input type={"text"} name={"city"} placeholder={"City"} required
                                        defaultValue={customer ? customer.address.city : ""}/>

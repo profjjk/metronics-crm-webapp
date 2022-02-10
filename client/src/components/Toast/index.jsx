@@ -11,6 +11,7 @@ const Toast = () => {
                     <button onClick={() => deleteToast(toast.id)}>
                         X
                     </button>
+
                     <p className={"toast-message"}>{toast.msg}</p>
                 </div>
             ))}

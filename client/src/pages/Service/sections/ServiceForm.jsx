@@ -34,26 +34,31 @@ const ServiceForm = () => {
             qc.invalidateQueries('jobs');
         }
     });
+
     const editJob = useMutation(job => API.updateJob(job.id, job.data), {
         onSuccess: () => {
             qc.invalidateQueries('jobs');
         }
     });
+
     const deleteJob = useMutation(id => API.deleteJob(id), {
         onSuccess: () => {
             qc.invalidateQueries('jobs');
         }
     });
+
     const createCustomer = useMutation(customer => API.createCustomer(customer), {
         onSuccess: () => {
             qc.invalidateQueries('customers');
         }
     });
+
     const editCustomer = useMutation(customer => API.updateCustomer(customer.id, customer.data), {
         onSuccess: () => {
             qc.invalidateQueries('customers');
         }
     });
+
     const deleteRequest = useMutation(id => API.deleteRequest(id), {
         onSuccess: () => {
             qc.invalidateQueries('requests');
@@ -66,13 +71,17 @@ const ServiceForm = () => {
         if (answer) deleteJob.mutate(id);
         addToast("Job Deleted");
     };
+
     const removeRequest = id => {
         deleteRequest.mutate(id);
     };
+
     const submit = async e => {
         e.preventDefault();
+
         try {
             const formData = Object.fromEntries(new FormData(e.target));
+
             const jobData = {
                 status: formData.status,
                 serviceDate: formData.serviceDate,
@@ -82,6 +91,7 @@ const ServiceForm = () => {
                 totalBill: parseFloat(formData.totalBill.trim()),
                 isPaid: formData.isPaid === "on",
             }
+
             const customerData = {
                 businessName: formData.businessName.trim(),
                 contactName: formData.contactName.trim(),
@@ -94,6 +104,7 @@ const ServiceForm = () => {
                     zipcode: formData.zipcode.trim()
                 },
             }
+
             if (submissionType === 'add') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 createJob.mutate({ customer: customer._id, ...jobData });
@@ -104,10 +115,12 @@ const ServiceForm = () => {
                     return;
                 }
             }
+
             if (submissionType === 'edit') {
                 editCustomer.mutate({ id: customer._id, data: customerData});
                 editJob.mutate({ id: job._id, data: jobData });
             }
+
             if (submissionType === 'new') {
                 const newCustomer = await createCustomer.mutateAsync(customerData);
                 createJob.mutate({ customer: newCustomer.data._id, ...jobData });
@@ -118,17 +131,21 @@ const ServiceForm = () => {
                     return;
                 }
             }
+
             qc.setQueryData('view', 'default');
         } catch(err) { console.error(err) }
     };
+
     const useExisting = () => {
         qc.setQueryData('submissionType', 'add');
+
         qc.setQueryData('selectedCustomer', {
             ...customer,
             _id: existingCustomer._id,
             businessName: existingCustomer.businessName,
             address: existingCustomer.address
         });
+
         qc.setQueryData('existingCustomer', null)
     }
 
@@ -143,11 +160,13 @@ const ServiceForm = () => {
                     <section>
                         <div className={"use-existing-customer"}>
                             <h4>The address matches an existing customer:</h4>
+
                             <p className={"match"}>
                                 <strong>{existingCustomer.businessName}</strong><br/>
                                 {existingCustomer.address.street1} {existingCustomer.address.street2 ? (", " + existingCustomer.address.street2) : <></>}<br/>
                                 {existingCustomer.address.city}, {existingCustomer.address.state} {existingCustomer.address.zipcode}
                             </p>
+
                             <div>
                                 <p>Add this job to <strong>{existingCustomer.businessName}</strong>?</p>
                                 <button onClick={useExisting}>Yes</button>
@@ -171,6 +190,7 @@ const ServiceForm = () => {
                                     Status
                                     <div className={"dropdown"}>
                                         <FontAwesomeIcon className={"faChevronDown"} icon={faChevronDown}/>
+
                                         <select name={"status"}>
                                             {job ? <option>{job.status}</option> : <></>}
                                             {job && job.status === "Pending" ? "" : <option>Pending</option>}
@@ -217,6 +237,7 @@ const ServiceForm = () => {
                                             <input type={"text"} name={"businessName"} placeholder={"Business Name"} required
                                                    defaultValue={customer ? customer.businessName : ""}/>
                                         )}
+
                                         <input type={"text"} name={"contactName"} placeholder={"Contact Person"}
                                                defaultValue={customer ? customer.contactName : ""}/>
                                         <input type={"text"} name={"phone"} placeholder={"Phone #"} required
@@ -231,6 +252,7 @@ const ServiceForm = () => {
                                                defaultValue={customer ? customer.address.street1 : ""}/>
                                         <input type={"text"} name={"street2"} placeholder={"Unit or Building #"}
                                                defaultValue={customer ? customer.address.street2 : ""}/>
+
                                         <div>
                                             <input type={"text"} name={"city"} placeholder={"City"} required
                                                    defaultValue={customer ? customer.address.city : ""}/>
