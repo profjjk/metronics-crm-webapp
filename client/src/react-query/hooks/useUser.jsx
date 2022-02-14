@@ -36,7 +36,6 @@ const useUser = () => {
 
     const clearUser = () => {
         setUser(null);
-        qc.setQueryData('user', null);
         qc.removeQueries(['user', 'jobs', 'customers', 'parts']);
     }
 
