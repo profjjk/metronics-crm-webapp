@@ -23,22 +23,6 @@ body {
   padding: 20px 40px;
 }
 
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  color: $blue;
-  margin: 1rem auto 3.5rem auto;
-
-  h1 {
-    font-size: 3rem;
-    font-weight: 300;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
 .section-header {
   display: flex;
   justify-content: space-between;

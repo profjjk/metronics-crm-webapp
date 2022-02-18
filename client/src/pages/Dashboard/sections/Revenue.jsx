@@ -1,34 +1,42 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 const Revenue = ({ jobs }) => {
-    const qc = useQueryClient();
-    const history = useHistory();
+    // STATE
     const [revenue, setRevenue] = useState(0);
     const [outstanding, setOutstanding] = useState(0);
+    // VARIABLES
     const year = dayjs(new Date()).format('YYYY');
     const dollarUSLocale = Intl.NumberFormat('en-US');
 
+    // LIFECYCLE EVENTS
     useEffect(() => {
-        let totalRevenue = 0;
-        let unpaid = 0;
+        addRevenue();
+        addOutstanding();
+    }, [jobs]);
 
+    // FUNCTIONS
+    const addRevenue = () => {
+        let totalRevenue = 0;
         for (let job of jobs) {
             if (dayjs(job.serviceDate).format('YYYY') === year && job.isPaid) {
                 totalRevenue += job.totalBill;
             }
-
+        }
+        setRevenue(dollarUSLocale.format(totalRevenue));
+    }
+    const addOutstanding = () => {
+        let unpaid = 0;
+        for (let job of jobs) {
             if (dayjs(job.serviceDate).format('YYYY') <= year  && !job.isPaid) {
                 unpaid += job.totalBill;
             }
         }
-
-        setRevenue(dollarUSLocale.format(totalRevenue));
         setOutstanding(dollarUSLocale.format(unpaid));
-    }, [jobs])
+    }
 
+    // RETURNED COMPONENT
     return (
         <section className={"section-revenue"}>
             <h2>YTD SERVICE REVENUE</h2>
@@ -37,12 +45,9 @@ const Revenue = ({ jobs }) => {
                 ${revenue}
             </p>
 
-            <p className={"outstanding"} onClick={() => {
-                qc.setQueryData('view', 'unpaid');
-                history.push('/service');
-            }}>
+            <Link className={"outstanding"} to={'/service/unpaid'}>
                 ${outstanding} outstanding
-            </p>
+            </Link>
         </section>
     )
 }

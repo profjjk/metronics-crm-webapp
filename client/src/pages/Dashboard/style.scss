@@ -1,104 +1,33 @@
 $blue: #185adb;
-$yellow: #ffc947;
-$light: #efefef;
 $dark: #0a1931;
-$red: #d3232b;
 
-// COMPONENTS
-[class|=btn] {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background: $blue;
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.mark-paid, .mark-read {
-  color: $blue;
-  width: max-content;
-  &:hover {
-    cursor: pointer;
-    font-weight: 700;
-  }
-}
-
-.mark-read {
-  margin-top: 5px;
-  margin-left: auto;
-}
-
-.read-toggle {
-  margin: 10px auto 20px auto;
-  width: max-content;
-  display: flex;
-  background: white;
-  border: 1px solid $dark;
-  border-radius: 10px;
-}
-
-.toggle-btn {
-  width: 75px;
-  padding: 5px 10px;
-  text-align: center;
-  font-weight: 600;
-
-  &:hover {
-    cursor: pointer;
-  }
-  &.active {
-    background: $blue;
-    color: white;
-  }
-  &.left {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  &.right {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-// LAYOUT
-#dashboard {
-  [class|=section] {
-    h2 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-  }
-}
-
-.message {
-  background: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin: 5px 0;
-}
-
-.msg-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-
+// PAGE STYLES
 .dashboard-top {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 
+// NOTIFICATIONS SECTION
+.section-notifications {
+  margin-bottom: 4rem;
+  min-height: 8rem;
+}
+.notifications {
+  display: flex;
+  flex-flow: column;
+  gap: 0.3rem;
+}
 .notice {
-  margin-bottom: 0.5rem;
+  color: $dark;
   font-weight: 600;
   font-size: 1.1rem;
+  text-decoration: none;
   width: max-content;
 
   &:hover {
@@ -106,12 +35,13 @@ $red: #d3232b;
     color: $blue;
   }
 }
-
-.section-notifications {
-  margin-bottom: 4rem;
-  min-height: 8rem;
+.empty-notifications {
+  text-align: left;
+  font-style: italic;
+  color: grey;
 }
 
+// REVENUE SECTION
 .section-revenue {
   margin: 0 auto 4rem auto;
   padding: 2rem;
@@ -127,13 +57,6 @@ $red: #d3232b;
     color: $blue !important;
   }
 }
-
-.empty-notifications {
-  text-align: left;
-  font-style: italic;
-  color: grey;
-}
-
 .revenue {
   font-size: 2.8rem;
   margin-bottom: 5px;
@@ -143,6 +66,7 @@ $red: #d3232b;
   color: darkgray;
   font-style: italic;
   width: max-content;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
     color: $blue;
@@ -150,20 +74,19 @@ $red: #d3232b;
   }
 }
 
-.upcoming {
+// CALENDAR SECTION
+.calendar {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-content: space-between;
   gap: 1%;
 }
-
-.card-day {
+.calendar-day {
   position: relative;
   border: 1px solid $dark;
   border-radius: 5px;
   min-height: 15rem;
   background: white;
-
   div {
     padding-top: 30px;
     overflow-y: scroll;
@@ -173,7 +96,6 @@ $red: #d3232b;
       display: none;
     }
   }
-
   h3 {
     padding: 5px 10px;
     display: flex;
@@ -188,11 +110,14 @@ $red: #d3232b;
     color: white;
     font-weight: 100;
   }
-
-  p {
-    margin: 15px 10px;
-    font-weight: 600;
-    font-size: 1.1rem;
+}
+.calendar-job {
+  margin: 15px 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  a {
+    text-decoration: none;
+    color: $dark;
     &:hover {
       cursor: pointer;
       color: $blue;
@@ -202,5 +127,60 @@ $red: #d3232b;
       font-size: 0.9rem;
       color: $blue;
     }
+  }
+}
+
+// MESSAGE SECTION
+.message {
+  background: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+.mark-paid, .mark-read {
+  color: $blue;
+  width: max-content;
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+.mark-read {
+  margin-top: 5px;
+  margin-left: auto;
+}
+.read-toggle {
+  margin: 10px auto 20px auto;
+  width: max-content;
+  display: flex;
+  background: white;
+  border: 1px solid $dark;
+  border-radius: 10px;
+}
+.toggle-btn {
+  width: 75px;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+  &.active {
+    background: $blue;
+    color: white;
+  }
+  &.left {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &.right {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 }
