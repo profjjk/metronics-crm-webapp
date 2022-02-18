@@ -38,7 +38,7 @@ const SideNavbar = () => {
 					))}
 
 					<li onClick={logout}>
-						<Link className={'signOut'} to={'/login'}>
+						<Link className={'nav-item signOut'} to={'/login'}>
 							<FontAwesomeIcon icon={faSignOutAlt}/>
 						</Link>
 					</li>

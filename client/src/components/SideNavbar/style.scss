@@ -1,14 +1,10 @@
 $blue: #185adb;
 $yellow: #ffc947;
-$light: #efefef;
-$dark: #0a1931;
 $red: #d3232b;
 
 @mixin easeOut {
   transition: all .3s ease-out;
 }
-
-
 
 .navbar {
   position: fixed;
@@ -49,15 +45,7 @@ $red: #d3232b;
 
 .signOut {
   margin-top: 6rem;
-  padding: 0 5px;
-  background: none;
-  color: white;
-  font-size: 2rem;
-  border: none;
-  border-radius: 5px;
   &:hover {
-    cursor: pointer;
     color: $red;
-    @include easeOut;
   }
 }
