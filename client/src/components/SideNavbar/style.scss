@@ -18,20 +18,22 @@ $red: #d3232b;
   height: 100%;
   background: $blue;
   display: flex;
-  flex-flow: column;
-  justify-content: space-between;
   ul {
     margin: 50px auto;
     padding: 0;
     list-style: none;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+    display: grid;
     gap: 6rem;
+
+    li {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 
 .nav-item {
+  margin: 0 auto;
   font-size: 2rem;
   color: white;
   &:hover {
@@ -46,7 +48,7 @@ $red: #d3232b;
 }
 
 .signOut {
-  margin: 25px auto;
+  margin-top: 6rem;
   padding: 0 5px;
   background: none;
   color: white;
