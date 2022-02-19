@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
+import { useData } from '../../../react-query';
 import dayjs from 'dayjs';
 
-const CustomerHistory = ({ jobs, customerId }) => {
+const History = () => {
     const qc = useQueryClient();
+    const history = useHistory();
+    const { customerId } = useParams();
     const [jobList, setJobList] = useState([]);
+    const customer = useData('selectedCustomer');
+    const jobs = useData('jobs');
 
     useEffect(() => {
-        const history = jobs.filter(job => job.customer._id === customerId && job.status === 'Completed');
+        const history = jobs.data.filter(job => job.customer._id === customerId && job.status === 'Completed');
         setJobList(history);
-    }, [customerId, jobs])
+    }, [customer, jobs])
 
     return (
         <section className={"customer-history"}>
@@ -27,7 +33,7 @@ const CustomerHistory = ({ jobs, customerId }) => {
                     <tr className={"table-item clickable tr-history"} key={job._id} onClick={() => {
                         qc.setQueryData('submissionType', 'edit');
                         qc.setQueryData('selectedJob', job);
-                        qc.setQueryData('view', 'serviceForm');
+                        history.push('/service/view');
                     }}>
                         <td className={"text-center"}>{job.serviceDate ? dayjs(job.serviceDate).format("MMM DD YYYY") : "--"}</td>
                         <td>{job.serviceNotes ? job.serviceNotes : ""}</td>
@@ -40,4 +46,4 @@ const CustomerHistory = ({ jobs, customerId }) => {
     )
 }
 
-export default CustomerHistory;
+export default History;

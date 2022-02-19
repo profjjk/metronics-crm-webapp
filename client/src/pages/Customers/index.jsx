@@ -1,20 +1,24 @@
-import { Redirect } from 'react-router-dom';
+import { Redirect, BrowserRouter as Router, Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useData, useCustomers, useUser, useJobs } from '../../react-query';
-import { Header, CustomersTable, CustomerHistory, CustomerForm } from './sections';
-import { ServiceForm } from '../Service/sections';
+import { Table, History, Form } from './sections';
+import { Header } from '../../components';
 import './style.scss';
 
 const CustomerPage = () => {
     const { user } = useUser();
+    const { path, url } = useRouteMatch();
     const { status: customerStatus, data: customers, error: customerError } = useCustomers();
     const { status: jobStatus, data: jobs, error: jobError } = useJobs();
-    const customer = useData('selectedCustomer');
-    const view = useData('view');
 
     // REDIRECT
     if (!user) {
         return <Redirect to={'/'} />
     }
+
+    const links = [
+        { name: 'View All', path: '/customers' },
+        { name: 'Create New', path: '/customers/new' }
+    ]
 
     switch(customerStatus || jobStatus) {
         case "loading":
@@ -22,29 +26,30 @@ const CustomerPage = () => {
         case "error":
             return <h4 className="text-center">Error: {customerError.message} {jobError.message}</h4>;
         default:
-            if (view === 'customerForm') {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <CustomerForm />
-                        {customer ? <CustomerHistory jobs={jobs.data} customerId={customer._id} /> : <></>}
+            return (
+                <Router>
+                    <main className={'container'}>
+                        <Header
+                            pageTitle={'Customers'}
+                            links={links}
+                        />
+                        <Switch>
+                            <Route exact path={path}>
+                                <Table customers={customers.data} />
+                            </Route>
+
+                            <Route path={`${path}/new`}>
+                                <Form />
+                            </Route>
+
+                            <Route path={`${path}/view`}>
+                                <Form />
+                                <History />
+                            </Route>
+                        </Switch>
                     </main>
-                )
-            } else if (view === 'serviceForm') {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <ServiceForm />
-                    </main>
-                )
-            } else {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <CustomersTable customers={customers.data} />
-                    </main>
-                )
-            }
+                </Router>
+            )
     }
 }
 

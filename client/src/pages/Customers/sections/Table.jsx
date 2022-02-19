@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
 import { Searchbar } from '../../../components';
 
-const CustomersTable = ({ customers }) => {
+const Table = ({ customers }) => {
     const qc = useQueryClient();
+    const history = useHistory();
+    const { url } = useRouteMatch();
     const [customerList, setCustomerList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -48,7 +51,7 @@ const CustomersTable = ({ customers }) => {
                     <tr className={"table-item tr-customer clickable"} key={customer._id} onClick={() => {
                         qc.setQueryData('submissionType', 'edit');
                         qc.setQueryData('selectedCustomer', customer);
-                        qc.setQueryData('view', 'customerForm');
+                        history.push(`${url}/view`);
                     }}>
                         <td>{customer.businessName}</td>
                         <td>
@@ -67,6 +70,6 @@ const CustomersTable = ({ customers }) => {
     )
 }
 
-export default CustomersTable;
+export default Table;
 
 // TODO: add pagination for displaying data

@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useData, useToast } from '../../../react-query';
 import API from '../../../utils/API';
 
-const CustomerForm = () => {
+const Form = () => {
     const qc = useQueryClient();
     const { addToast } = useToast();
-    const customer = useData('selectedCustomer');
     const submissionType = useData('submissionType');
+    const customer = useData('selectedCustomer');
 
     // DATA MUTATIONS
     const createCustomer = useMutation(customer => API.createCustomer(customer), {
@@ -134,13 +134,14 @@ const CustomerForm = () => {
                         Cancel
                     </button>
 
-                    {customer && customer._id ? (<button className={"btn-form delete"} onClick={removeCustomer}>
-                        Delete
-                    </button>) : <></>}
+                    {customer && customer._id ?
+                        <button className={"btn-form delete"} onClick={removeCustomer}>
+                            Delete
+                        </button> : null}
                 </div>
             </form>
         </section>
     )
 }
 
-export default CustomerForm;
+export default Form;
