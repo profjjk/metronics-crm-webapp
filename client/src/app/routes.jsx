@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch, useRouteMatch } from "react-router-dom";
 import { Customers, Dashboard, Inventory, Login, Register, Service, NotFoundPage } from "../pages";
-import { ServiceForm } from '../pages/Service/sections';
+import { Form } from '../pages/Service/sections';
 import { SideNavbar } from '../components';
 
 const routes = [
@@ -9,7 +9,7 @@ const routes = [
     { path: '/dashboard', component: Dashboard },
     { path: '/customers', component: Customers },
     { path: '/service', component: Service, routes: [
-            { path: '/service/form', component: ServiceForm }
+            { path: '/service/form', component: Form }
         ]},
     { path: '/inventory', component: Inventory }
 ];

@@ -1,55 +1,52 @@
-import { Redirect } from 'react-router-dom';
-import { useUser, useData, useJobs, useRequests } from '../../react-query';
-import { Header, ServiceTable, RequestTable, UnpaidTable, ServiceForm } from './sections';
+import { Redirect, BrowserRouter as Router, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { useUser } from '../../react-query';
+import { Table, Requests, Unpaid, Form } from './sections';
+import { Header } from '../../components';
 import './style.scss';
 
 const ServicePage = () => {
-    const { user } = useUser();
-    const { status: jobStatus, data: jobs, error: jobError } = useJobs();
-    const { status: reqStatus, data: requests, error: reqError } = useRequests();
-    const view = useData('view');
+	const { user } = useUser();
+	const { path, url } = useRouteMatch();
 
-    // REDIRECTS
-    if (!user) {
-        return <Redirect to={'/'} />
-    }
+	// REDIRECTS
+	if(!user) {
+		return <Redirect to={'/'}/>
+	}
 
-    switch(jobStatus || reqStatus) {
-        case "loading":
-            return <h1 className="text-center">Loading</h1>;
-        case "error":
-            return <h4 className="text-center">Error: {jobError.message} {reqError.message}</h4>;
-        default:
-            if (view === 'serviceForm') {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <ServiceForm />
-                    </main>
-                )
-            } else if (view === 'requests') {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <RequestTable requests={requests.data} />
-                    </main>
-                )
-            } else if (view === 'unpaid') {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <UnpaidTable jobs={jobs.data} />
-                    </main>
-                )
-            } else {
-                return (
-                    <main className={"container"}>
-                        <Header />
-                        <ServiceTable jobs={jobs.data} />
-                    </main>
-                )
-            }
-    }
+	const links = [
+		{ name: 'View All', path: '/service' },
+		{ name: 'View Requests', path: '/service/requests' },
+		{ name: 'View Unpaid', path: '/service/unpaid' },
+		{ name: 'Create New', path: '/service/form' }
+	];
+
+	return (
+		<Router>
+			<main className={'container'}>
+				<Header
+					pageTitle={'Service Jobs'}
+					links={links}
+				/>
+				<Switch>
+					<Route exact path={'/service'}>
+						<Table />
+					</Route>
+
+					<Route path={`/service/requests`}>
+						<Requests />
+					</Route>
+
+					<Route path={`/service/unpaid`}>
+						<Unpaid />
+					</Route>
+
+					<Route path={`/service/form`}>
+						<Form />
+					</Route>
+				</Switch>
+			</main>
+		</Router>
+	)
 }
 
 export default ServicePage;

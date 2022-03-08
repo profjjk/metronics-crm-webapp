@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faHashtag, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import API from '../../../utils/API';
 
-const ServiceForm = () => {
+const Form = () => {
     const qc = useQueryClient();
-    const { status, data, error } = useCustomers();
+    const { status, data: customers, error } = useCustomers();
     const { addToast } = useToast();
     const existingCustomer = useData('existingCustomer');
     const deleteReq = useData('deleteRequest');
@@ -20,13 +20,13 @@ const ServiceForm = () => {
 
     useEffect(() => {
         if (status === 'success' && submissionType === 'new' && customer) {
-            const found = data.data.filter(data => {
+            const found = customers.data.filter(data => {
                 return customer.address.street1.toLowerCase() === data.address.street1.toLowerCase()
                     && customer.address.city.toLowerCase() === data.address.city.toLowerCase();
             })
             if (found.length > 0) qc.setQueryData('existingCustomer', found[0])
         }
-    }, [status, data, submissionType, customer]);
+    }, [status, customers, submissionType, customer]);
 
     // DATA MUTATIONS
     const createJob = useMutation(job => API.createJob(job), {
@@ -76,64 +76,73 @@ const ServiceForm = () => {
         deleteRequest.mutate(id);
     };
 
-    const submit = async e => {
-        e.preventDefault();
+    const addNewJob = (job, customer) => {
+        editCustomer.mutate({ id: customer._id, data: customer});
+        createJob.mutate({ customer: customer._id, ...job });
+        if (deleteReq) {
+            removeRequest(job._id)
+            qc.setQueryData('deleteRequest', null);
+            qc.setQueryData('view', 'requests');
+        }
+    };
 
+    const editExistingJob = (job, customer) => {
+        editCustomer.mutate({ id: customer._id, data: customer});
+        editJob.mutate({ id: job._id, data: job });
+    };
+
+    const createNewJobAndCustomer = async (job, customer) => {
         try {
-            const formData = Object.fromEntries(new FormData(e.target));
-
-            const jobData = {
-                status: formData.status,
-                serviceDate: formData.serviceDate,
-                invoiceNumber: formData.invoiceNumber.trim(),
-                issueNotes: formData.issueNotes.trim(),
-                serviceNotes: formData.serviceNotes.trim(),
-                totalBill: parseFloat(formData.totalBill.trim()),
-                isPaid: formData.isPaid === "on",
+            const newCustomer = await createCustomer.mutateAsync(customer);
+            createJob.mutate({ customer: newCustomer.data._id, ...job });
+            if (deleteReq) {
+                removeRequest(job._id)
+                qc.setQueryData('deleteRequest', null);
+                qc.setQueryData('view', 'requests');
             }
+        } catch (err) { console.error(err) }
+    };
 
-            const customerData = {
-                businessName: formData.businessName.trim(),
-                contactName: formData.contactName.trim(),
-                phone: formData.phone.trim(),
-                address: {
-                    street1: formData.street1.trim(),
-                    street2: formData.street2.trim(),
-                    city: formData.city.trim(),
-                    state: formData.state.trim(),
-                    zipcode: formData.zipcode.trim()
-                },
-            }
+    const submit = e => {
+        e.preventDefault();
+        const formData = Object.fromEntries(new FormData(e.target));
 
-            if (submissionType === 'add') {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                createJob.mutate({ customer: customer._id, ...jobData });
-                if(deleteReq) {
-                    removeRequest(job._id)
-                    qc.setQueryData('deleteRequest', null);
-                    qc.setQueryData('view', 'requests');
-                    return;
-                }
-            }
+        const jobData = {
+            status: formData.status,
+            serviceDate: formData.serviceDate,
+            invoiceNumber: formData.invoiceNumber.trim(),
+            issueNotes: formData.issueNotes.trim(),
+            serviceNotes: formData.serviceNotes.trim(),
+            totalBill: parseFloat(formData.totalBill.trim()),
+            isPaid: formData.isPaid === "on",
+        }
 
-            if (submissionType === 'edit') {
-                editCustomer.mutate({ id: customer._id, data: customerData});
-                editJob.mutate({ id: job._id, data: jobData });
-            }
+        const customerData = {
+            businessName: formData.businessName.trim(),
+            contactName: formData.contactName.trim(),
+            phone: formData.phone.trim(),
+            address: {
+                street1: formData.street1.trim(),
+                street2: formData.street2.trim(),
+                city: formData.city.trim(),
+                state: formData.state.trim(),
+                zipcode: formData.zipcode.trim()
+            },
+        }
 
-            if (submissionType === 'new') {
-                const newCustomer = await createCustomer.mutateAsync(customerData);
-                createJob.mutate({ customer: newCustomer.data._id, ...jobData });
-                if(deleteReq) {
-                    removeRequest(job._id)
-                    qc.setQueryData('deleteRequest', null);
-                    qc.setQueryData('view', 'requests');
-                    return;
-                }
-            }
+        if (submissionType === 'add') {
+            addNewJob(jobData, customerData);
+        }
 
-            qc.setQueryData('view', 'default');
-        } catch(err) { console.error(err) }
+        if (submissionType === 'edit') {
+            editExistingJob(jobData, customerData);
+        }
+
+        if (submissionType === 'new') {
+            createNewJobAndCustomer(jobData, customerData);
+        }
+
+        qc.setQueryData('view', 'default');
     };
 
     const useExisting = () => {
@@ -315,4 +324,4 @@ const ServiceForm = () => {
     }
 }
 
-export default ServiceForm;
+export default Form;

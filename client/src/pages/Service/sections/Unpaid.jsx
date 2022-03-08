@@ -4,7 +4,7 @@ import { Searchbar } from '../../../components';
 import API from '../../../utils/API';
 import dayjs from 'dayjs';
 
-const UnpaidTable = ({ jobs }) => {
+const Unpaid = ({ jobs }) => {
     const qc = useQueryClient();
     const [jobList, setJobList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -76,4 +76,4 @@ const UnpaidTable = ({ jobs }) => {
     )
 }
 
-export default UnpaidTable;
+export default Unpaid;

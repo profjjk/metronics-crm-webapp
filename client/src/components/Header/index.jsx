@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import './style.scss';
 
 const Header = ({ pageTitle, links }) => {
+	const { url } = useRouteMatch();
+
 	return (
 		<div className={'main-header'}>
 			<h1>
