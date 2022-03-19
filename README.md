@@ -6,7 +6,7 @@
 ---
 
 ## PROJECT SUMMARY
-A customized tool to digitize the company’s methods for organizing and tracking customers and service requests, and assist with inventory management. Built using the MERN stack (MongoDB, Express.js, React.js, Node.js) with JWT authentication, app-wide state management via React Query, and deployed on AWS.
+A customized tool to digitize the company’s methods for organizing and tracking customers and service requests, and assist with inventory management. Built using the MERN stack (MongoDB, Express.js, React.js, Node.js) with JWT authentication, app-wide state management via React Query.
 
 <center>
 <img src="assets/demo.gif" width="60%" height="60%"/>
