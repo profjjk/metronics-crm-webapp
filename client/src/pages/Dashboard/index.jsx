@@ -1,61 +1,64 @@
-import { Redirect } from 'react-router-dom';
-import { useData, useMessages, useJobs, useUser, useRequests, useParts } from '../../react-query';
-import { Calendar, Header, MessageTable, Notifications, Revenue } from './sections';
-import { ServiceForm } from '../Service/sections';
+import { Redirect, BrowserRouter as Router, Switch, Route, useRouteMatch } from 'react-router-dom';
+import { useUser, useJobs, useRequests, useParts, useMessages } from '../../react-query';
+import { Calendar, Messages, Notifications, Revenue } from './sections';
+import { Header } from '../../components';
 import './style.scss';
 
 const DashboardPage = () => {
-    const { user } = useUser();
-    const { status: msgStatus, data: messages, error: msgError } = useMessages();
-    const { status: reqStatus, data: requests, error: reqError } = useRequests();
-    const { status: jobStatus, data: jobs, error: jobError } = useJobs();
-    const { status: partStatus, data: parts, error: partError } = useParts();
-    const view = useData('view');
+	const { user } = useUser();
+	const { path, url } = useRouteMatch();
+	const { status: jobStatus, data: jobs, error: jobError } = useJobs();
+	const { status: reqStatus, data: requests, error: reqError } = useRequests();
+	const { status: partStatus, data: parts, error: partError } = useParts();
+	const { status: msgStatus, data: messages, error: msgError } = useMessages();
 
-    // REDIRECTS
-    if (!user) {
-        return <Redirect to={'/'} />
-    }
+	// REDIRECTS
+	if(!user) {
+		return <Redirect to={'/'}/>
+	}
 
-    switch(jobStatus || msgStatus || reqStatus || partStatus) {
-        case "loading":
-            return <h1 className="text-center">Loading</h1>;
-        case "error":
-            return <h4 className="text-center">Error: {jobError.message} | {msgError.message} | {reqError.message} | {partError.message}</h4>;
-        default:
-            if (view === 'messages') {
-                return (
-                    <main className={"container"} id={"dashboard"}>
-                        <Header />
-                        <MessageTable messages={messages.data} />
-                    </main>
-                )
-            } else if (view === 'serviceForm') {
-                return (
-                    <main className={"container"} id={"dashboard"}>
-                        <Header />
-                        <ServiceForm />
-                    </main>
-                )
-            } else {
-                return (
-                    <main className={"container"} id={"dashboard"}>
-                        <Header />
-                        <div className={"dashboard-top"}>
-                            <Notifications
-                                jobs={jobStatus === 'success' ? jobs.data.filter(job => job.status === 'Pending') : []}
-                                requests={reqStatus === 'success' ? requests.data : []}
-                                messages={msgStatus === 'success' ? messages.data.filter(msg => !msg.read) : []}
-                                parts={partStatus === 'success' ? parts.data.filter(part => part.stock < part.minimum) : []}
-                            />
+	const links = [
+		{ name: 'Overview', path: '/dashboard' },
+		{ name: 'View Messages', path: '/dashboard/messages' }
+	];
 
-                            <Revenue jobs={jobs.data.filter(job => job.status === 'Completed')} />
-                        </div>
-                        <Calendar jobs={jobs.data}/>
-                    </main>
-                )
-            }
-    }
+	switch (jobStatus || reqStatus || msgStatus || partStatus) {
+		case 'loading':
+			return <h1 className="text-center">Loading</h1>;
+		case 'error':
+			return <h4 className="text-center">Error: {jobError.message} | {msgError.message} | {reqError.message} | {partError.message}</h4>;
+		default:
+			return (
+				<Router>
+					<main className={'container'}>
+						<Header
+							pageTitle={'Dashboard'}
+							links={links}
+						/>
+						<Switch>
+							<Route exact path={path}>
+								<div className={'dashboard-top'}>
+									<Notifications
+										jobs={jobs.data.filter(job => job.status === 'Pending')}
+										requests={requests.data}
+										messages={messages.data.filter(msg => !msg.read)}
+										parts={parts.data.filter(part => part.stock < part.minimum)}
+									/>
+
+									<Revenue jobs={jobs.data}/>
+								</div>
+
+								<Calendar jobs={jobs.data}/>
+							</Route>
+
+							<Route path={`${url}/messages`}>
+								<Messages messages={messages.data} />
+							</Route>
+						</Switch>
+					</main>
+				</Router>
+			)
+	}
 }
 
 export default DashboardPage;

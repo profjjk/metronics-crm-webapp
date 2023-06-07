@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
 import dayjs from 'dayjs';
 
@@ -27,15 +28,14 @@ const Calendar = ({ jobs }) => {
         qc.setQueryData('submissionType', 'edit');
         qc.setQueryData('selectedJob', job);
         qc.setQueryData('selectedCustomer', job.customer);
-        qc.setQueryData('view', 'serviceForm');
     }
 
     return (
         <section className={"section-calendar"}>
             <h2>5 DAY SCHEDULE</h2>
-            <div className={"upcoming"}>
+            <div className={"calendar"}>
                 {days.map(day => (
-                    <div className={"card-day"} key={day.number}>
+                    <div className={"calendar-day"} key={day.number}>
                         <h3>
                             <span>{day.name}</span>
                             <span>{day.number}</span>
@@ -49,9 +49,11 @@ const Calendar = ({ jobs }) => {
                             )).sort((job1, job2) => (
                                 job1.customer.address.city.charCodeAt(0) - job2.customer.address.city.charCodeAt(0)
                             )).map(job => (
-                                <p key={job._id} onClick={() => selectJob(job)}>
-                                    {job.customer.businessName}<br/>
-                                    <span>{job.customer.address.city}</span>
+                                <p key={job._id} className={'calendar-job'} onClick={() => selectJob(job)}>
+                                    <Link to={'/service/form'}>
+                                        {job.customer.businessName}<br/>
+                                        <span>{job.customer.address.city}</span>
+                                    </Link>
                                 </p>
                             ))}
                         </div>

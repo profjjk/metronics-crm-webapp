@@ -5,15 +5,15 @@ import dayjs from 'dayjs';
 
 const Messages = ({ messages }) => {
     const qc = useQueryClient();
-    const [msgList, setMsgList] = useState(messages);
+    const [msgList, setMsgList] = useState([]);
     const [read, setRead] = useState(false);
 
     useEffect(() => {
-            if (read === false) {
-                setMsgList(messages.filter(msg => msg.read === false));
-            } else {
-                setMsgList(messages.filter(msg => msg.read === true));
-            }
+        if (read === false) {
+            setMsgList(messages.filter(msg => msg.read === false));
+        } else {
+            setMsgList(messages.filter(msg => msg.read === true));
+        }
     }, [read, messages]);
 
     // DATA MUTATIONS

@@ -1,0 +1,27 @@
+$blue: #185adb;
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin: 1rem auto 3.5rem auto;
+
+  .page-title {
+    color: $blue;
+    text-decoration: none;
+    font-size: 3rem;
+    font-weight: 300;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .section-link {
+    background: $blue;
+    color: white;
+    text-decoration: none;
+    font-weight: bolder;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+}

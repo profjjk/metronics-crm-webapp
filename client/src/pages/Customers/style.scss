@@ -1,12 +1,12 @@
 $blue: #185adb;
 
-/* CUSTOMERS TABLE */
+/* TABLE */
 .tr-customer {
   display: grid;
   grid-template-columns: 3fr 5fr 2fr 2fr;
 }
 
-/* CUSTOMER HISTORY TABLE */
+/* HISTORY */
 .customer-history {
   margin-top: 3rem;
   h2 {
