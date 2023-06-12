@@ -31,7 +31,7 @@ const Login = () => {
     return (
         <main>
             <div id={"card-login"}>
-                <h1>Metronics</h1>
+                <h1>Service Center</h1>
 
                 <form id={"form-login"} onSubmit={submitHandler}>
                     <FontAwesomeIcon className={"icon-faUser"} icon={faUser}/>
